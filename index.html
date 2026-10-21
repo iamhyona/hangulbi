@@ -213,6 +213,39 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sp-stats div+div{border-left:2px solid var(--ink)}
 .sp-stats span{font-size:12px;color:var(--muted)}
 .sp-stats b{font-family:var(--f-disp);font-weight:400;font-size:16px;min-width:2.5ch;text-align:right;-webkit-font-smoothing:none}
+.speed{position:relative}
+.sp-timer{width:100%;height:10px;border:2px solid var(--ink);border-radius:99px;background:var(--win);overflow:hidden;margin-top:-8px}
+.sp-timer i{display:block;height:100%;width:100%;background:var(--gold);transform-origin:left}
+.sp-timer.low i{background:var(--red)}
+.sp-stats b.lives{min-width:0;display:flex;gap:3px;align-self:center}
+.sp-stats b.lives i{width:9px;height:9px;background:var(--red);border:1.5px solid var(--ink);border-radius:1px}
+.sp-stats b.lives i.off{background:transparent;border-color:#b9c7c5}
+.sp-msg{position:absolute;left:0;right:0;top:22%;text-align:center;z-index:5;pointer-events:none;opacity:0;transition:opacity .25s;font-family:var(--f-disp);font-size:32px;color:var(--gold);-webkit-text-stroke:6px var(--ink);paint-order:stroke fill;text-shadow:4px 4px 0 var(--ink);-webkit-font-smoothing:none}
+.sp-msg small{display:block;font-size:16px;color:#fff;-webkit-text-stroke:4px var(--ink);margin-top:6px;text-shadow:2px 2px 0 var(--ink)}
+.sp-msg.show{opacity:1}
+.sp-msg.bad{color:var(--red)}
+.speed.shake .sp-wrap{animation:shk .3s}
+.sum.sum4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:480px){.sum.sum4{grid-template-columns:repeat(2,1fr)}}
+.sp-name{display:flex;gap:8px}
+#spName{box-sizing:border-box;flex:1;min-width:0;height:46px;border:2.5px solid var(--ink);border-radius:8px;font-family:var(--f-type);font-size:18px;padding:0 12px;background:var(--win);color:var(--ink)}
+.sp-name .btn{height:46px}
+.sp-name.saved{opacity:.5;pointer-events:none}
+.rank{border:2px solid var(--ink);border-radius:10px;overflow:hidden}
+.rank-tabs{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:2px solid var(--ink)}
+.rank-tabs button{border:0;background:var(--paper);font-family:var(--f-disp);font-size:14px;padding:8px 0;cursor:pointer;color:var(--ink);-webkit-font-smoothing:none}
+.rank-tabs button+button{border-left:2px solid var(--ink)}
+.rank-tabs button[aria-selected="true"]{background:var(--ink);color:#fff}
+.rank-list{list-style:none;margin:0;padding:6px 14px;max-height:190px;overflow:auto;counter-reset:r}
+.rank-list li{display:flex;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid #d6e3e1;font-size:14px;counter-increment:r}
+.rank-list li:last-child{border-bottom:0}
+.rank-list li::before{content:counter(r);font-family:var(--f-disp);width:1.6em;color:var(--muted)}
+.rank-list li:nth-child(1)::before{color:#c9971a}
+.rank-list li.me{font-weight:700}
+.rank-list li b{margin-left:auto;font-family:var(--f-disp);font-weight:400;font-variant-numeric:tabular-nums}
+.rank-list li em{font-style:normal;font-size:11px;color:var(--muted)}
+.rank-list .empty{color:var(--muted);justify-content:center}
+.rank-list .empty::before{content:none}
 .sp-result{display:flex;flex-direction:column;gap:16px;border:2.5px solid var(--ink);border-radius:10px;background:var(--win);padding:26px 22px;box-shadow:5px 5px 0 var(--ink)}
 .sp-result h2{margin:0;text-align:center;font-family:var(--f-disp);font-weight:400;font-size:32px}
 @media (max-width:480px){.sp-sent{font-size:21px}#spInput{font-size:20px;height:54px}.speed{padding:20px 14px}.sp-stats div{padding:6px 10px}}
@@ -272,28 +305,37 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
     </form>
   </div>
   <div class="speed" id="speed" hidden>
+    <div class="sp-msg" id="spMsg"></div>
     <div class="sp-wrap">
       <div class="sp-play" id="spPlay">
         <div class="sp-dots" id="spDots" aria-label="진행"></div><span id="spProg" hidden></span>
         <div class="sp-sent" id="spSent"></div>
+        <div class="sp-timer"><i id="spTimer"></i></div>
         <form id="spForm" autocomplete="off">
-          <input id="spInput" type="text" enterkeyhint="done" autocapitalize="off" spellcheck="false" placeholder="위 문장을 그대로 치고 Enter" aria-label="문장 입력">
+          <input id="spInput" type="text" enterkeyhint="done" autocapitalize="off" spellcheck="false" placeholder="위 문장을 그대로 치고 스페이스바" aria-label="문장 입력">
         </form>
         <div class="sp-next" id="spNext"></div>
         <div class="sp-stats">
+          <div><span>STAGE</span><b id="spStage">1</b></div>
+          <div><span>목표</span><b id="spGoal">0</b></div>
           <div><span>타수</span><b id="spKpm">0</b></div>
-          <div><span>정확도</span><b id="spAcc">-</b></div>
-          <div><span>최고</span><b id="spBest">0</b></div>
+          <div><span>목숨</span><b id="spLives" class="lives"></b></div>
         </div>
       </div>
       <div class="sp-result" id="spResult" hidden>
         <h2 id="spRTitle">결과</h2>
-        <div class="sum">
+        <div class="sum sum4">
+          <div><span>SCORE</span><b id="spRScore">0</b></div>
           <div><span>평균 타수</span><b id="spRAvg">0</b></div>
-          <div><span>최고 타수</span><b id="spRMax">0</b></div>
           <div><span>정확도</span><b id="spRAcc">0%</b></div>
+          <div><span>성공</span><b id="spROk">0</b></div>
         </div>
         <div class="best" id="spRBest"></div>
+        <form class="sp-name" id="spNameForm" autocomplete="off"><input id="spName" maxlength="10" placeholder="이름" aria-label="이름"><button class="btn" type="submit" id="spSave">랭킹 등록</button></form>
+        <div class="rank">
+          <div class="rank-tabs" role="tablist"><button data-k="score" aria-selected="true">점수</button><button data-k="kpm">속도</button><button data-k="acc">정확도</button><button data-k="ok">횟수</button></div>
+          <ol class="rank-list" id="rankList"></ol>
+        </div>
         <div class="row2"><button class="btn" id="spAgain">한 번 더</button><button class="btn ghost" id="spHome">처음으로</button></div>
       </div>
     </div>
@@ -763,54 +805,98 @@ function gameOver(){
 function setMode(m){
   mode=m;store.set("mcb-mode",m);$("modes").dataset.m=m;
   $("mBasic").setAttribute("aria-checked",m==="basic");$("mSpeed").setAttribute("aria-checked",m==="speed");
-  const b=+(store.get("mcb-best-"+m)||0);$("bestTxt").textContent=b?(m==="speed"?`최고 ${b.toLocaleString()}타`:`최고 ${b.toLocaleString()}점`):"";
+  const b=+(store.get("mcb-best-"+m)||0);$("bestTxt").textContent=b?(m==="speed"?`최고 STAGE ${b}`:`최고 ${b.toLocaleString()}점`):"";
 }
 $("mBasic").onclick=()=>setMode("basic");$("mSpeed").onclick=()=>setMode("speed");
 function begin(){mode==="speed"?startSpeed():start()}
+const SP_LIVES=5;
+const spTarget=st=>120+(st-1)*40;
+function spDeck(){const p=SENTS.slice();for(let i=p.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[p[i],p[j]]=[p[j],p[i]]}return p.slice(0,SP_N)}
+function spMsg(big,small,bad,ms=1100){const m=$("spMsg");m.innerHTML=esc(big)+(small?`<small>${esc(small)}</small>`:"");m.classList.toggle("bad",!!bad);m.classList.add("show");clearTimeout(spMsg.t);spMsg.t=setTimeout(()=>m.classList.remove("show"),ms)}
 function startSpeed(){
   if(S){S.running=false}cancelAnimationFrame(raf);
   ["startOv","overOv","pauseOv","clearOv"].forEach(id=>$(id).hidden=true);
   document.querySelector(".win").classList.add("speedmode");$("speed").hidden=false;$("spResult").hidden=true;$("spPlay").hidden=false;
-  const pool=SENTS.slice();for(let i=pool.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[pool[i],pool[j]]=[pool[j],pool[i]]}
-  SP={list:pool.slice(0,SP_N),i:0,t0:0,res:[]};$("spBest").textContent=(+(store.get("mcb-best-speed")||0)).toLocaleString();
-  spShow();
+  SP={stage:1,list:spDeck(),i:0,lives:SP_LIVES,res:[],ok:0,busy:false,cOk:0,cAll:0,pts:0};
+  spMsg("STAGE 1","목표 "+spTarget(1)+"타",false,1400);spShow();
+}
+function spHud(){
+  $("spStage").textContent=SP.stage;$("spGoal").textContent=spTarget(SP.stage);
+  $("spLives").innerHTML=Array.from({length:SP_LIVES},(_,k)=>`<i class="${k<SP.lives?"":"off"}"></i>`).join("");
 }
 function spShow(){
   const t=SP.list[SP.i];
   $("spDots").innerHTML=Array.from({length:SP_N},(_,k)=>`<i class="${k<SP.i?"done":k===SP.i?"now":""}"></i>`).join("");
   $("spNext").textContent=SP.list[SP.i+1]||"";
   $("spSent").innerHTML=[...t].map(c=>`<i>${c===" "?"&nbsp;":esc(c)}</i>`).join("");
-  const inp=$("spInput");inp.value="";inp.disabled=false;$("spPlay").hidden=false;inp.focus();SP.t0=0;spPaint();$("spKpm").textContent="0";$("spAcc").textContent="-";
+  const inp=$("spInput");inp.value="";inp.disabled=false;$("spPlay").hidden=false;inp.focus();
+  SP.t0=performance.now();SP.limit=Math.max(4000,keys(t)/spTarget(SP.stage)*60000)+1500;SP.busy=false;
+  spPaint();spHud();$("spKpm").textContent="0";
 }
-function spAccOf(v,t){let ok=0;for(let i=0;i<t.length;i++)if(v[i]===t[i])ok++;return ok/Math.max(t.length,v.length)}
 function spPaint(){
   const v=$("spInput").value,t=SP.list[SP.i],els=$("spSent").children;
   for(let i=0;i<els.length;i++){const e=els[i];e.className=i<v.length-1?(v[i]===t[i]?"ok":"bad"):i===v.length-1?(v[i]===t[i]?"ok":""):i===v.length?"cur":""}
 }
 function spTick(){
-  if(!SP||$("speed").hidden||!SP.t0)return;
-  const v=$("spInput").value,min=Math.max(1000,performance.now()-SP.t0)/60000;
-  $("spKpm").textContent=Math.round(keys(v)/min);
-  $("spAcc").textContent=v?Math.round(spAccOf(v,SP.list[SP.i].slice(0,v.length))*100)+"%":"-";
+  if(!SP||SP.busy||$("speed").hidden||!$("spResult").hidden)return;
+  const el=performance.now()-SP.t0,left=Math.max(0,1-el/SP.limit);
+  $("spTimer").style.transform=`scaleX(${left})`;$("spTimer").parentElement.classList.toggle("low",left<.25);
+  const v=$("spInput").value;$("spKpm").textContent=v?Math.round(keys(v)/Math.max(1000,el)*60000):0;
+  if(left<=0)spFail("시간 초과");
 }
-setInterval(spTick,200);
-$("spInput").addEventListener("input",()=>{if(!SP)return;if(!SP.t0)SP.t0=performance.now();spPaint()});
+setInterval(spTick,100);
+$("spInput").addEventListener("input",()=>{if(!SP||SP.busy)return;spPaint();
+  const v=$("spInput").value,t=SP.list[SP.i];
+  if(/\s$/.test(v)&&v.trimEnd().length>=t.length)setTimeout(spSubmit,0);
+});
+function spAdvance(){
+  SP.i++;
+  if(SP.i>=SP_N){SP.stage++;SP.i=0;SP.list=spDeck();spMsg("STAGE "+SP.stage,"목표 "+spTarget(SP.stage)+"타",false,1400);setTimeout(spShow,900)}
+  else setTimeout(spShow,450);
+}
+function spCount(v,t){let ok=0;for(let i=0;i<t.length;i++)if(v[i]===t[i])ok++;SP.cOk+=ok;SP.cAll+=Math.max(t.length,v.length)}
+function spFail(why){
+  if(SP.busy)return;SP.busy=true;spCount($("spInput").value,SP.list[SP.i]);SP.lives--;spHud();
+  const sp=$("speed");sp.classList.remove("shake");void sp.offsetWidth;sp.classList.add("shake");
+  $("spInput").disabled=true;
+  if(SP.lives<=0){spMsg(why,"목숨이 다 떨어졌어요",true,1200);setTimeout(spEnd,900);return}
+  spMsg(why,"목숨 "+SP.lives+"개 남음",true,900);spAdvance();
+}
 function spSubmit(){
-  if(!SP||$("speed").hidden||SP.i>=SP_N)return;const v=$("spInput").value.trim();if(!v||!SP.t0)return;
-  const t=SP.list[SP.i],min=Math.max(1000,performance.now()-SP.t0)/60000,acc=spAccOf(v,t),kpm=Math.round(keys(v)/min*acc);
-  SP.res.push({kpm,acc});$("spKpm").textContent=kpm;$("spAcc").textContent=Math.round(acc*100)+"%";
-  SP.i++;if(SP.i<SP_N){setTimeout(spShow,250)}else spEnd();
+  if(!SP||SP.busy||$("speed").hidden||!$("spResult").hidden)return;const v=$("spInput").value.trim();if(!v)return;
+  const t=SP.list[SP.i];
+  if(v.replace(/\s+/g," ")!==t){spFail("오타");return}
+  SP.busy=true;const el=performance.now()-SP.t0,kpm=Math.round(keys(t)/Math.max(1000,el)*60000);
+  SP.res.push(kpm);SP.ok++;spCount(t,t);SP.pts+=Math.round(kpm*(1+(SP.stage-1)*.2));$("spKpm").textContent=kpm;spMsg(kpm+"타","",false,600);$("spInput").disabled=true;spAdvance();
 }
 $("spInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.isComposing||e.keyCode===229)){e.preventDefault();setTimeout(spSubmit,0)}});
 $("spForm").addEventListener("submit",e=>{e.preventDefault();setTimeout(spSubmit,0)});
+const RK="mcb-rank-speed";
+function rkLoad(){try{return JSON.parse(store.get(RK)||"[]")}catch(e){return[]}}
+let rkTab="score",rkMine=null;
+function rkRender(){
+  const list=rkLoad().slice().sort((a,b)=>b[rkTab]-a[rkTab]||b.score-a.score).slice(0,10);
+  const fmt=r=>rkTab==="acc"?r.acc+"%":rkTab==="kpm"?r.kpm.toLocaleString()+"타":rkTab==="ok"?r.ok+"문장":r.score.toLocaleString();
+  $("rankList").innerHTML=list.length?list.map(r=>`<li class="${r.id===rkMine?"me":""}">${esc(r.name)} <em>STAGE ${r.stage}</em><b>${fmt(r)}</b></li>`).join(""):`<li class="empty">아직 기록이 없어요</li>`;
+  document.querySelectorAll(".rank-tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.k===rkTab));
+}
+document.querySelectorAll(".rank-tabs button").forEach(b=>b.onclick=()=>{rkTab=b.dataset.k;rkRender()});
 function spEnd(){
-  const avg=Math.round(SP.res.reduce((a,b)=>a+b.kpm,0)/SP.res.length),mx=Math.max(...SP.res.map(r=>r.kpm)),acc=Math.round(SP.res.reduce((a,b)=>a+b.acc,0)/SP.res.length*100);
-  const best=+(store.get("mcb-best-speed")||0),rec=avg>best;if(rec)store.set("mcb-best-speed",avg);
-  $("spRAvg").textContent=avg.toLocaleString();$("spRMax").textContent=mx.toLocaleString();$("spRAcc").textContent=acc+"%";
-  $("spRTitle").textContent=avg>=500?"손가락이 번개":avg>=300?"타자 장인":avg>=150?"꽤 빠른 손":"천천히 정확하게";
-  $("spRBest").textContent=rec?"새 최고 기록!":`최고 기록 ${best.toLocaleString()}타`;
+  const avg=SP.res.length?Math.round(SP.res.reduce((a,b)=>a+b,0)/SP.res.length):0,acc=SP.cAll?Math.round(SP.cOk/SP.cAll*100):0;
+  const score=Math.round(SP.pts*acc/100);
+  SP.final={score,kpm:avg,acc,ok:SP.ok,stage:SP.stage};
+  const best=+(store.get("mcb-best-speed")||0),rec=SP.stage>best;if(rec)store.set("mcb-best-speed",SP.stage);
+  $("spRScore").textContent=score.toLocaleString();$("spRAvg").textContent=avg.toLocaleString();$("spRAcc").textContent=acc+"%";$("spROk").textContent=SP.ok;
+  $("spRTitle").textContent="STAGE "+SP.stage;
+  $("spRBest").textContent=rec?"새 최고 기록!":`최고 기록 STAGE ${best}`;
+  $("spName").value=store.get("mcb-name")||"";$("spNameForm").classList.remove("saved");rkMine=null;rkTab="score";rkRender();
   $("spPlay").hidden=true;$("spResult").hidden=false;$("spInput").blur();
 }
+$("spNameForm").addEventListener("submit",e=>{e.preventDefault();if(!SP||!SP.final||rkMine)return;
+  const name=($("spName").value.trim()||"익명").slice(0,10);store.set("mcb-name",name);
+  const r={id:Date.now()+"",name,...SP.final,date:new Date().toISOString().slice(0,10)};
+  const all=rkLoad();all.push(r);all.sort((a,b)=>b.score-a.score);store.set(RK,JSON.stringify(all.slice(0,50)));
+  rkMine=r.id;$("spNameForm").classList.add("saved");rkRender()});
 $("spAgain").onclick=startSpeed;$("spHome").onclick=()=>goHome();
 $("startBtn").onclick=begin;$("againBtn").onclick=start;
 $("homeBtn").onclick=goHome;
