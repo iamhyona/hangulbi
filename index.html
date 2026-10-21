@@ -138,16 +138,15 @@ body{background:#e4eeec;color:var(--ink);font-family:var(--f-body);overflow:hidd
 @keyframes thaw{30%{transform:translateX(-3px)}60%{transform:translateX(3px)}}
 
 .dict{border-top:2.5px solid var(--ink);background:var(--paper);padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px}
-.define{height:52px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.define{height:60px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:2px}
 .define .dw{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
 .define b{font-family:var(--f-type);font-weight:400;font-size:16px;-webkit-font-smoothing:none}
 .define s{font-family:var(--f-type);font-size:16px;color:var(--red);text-decoration-thickness:2px;-webkit-font-smoothing:none}
 .define em{font-style:normal;font-size:11px;font-weight:700;color:#fff;background:var(--red);border-radius:99px;padding:1px 7px}
-.define p{margin:0;font-family:"PretendardSub","Pretendard",var(--f-body);font-size:13px;line-height:1.4;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.define p{margin:0;font-family:"PretendardSub","Pretendard",var(--f-body);font-size:15px;line-height:1.4;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .define p.hint0{color:var(--muted)}
-.define{border-radius:6px;margin:0 -6px;padding:0 6px}
-.define.pop{animation:dpop .55s steps(1,end)}
-@keyframes dpop{0%{opacity:1;background:#ffe27a}35%{opacity:.15;background:transparent}70%{opacity:1;background:#ffe27a}100%{background:transparent}}
+.define.pop>*{animation:dpop .6s steps(1,end)}
+@keyframes dpop{0%{opacity:1}30%{opacity:0}60%{opacity:1}}
 .card{min-height:58px;display:flex;flex-direction:column;gap:3px}
 .card .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .card .word{font-family:var(--f-type);font-weight:400;font-size:22px}
@@ -297,7 +296,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
         <div><span>WORDS</span><b id="oPop">0</b></div>
         <div><span>STAGE</span><b id="oLevel">1</b></div>
       </div>
-      <div class="verdict" id="oVerdict"></div>
+      <div class="verdict" id="oVerdict" hidden></div>
       <div class="best" id="oBest"></div>
       <div class="ltitle">이번 판 단어장</div>
       <div class="list" id="oList"></div>
