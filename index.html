@@ -242,7 +242,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sp-msg.show{display:block;animation:msgIn .18s steps(2,end)}
 @keyframes msgIn{from{transform:translateX(-50%) translateY(6px)}}
 .sp-msg.bad{background:var(--red);color:#fff}
-.speed.shake .sp-wrap{animation:shk .3s}
+.speed.shake .sp-sent,.speed.shake #spForm{animation:shk .3s}
 .sum.sum4{grid-template-columns:repeat(4,1fr)}
 @media (max-width:480px){.sum.sum4{grid-template-columns:repeat(2,1fr)}}
 .sp-name{display:flex;gap:8px}
@@ -864,7 +864,7 @@ function spShow(){
   $("spDots").innerHTML=Array.from({length:SP_N},(_,k)=>`<i class="${k<SP.i?"done":k===SP.i?"now":""}"></i>`).join("");
   $("spNext").textContent=SP.list[SP.i+1]||"";
   $("spSent").innerHTML=[...t].map(c=>`<i>${esc(c)}</i>`).join("");
-  const inp=$("spInput");inp.value="";inp.disabled=false;$("spPlay").hidden=false;inp.focus();
+  const inp=$("spInput");inp.blur();inp.value="";inp.disabled=false;$("spPlay").hidden=false;inp.focus();
   SP.t0=performance.now();SP.limit=Math.max(4000,keys(t)/spTarget(SP.stage)*60000)+1500;SP.busy=false;
   spPaint();spHud();$("spKpm").textContent="0";
 }
@@ -893,7 +893,7 @@ function spCount(v,t){let ok=0;for(let i=0;i<t.length;i++)if(v[i]===t[i])ok++;SP
 function spFail(why){
   if(SP.busy)return;SP.busy=true;spCount($("spInput").value,SP.list[SP.i]);SP.lives--;spHud();
   const sp=$("speed");sp.classList.remove("shake");void sp.offsetWidth;sp.classList.add("shake");
-  $("spInput").disabled=true;
+  
   if(SP.lives<=0){spMsg(why,"목숨이 다 떨어졌어요",true,1200);setTimeout(spEnd,900);return}
   spMsg(why,"목숨 "+SP.lives+"개 남음",true,900);spAdvance();
 }
@@ -902,7 +902,7 @@ function spSubmit(){
   const t=SP.list[SP.i];
   if(v.replace(/\s+/g," ")!==t){spFail("오타");return}
   SP.busy=true;const el=performance.now()-SP.t0,kpm=Math.round(keys(t)/Math.max(1000,el)*60000);
-  SP.res.push(kpm);SP.ok++;spCount(t,t);SP.pts+=Math.round(kpm*(1+(SP.stage-1)*.2));$("spKpm").textContent=kpm;spMsg(kpm+"타","",false,600);$("spInput").disabled=true;spAdvance();
+  SP.res.push(kpm);SP.ok++;spCount(t,t);SP.pts+=Math.round(kpm*(1+(SP.stage-1)*.2));$("spKpm").textContent=kpm;spMsg(kpm+"타","",false,600);spAdvance();
 }
 $("spInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.isComposing||e.keyCode===229)){e.preventDefault();setTimeout(spSubmit,0)}});
 $("spForm").addEventListener("submit",e=>{e.preventDefault();setTimeout(spSubmit,0)});
