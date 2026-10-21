@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>한글비타자게임</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard-dynamic-subset.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@400;500;700;800&family=DM+Mono:wght@500&display=swap">
+<style>
+
+[hidden]{display:none!important}
+@font-face{font-family:"NeoDunggeunmo";src:url(https://cdn.jsdelivr.net/npm/@kfonts/neodgm@0.5.0/neodgm.woff2) format("woff2");font-display:block}
+/* 90년대 타자교사 산성비를 네오레트로 창(굵은 테두리 + 하드섀도)으로 다시 그림. 청록 바다, 벽돌탑 위의 세종대왕 */
+:root{
+  --sea:#7fcfc9; --sea2:#5fbdb6; --ink:#0c1a1c; --win:#ffffff; --paper:#f3fbfa; --muted:#5d7472;
+  --brick:#8d98ff; --brick2:#6f7af0; --gold:#ffd23f; --red:#ff5a4e; --wave:#1b3c8f; --wave2:#2c58c9;
+  --f-body:"Asta Sans","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --f-disp:"NeoDunggeunmo","Black Han Sans",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,monospace;
+  --f-type:"NeoDunggeunmo","Nanum Gothic Coding",ui-monospace,monospace;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:#e4eeec;color:var(--ink);font-family:var(--f-body);overflow:hidden}
+.app{height:100%;max-width:820px;margin:0 auto;display:flex;flex-direction:column;
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));padding-block:10px 12px}
+.win{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--win);border:2.5px solid var(--ink);border-radius:10px;box-shadow:4px 4px 0 var(--ink);overflow:hidden}
+.tbar{display:flex;align-items:center;gap:7px;padding:7px 10px;border-bottom:2.5px solid var(--ink);background:var(--win)}
+.tbar .ttl{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--f-disp);font-size:16px}
+.stat{white-space:nowrap;box-sizing:border-box;height:30px;display:inline-flex;align-items:center;padding:0 8px;border:2px solid var(--ink);border-radius:7px;background:var(--win);box-shadow:2px 2px 0 var(--ink);font-size:14px!important}
+.stat b{font-size:16px;color:var(--ink)}
+.stat b#sScore{min-width:3ch;text-align:right}
+.stat{font-family:var(--f-disp);font-size:16px;font-variant-numeric:tabular-nums}.stat b{font-weight:400;margin-left:4px}
+.ibtn{width:30px;height:30px;border-radius:7px;border:2px solid var(--ink);background:var(--win);display:grid;place-items:center;cursor:pointer;color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.ibtn:active{transform:translate(2px,2px);box-shadow:none}
+.ibtn svg{width:14px;height:14px}
+@property --sea{syntax:"<color>";inherits:true;initial-value:#7fcfc9}
+@property --sea2{syntax:"<color>";inherits:true;initial-value:#5fbdb6}
+.stage{--wtext:var(--ink);--wshadow:0 2px 0 rgba(255,255,255,.45);flex:1;min-height:0;position:relative;overflow:hidden;background:linear-gradient(var(--sea),var(--sea2));transition:--sea 1.2s,--sea2 1.2s}
+.stage[data-bg="1"]{--sea:#ffc39a;--sea2:#f59a7c}
+.stage[data-bg="2"]{--sea:#a99ae0;--sea2:#7a6cc4;--wtext:#fff;--wshadow:2px 2px 0 var(--ink)}
+.stage[data-bg="3"]{--sea:#2a3f75;--sea2:#141f45;--wtext:#fff;--wshadow:2px 2px 0 var(--ink)}
+.stage[data-bg="4"]{--sea:#6c7a82;--sea2:#3d484e;--wtext:#fff;--wshadow:2px 2px 0 var(--ink)}
+.stars{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity 1.2s;pointer-events:none;
+  background-image:radial-gradient(#fff 1px,transparent 1.5px),radial-gradient(rgba(255,255,255,.7) 1px,transparent 1.5px);background-size:57px 61px,83px 47px;background-position:11px 7px,37px 29px}
+.stage[data-bg="3"] .stars{opacity:1}
+.sun{position:absolute;right:14%;top:16%;width:54px;height:54px;border-radius:50%;background:#ffe27a;z-index:0;opacity:0;transition:opacity 1.2s}
+.stage[data-bg="1"] .sun{opacity:1}
+.stage[data-bg="3"] .sun{opacity:1;background:#fff6c9;width:38px;height:38px;box-shadow:inset -9px -4px 0 #e3d79c}
+.stage.flash::after{content:"";position:absolute;inset:0;background:#fff;z-index:8;pointer-events:none;animation:flash .5s}
+@keyframes flash{0%,40%{opacity:.45}20%,100%{opacity:0}}
+.w{position:absolute;left:0;top:0;white-space:nowrap;font-family:var(--f-type);font-weight:400;font-size:26px;color:var(--wtext);will-change:transform;z-index:3;
+  text-shadow:var(--wshadow)}
+.w,.bubble,#typing,.stat,.ttl,.dlg h1,.dlg h2,.boom,.banner span{-webkit-font-smoothing:none}
+.w.bonus{color:var(--gold);text-shadow:2px 2px 0 var(--ink)}
+.w.dunk{animation:dunk .25s ease-out}
+@keyframes dunk{0%{margin-top:-26px}100%{margin-top:0}}
+.stage.jolt{animation:jolt .25s}
+@keyframes jolt{30%{box-shadow:inset 0 0 0 4px var(--red)}}
+.w.big{color:#fff;background:var(--red);border:3px solid var(--ink);border-radius:6px;padding:1px 8px 1px 30px;box-shadow:3px 3px 0 var(--ink);text-shadow:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' shape-rendering='crispEdges'%3E%3Cpath fill='%230c1a1c' d='M3 3h4v1h1v4H7v1H3V8H2V4h1z'/%3E%3Cpath fill='%23fff' d='M4 4h1v1H4z'/%3E%3Cpath fill='%23ffd23f' d='M7 1h1v1H7zM8 0h1v1H8zM6 2h1v1H6z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-size:20px 20px;background-position:6px center}
+.w.gone{transition:opacity .4s,transform .4s;opacity:0}
+.w.melt{transition:opacity .6s,filter .6s;opacity:0;filter:blur(3px)}
+.boom{position:absolute;pointer-events:none;z-index:4;font-family:var(--f-disp);font-size:16px;line-height:1;color:var(--ink);background:var(--gold);border:2px solid var(--ink);border-radius:4px;padding:4px 7px;box-shadow:2px 2px 0 var(--ink);animation:boom .8s ease-out forwards;white-space:nowrap}
+@keyframes boom{0%{transform:scale(.6)}25%{transform:scale(1.1)}100%{transform:translateY(-26px);opacity:0}}
+.water{position:absolute;left:0;right:0;bottom:0;height:var(--wh,30px);z-index:5;background:rgba(27,60,143,.78)}
+.water .fill{opacity:.85}
+.stage.danger .water{animation:dangerW .6s steps(2) infinite}
+@keyframes dangerW{50%{background:rgba(160,40,60,.8)}}
+.water svg{position:absolute;left:-10%;top:-13px;width:120%;height:16px}
+.foam{position:absolute;width:18px;height:3px;background:rgba(255,255,255,.55);box-shadow:24px 0 0 rgba(255,255,255,.3)}
+.stage.frozen .foam{opacity:0}
+.water .wf{animation:slosh 5s ease-in-out infinite alternate}
+.water .wb{top:-17px;animation:slosh 6.5s ease-in-out infinite alternate-reverse}
+@keyframes slosh{from{transform:translateX(-7%)}to{transform:translateX(7%)}}
+.tower{position:absolute;left:50%;transform:translateX(-50%);bottom:14px;z-index:4;display:flex;flex-direction:column;align-items:center;transition:bottom .5s}
+.bricks{display:grid;grid-template-columns:repeat(4,33px);gap:0;padding:0 3px 3px 0}
+.bricks i{box-sizing:border-box;height:20px;background:var(--brick);border:3px solid var(--ink);margin:0 -3px -3px 0;border-radius:2px;box-shadow:inset 0 -3px 0 var(--brick2)}
+.bricks i.off{visibility:hidden}
+.bricks i.crack{animation:crack .26s steps(2) forwards}
+@keyframes crack{0%{transform:translateX(-2px)}50%{transform:translateX(2px);background:var(--red)}100%{background:var(--red)}}
+.chunk{position:absolute;z-index:5;background:var(--brick);border:2.5px solid var(--ink);pointer-events:none;animation:fall .75s cubic-bezier(.4,0,1,1) forwards}
+@keyframes fall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),140px) rotate(var(--rot));opacity:.2}}
+.mascot{width:75px;height:85px;margin-bottom:-6px;transition:transform .3s}
+.mascot.bob{animation:bob .45s}
+@keyframes bob{40%{transform:translateY(-10px) rotate(-6deg)}}
+.mascot.hurt{animation:hurt .45s}
+@keyframes hurt{25%{transform:translateX(-5px) rotate(-8deg)}75%{transform:translateX(5px) rotate(8deg)}}
+.mascot .f{display:none} .mascot[data-f="n"] .fn,.mascot[data-f="h"] .fh,.mascot[data-f="p"] .fp{display:inline}
+.bubble{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:6px;width:max-content;max-width:min(220px,64vw);white-space:normal;text-align:center;
+  background:var(--win);border:2px solid var(--ink);border-radius:10px;padding:5px 10px;font-size:12.5px;font-weight:700;line-height:1.4;box-shadow:2px 2px 0 var(--ink);opacity:0;transition:opacity .2s}
+.bubble.show{opacity:1}
+.bubble{font-family:var(--f-type);font-weight:400;font-size:16px;line-height:1.35;text-align:left}
+.bubble b{font-family:var(--f-type);font-weight:400;font-size:16px}
+.bubble .m{display:block;margin-top:3px;font-family:"PretendardSub","Pretendard",var(--f-body);font-size:13px;line-height:1.45;-webkit-font-smoothing:auto}
+.bubble s{font-family:var(--f-type);font-size:16px;color:var(--red);text-decoration-thickness:2px}
+.bubble.bad{border-color:var(--red)}
+.banner{position:absolute;left:0;right:0;top:34%;text-align:center;z-index:6;pointer-events:none;opacity:0;transition:opacity .3s}
+.banner span{display:inline-block;font-family:var(--f-disp);font-size:32px;color:var(--gold);-webkit-text-stroke:6px var(--ink);paint-order:stroke fill;text-shadow:4px 4px 0 var(--ink)}
+.banner small{display:block;font-family:var(--f-disp);font-size:16px;color:#fff;margin-top:6px;-webkit-text-stroke:4px var(--ink);paint-order:stroke fill;text-shadow:2px 2px 0 var(--ink)}
+.banner.show{opacity:1}
+.drop{position:absolute;top:0;width:2px;height:12px;background:rgba(255,255,255,.55);z-index:1;pointer-events:none;animation:rain linear infinite}
+@keyframes rain{from{transform:translateY(-20px)}to{transform:translateY(900px)}}
+.stage.frozen .drop,.stage.paused .drop{animation-play-state:paused}
+.frost{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .25s;
+  box-shadow:inset 0 0 0 4px #ffffff,inset 0 0 0 7px #bfe8f7,inset 0 0 70px 16px rgba(225,247,255,.95)}
+.prog{position:absolute;left:0;right:0;top:0;height:8px;background:rgba(255,255,255,.35);z-index:6;border-bottom:2px solid var(--ink)}
+.prog i{display:block;height:100%;width:0;background:var(--gold);border-right:2px solid var(--ink);transition:width .3s}
+.icebar{position:absolute;left:10px;bottom:calc(var(--wh,30px) + 14px);z-index:2;display:flex;align-items:center;gap:6px;padding:4px 8px 4px 5px;
+  background:#e8f8ff;border:2.5px solid var(--ink);border-radius:8px;box-shadow:3px 3px 0 var(--ink);opacity:0;transition:opacity .2s;pointer-events:none}
+.stage.frozen .icebar{opacity:1}
+.icebar svg{width:22px;height:22px;animation:spin 3s linear infinite}
+@keyframes spin{to{transform:rotate(90deg)}}
+.icebar .gauge{width:54px;height:10px;border:2px solid var(--ink);background:#fff;border-radius:2px;overflow:hidden}
+.icebar .gauge i{display:block;height:100%;width:100%;background:#7fd4ff;transform-origin:left}
+.icebar b{display:none;white-space:nowrap;font-family:var(--f-disp);font-weight:400;font-size:16px;color:#1e5a78;-webkit-font-smoothing:none}
+.water,.water path{transition:background .4s,fill .4s}
+.stage.frozen .water{background:#bfe6f5;background-image:linear-gradient(100deg,transparent 0 18%,rgba(255,255,255,.75) 18% 19.5%,transparent 19.5% 61%,rgba(255,255,255,.6) 61% 62%,transparent 62%),
+  linear-gradient(transparent 0 40%,rgba(255,255,255,.35) 40% 46%,transparent 46%)}
+.stage.frozen .water svg{animation-play-state:paused}
+.stage.frozen .water .wf .fill{fill:#d4f1fb}
+.stage.frozen .water .wb .fill{fill:#a5d9ee}
+.water .crack{position:absolute;inset:0;left:0;top:0;width:100%;height:100%;animation:none;opacity:0;pointer-events:none}
+.stage.frozen .water .crack{opacity:1}
+.stage.thaw .water .crack{animation:crk .45s steps(2)}
+@keyframes crk{50%{opacity:1;transform:scaleX(1.05)}}
+.stage.frozen .mascot{animation:shiver .12s linear infinite}
+@keyframes shiver{0%,100%{transform:translateX(0)}50%{transform:translateX(1.5px)}}
+.stage.frozen .bricks i{background:#c4ccff;box-shadow:inset 0 -3px 0 var(--brick2),inset 0 2px 0 #fff}
+.stage.frozen .drop{width:4px!important;height:4px!important;background:#ffffff;box-shadow:0 0 0 1px #8fd0ec}
+.stage.frozen .frost{opacity:1}
+.stage.frozen .w{background:#e3f6ff;border:2px solid #fff;outline:2px solid #8fd0ec;border-radius:3px;padding:0 6px;color:#2a5a72;text-shadow:0 1px 0 #fff}
+.stage.thaw .frost{animation:thaw .45s}
+@keyframes thaw{30%{transform:translateX(-3px)}60%{transform:translateX(3px)}}
+
+.dict{border-top:2.5px solid var(--ink);background:var(--paper);padding:8px 12px 10px;display:flex;flex-direction:column;gap:8px}
+.define{height:52px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.define .dw{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.define b{font-family:var(--f-type);font-weight:400;font-size:16px;-webkit-font-smoothing:none}
+.define s{font-family:var(--f-type);font-size:16px;color:var(--red);text-decoration-thickness:2px;-webkit-font-smoothing:none}
+.define em{font-style:normal;font-size:11px;font-weight:700;color:#fff;background:var(--red);border-radius:99px;padding:1px 7px}
+.define p{margin:0;font-family:"PretendardSub","Pretendard",var(--f-body);font-size:13px;line-height:1.4;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.define p.hint0{color:var(--muted)}
+.define.pop{animation:dpop .25s ease-out}
+@keyframes dpop{from{transform:translateY(4px);opacity:.2}}
+.card{min-height:58px;display:flex;flex-direction:column;gap:3px}
+.card .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card .word{font-family:var(--f-type);font-weight:400;font-size:22px}
+.card .wrong{font-family:var(--f-type);font-weight:400;font-size:14px;color:var(--red);text-decoration:line-through;text-decoration-thickness:2px}
+.chip{font-size:11px;font-weight:700;border:1.5px solid var(--ink);border-radius:99px;padding:0 8px;background:var(--win)}
+.chip.miss{background:var(--red);color:#fff}
+.chip.x2{background:var(--gold)}
+.card .mean{font-size:14px;line-height:1.5;max-width:64ch}
+.card .empty{font-size:13px;color:var(--muted);line-height:1.5}
+.card.flash{animation:fl .4s}
+@keyframes fl{from{transform:translateY(4px);opacity:.3}}
+form{display:flex;gap:8px}
+#typing{box-sizing:border-box;flex:1;min-width:0;height:50px;border:2.5px solid var(--ink);border-radius:8px;background:var(--win);color:var(--ink);font-family:var(--f-type);font-weight:400;font-size:24px;padding:0 12px}
+#typing:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
+#typing.shake{animation:shk .3s}
+@keyframes shk{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.btn{box-sizing:border-box;height:50px;padding:0 18px;border:2.5px solid var(--ink);border-radius:8px;background:var(--gold);color:var(--ink);font-family:var(--f-disp);font-size:16px;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:none}
+.btn.ghost{background:var(--win)}
+button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+
+.overlay{position:fixed;inset:0;background:rgba(12,26,28,.45);display:grid;place-items:center;z-index:20;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+.dlg{width:100%;max-width:440px;max-height:100%;display:flex;flex-direction:column;background:var(--win);border:2.5px solid var(--ink);border-radius:10px;box-shadow:6px 6px 0 var(--ink);overflow:hidden}
+.dlg .tbar{background:var(--ink);color:#fff}
+.dlg .tbar .ttl{text-align:left;letter-spacing:.06em;font-size:14px}
+.dlg .body{padding:20px;display:flex;flex-direction:column;gap:14px;overflow:auto}
+.maker{margin-top:-8px;text-align:center;font-family:var(--f-disp);font-size:16px;color:var(--muted);-webkit-font-smoothing:none}
+.dlg h1{margin:0;text-align:center;font-family:var(--f-disp);font-weight:400;font-size:48px;line-height:1.1}
+.dlg h1 em{font-style:normal;color:var(--sea)}
+.dlg h2{margin:0;font-family:var(--f-disp);font-weight:400;font-size:32px}
+.dlg p{margin:0;line-height:1.6;font-size:14px;color:var(--muted)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mode{text-align:left;border:2px solid var(--ink);background:var(--win);color:var(--ink);border-radius:8px;padding:10px;cursor:pointer;font-family:var(--f-body)}
+.mode{text-align:center}.mode b{display:block;font-family:var(--f-disp);font-weight:400;font-size:16px}
+.mode span{font-size:12px;color:var(--muted);line-height:1.4}
+.modes{gap:0;border:2px solid var(--ink);border-radius:8px;overflow:hidden}
+.modes .mode{border:0;border-radius:0;padding:10px 6px}
+.modes .mode+.mode{border-left:2px solid var(--ink)}
+.mode[aria-pressed="true"]{background:var(--ink);color:#fff}
+#startBtn{height:56px;font-size:24px}
+.mode[aria-pressed="true"] span{color:var(--ink)}
+.best{font-family:var(--f-disp);font-size:16px;color:var(--ink);-webkit-font-smoothing:none;font-variant-numeric:tabular-nums;text-align:center}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-variant-numeric:tabular-nums}
+.sum>div{border:2px solid var(--ink);border-radius:8px;background:var(--win);box-shadow:2px 2px 0 var(--ink);padding:8px 10px;align-items:center;text-align:center;gap:2px;min-width:0}
+.sum>div b{font-size:22px!important;white-space:nowrap}
+.sum div{display:flex;flex-direction:column}.sum b{font-family:var(--f-disp);font-weight:400;font-size:26px}.sum span{font-size:11px;color:var(--muted)}
+.verdict{font-weight:700;font-size:14px;background:var(--paper);border:2px solid var(--ink);border-radius:8px;padding:8px 10px}
+.list{display:flex;flex-direction:column;border:2px solid var(--ink);border-radius:8px;max-height:min(230px,32vh);overflow-y:auto;padding:6px 18px;flex-shrink:0}
+.list .row:last-child{border-bottom:0}
+.list .row{padding:11px 0;border-bottom:1px solid #d6e3e1;display:flex;flex-direction:column;gap:2px}
+.list .h{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.list .h b{font-family:var(--f-type);font-weight:400;font-size:16px}.list .h s{font-family:var(--f-type);color:var(--red);font-size:16px}
+.list .h em{font-style:normal;font-size:11px;font-weight:700;color:var(--red);margin-left:auto}
+.list .row p{font-family:"PretendardSub",var(--f-body);font-size:13px;line-height:1.5;color:var(--ink)}
+.ltitle{font-size:12px;font-weight:700;color:var(--muted)}
+.row2{display:flex;gap:8px}.row2 .btn{flex:1}
+@media (max-width:440px){.win .tbar .ttl{visibility:hidden}}
+@media (max-width:480px){.w{font-size:19px}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}}
+</style>
+<style>html,body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box;height:100%}</style>
+</head>
+<body>
+
+<div class="app">
+ <div class="win">
+  <div class="tbar">
+    <span class="ttl">한글비타자게임</span>
+    <span class="stat">STAGE <b id="sLevel">1</b></span>
+    <span class="stat">점수 <b id="sScore">0</b></span>
+    <button class="ibtn" id="homeTop" aria-label="처음 화면으로"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5 1 7.6h2.2V14h3.6v-4h2.4v4h3.6V7.6H15z"/></svg></button>
+    <button class="ibtn" id="restartTop" aria-label="다시 시작"><svg viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2.5" width="2.4" height="11" rx=".8"/><path d="M14 2.8v10.4L5.6 8z"/></svg></button>
+    <button class="ibtn" id="pauseBtn" aria-label="일시정지"><svg viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="3.4" height="12" rx="1"/><rect x="9.6" y="2" width="3.4" height="12" rx="1"/></svg></button>
+  </div>
+  <div class="stage" id="stage">
+    <div class="stars"></div><div class="sun"></div>
+    <div class="prog"><i id="progBar"></i></div>
+    <div class="frost"></div>
+    <div class="icebar"><svg viewBox="0 0 9 9" shape-rendering="crispEdges" aria-hidden="true"><path fill="#4aa8d8" d="M4 0h1v9H4zM0 4h9v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM5 5h1v1H5zM6 6h1v1H6zM7 7h1v1H7zM7 1h1v1H7zM6 2h1v1H6zM5 3h1v1H5zM3 5h1v1H3zM2 6h1v1H2zM1 7h1v1H1z"/></svg><b>얼음</b><span class="gauge"><i id="iceGauge"></i></span></div>
+    <div class="banner" id="banner"><span></span><small></small></div>
+    <div class="tower" id="tower">
+      <div class="bubble" id="bubble"></div>
+      <svg class="mascot" id="mascot" data-f="n" viewBox="0 0 30 34" shape-rendering="crispEdges" aria-hidden="true"></svg>
+      <div class="bricks" id="bricks"></div>
+    </div>
+    <div class="water" id="water"><svg class="crack" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path d="M8 6 L14 13 L12 20 L18 26 M14 13 L22 11 M46 4 L42 12 L48 18 L45 27 M48 18 L56 20 M78 7 L84 14 L80 21 M84 14 L92 15 L95 22" fill="none" stroke="#ffffff" stroke-width="1.2" vector-effect="non-scaling-stroke"/></svg><svg class="wb" viewBox="0 0 240 16" preserveAspectRatio="none"><path class="fill" d="M0 10 Q5 3 10 10 T20 10 Q25 3 30 10 T40 10 Q45 3 50 10 T60 10 Q65 3 70 10 T80 10 Q85 3 90 10 T100 10 Q105 3 110 10 T120 10 Q125 3 130 10 T140 10 Q145 3 150 10 T160 10 Q165 3 170 10 T180 10 Q185 3 190 10 T200 10 Q205 3 210 10 T220 10 Q225 3 230 10 T240 10 V16 H0Z" fill="#3a68d6"/><path d="M0 10 Q5 3 10 10 T20 10 Q25 3 30 10 T40 10 Q45 3 50 10 T60 10 Q65 3 70 10 T80 10 Q85 3 90 10 T100 10 Q105 3 110 10 T120 10 Q125 3 130 10 T140 10 Q145 3 150 10 T160 10 Q165 3 170 10 T180 10 Q185 3 190 10 T200 10 Q205 3 210 10 T220 10 Q225 3 230 10 T240 10" fill="none" stroke="#0c1a1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg><svg class="wf" viewBox="0 0 240 16" preserveAspectRatio="none"><path class="fill" d="M0 11 Q5 4 10 11 T20 11 Q25 4 30 11 T40 11 Q45 4 50 11 T60 11 Q65 4 70 11 T80 11 Q85 4 90 11 T100 11 Q105 4 110 11 T120 11 Q125 4 130 11 T140 11 Q145 4 150 11 T160 11 Q165 4 170 11 T180 11 Q185 4 190 11 T200 11 Q205 4 210 11 T220 11 Q225 4 230 11 T240 11 V16 H0Z" fill="#1b3c8f"/><path d="M0 11 Q5 4 10 11 T20 11 Q25 4 30 11 T40 11 Q45 4 50 11 T60 11 Q65 4 70 11 T80 11 Q85 4 90 11 T100 11 Q105 4 110 11 T120 11 Q125 4 130 11 T140 11 Q145 4 150 11 T160 11 Q165 4 170 11 T180 11 Q185 4 190 11 T200 11 Q205 4 210 11 T220 11 Q225 4 230 11 T240 11" fill="none" stroke="#0c1a1c" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg><i class="foam" style="left:12%;top:14px"></i><i class="foam" style="left:47%;top:26px"></i><i class="foam" style="left:78%;top:12px"></i><i class="foam" style="left:30%;top:40px"></i></div>
+  </div>
+  <div class="dict">
+    <div class="define" id="define"><p class="hint0">터뜨린 단어의 뜻이 여기에 나와요</p></div>
+    <form id="form" autocomplete="off">
+      <input id="typing" type="text" enterkeyhint="done" autocapitalize="off" spellcheck="false" placeholder="여기에 입력" aria-label="낱말 입력">
+      <button class="btn" type="submit">입력</button>
+    </form>
+  </div>
+ </div>
+</div>
+
+<div class="overlay" id="startOv">
+  <div class="dlg">
+    <div class="tbar"><span class="ttl">PARKHYONA.EXE</span></div>
+    <div class="body">
+      <h1>한글비타자게임</h1>
+      <div class="maker">박현아가 만든 게임</div>
+      <div class="modes">
+        <button class="mode" id="mBasic" aria-pressed="true"><b>받아쓰기</b></button>
+        <button class="mode" id="mFix" aria-pressed="false"><b>틀린말 바로쓰기</b></button>
+      </div>
+      <button class="btn" id="startBtn">시작하기</button>
+      <div class="best" id="bestTxt"></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="clearOv" hidden>
+  <div class="dlg">
+    <div class="tbar"><span class="ttl">STAGE CLEAR</span></div>
+    <div class="body">
+      <h2 id="cTitle">1스테이지 클리어!</h2>
+      <div class="sum">
+        <div><b id="cBonus">0</b><span>벽돌 보너스</span></div>
+        <div><b id="cScore">0</b><span>점수</span></div>
+      </div>
+      <p id="cNext"></p>
+      <button class="btn" id="nextBtn">다음 스테이지</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="pauseOv" hidden>
+  <div class="dlg">
+    <div class="tbar"><span class="ttl">일시정지</span></div>
+    <div class="body">
+      <h2>세종대왕님 잠시 쉬어 가는 중</h2>
+      <div class="row2"><button class="btn" id="resumeBtn">계속하기</button><button class="btn ghost" id="quitBtn">결과 보기</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overOv" hidden>
+  <div class="dlg">
+    <div class="tbar"><span class="ttl">게임 종료</span></div>
+    <div class="body">
+      <h2 id="oTitle">한글비 홍수</h2>
+      <div class="sum">
+        <div><b id="oScore">0</b><span>점수</span></div>
+        <div><b id="oPop">0</b><span>터뜨린 말</span></div>
+        <div><b id="oLevel">1</b><span>스테이지</span></div>
+      </div>
+      <div class="verdict" id="oVerdict"></div>
+      <div class="best" id="oBest"></div>
+      <div class="ltitle">이번 판 단어장</div>
+      <div class="list" id="oList"></div>
+      <div class="row2"><button class="btn" id="againBtn">한 판 더</button><button class="btn ghost" id="homeBtn">처음으로</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const WORDS=[
+["설거지","먹고 난 뒤 그릇을 씻어 정리하는 일.","설겆이","S"],
+["금세","'금시에'가 줄어든 말. 지금 바로.","금새","S"],
+["며칠","그달의 몇째 되는 날. 또는 몇 날.","몇일","S"],
+["웬일","어찌 된 일. ('웬'은 '어찌 된'이라는 뜻)","왠일","S"],
+["왠지","'왜인지'가 줄어든 말. 왜 그런지 모르게.","웬지","S"],
+["어이없다","일이 너무 뜻밖이어서 기가 막히는 듯하다.","어의없다","S"],
+["희한하다","매우 드물거나 신기하다.","희안하다","S"],
+["무릅쓰다","힘들고 어려운 일을 참고 견디다.","무릎쓰다","S"],
+["오랜만","'오래간만'이 줄어든 말.","오랫만","S"],
+["굳이","단단한 마음으로 구태여.","구지","S"],
+["일부러","어떤 목적이나 생각을 가지고. 또는 알면서도 마음을 숨기고.","일부로","S"],
+["역할","자기가 마땅히 하여야 할 맡은 바 직책이나 임무.","역활","S"],
+["어떡해","'어떻게 해'가 줄어든 말.","어떻해","S"],
+["되뇌다","같은 말을 되풀이하다.","되뇌이다","S"],
+["설레다","마음이 가라앉지 않고 들떠서 두근거리다.","설레이다","S"],
+["개수","한 개씩 낱으로 셀 수 있는 물건의 수효.","갯수","S"],
+["핼쑥하다","얼굴에 핏기가 없고 파리하다.","헬쓱하다","S"],
+["닦달하다","남을 단단히 을러대고 몰아붙이다.","닥달하다","S"],
+["짜깁기","기존의 글이나 영상 따위를 편집하여 새로 만드는 일. 본래는 해진 천을 짜서 깁는 일.","짜집기","S"],
+["곰곰이","여러모로 깊이 생각하는 모양.","곰곰히","S"],
+["깨끗이","더러움이 없이. 말끔하게.","깨끗히","S"],
+["틈틈이","겨를이 있을 때마다.","틈틈히","S"],
+["꼼꼼히","빈틈이 없이 차근차근하고 조심스럽게.","꼼꼼이","S"],
+["번번이","매 때마다.","번번히","S"],
+["일일이","하나씩 하나씩. 여러 사람을 대할 때 한 사람씩.","일일히","S"],
+["안절부절못하다","마음이 초조하고 불안하여 어찌할 바를 모르다.","안절부절하다","S"],
+["삼가다","몸가짐이나 말을 조심하다. 꺼려서 하지 않거나 양을 줄이다.","삼가하다","S"],
+["뇌졸중","뇌혈관이 막히거나 터져서 생기는 병.","뇌졸증","S"],
+["눈곱","눈에서 나오는 진득한 액. 또는 그것이 말라붙은 것.","눈꼽","S"],
+["베개","잠을 자거나 누울 때 머리를 괴는 물건.","배게","S"],
+["육개장","쇠고기를 삶아 얼큰하게 끓인 국.","육계장","S"],
+["찌개","고기나 채소를 넣고 국물을 적게 하여 끓인 반찬.","찌게","S"],
+["떡볶이","가래떡을 토막 내어 양념과 함께 볶거나 끓인 음식.","떡볶기","S"],
+["대가","일을 하고 그에 대한 값으로 받는 보수. 노력이나 희생으로 얻은 결과.","댓가","S"],
+["내로라하다","어떤 분야를 대표할 만하다.","내노라하다","S"],
+["으레","두말할 것 없이 당연히. 틀림없이 언제나.","으례","S"],
+["귀띔","상대가 눈치로 알아들을 수 있도록 미리 슬그머니 일깨워 줌.","귀뜸","S"],
+["움큼","손으로 한 줌 움켜쥘 만한 분량.","웅큼","S"],
+["사글세","집이나 방을 빌려 쓰는 대가로 다달이 내는 돈.","삭월세","S"],
+["통째","나누지 아니한 덩어리 전부.","통채","S"],
+["얽히고설키다","관계, 일, 감정 따위가 이리저리 복잡하게 얽히다.","얼키고설키다","S"],
+["부기","부종으로 인하여 부은 상태.","붓기","S"],
+["구레나룻","귀밑에서 턱까지 잇따라 난 수염.","구렛나루","S"],
+["휴게실","잠깐 머물러 쉴 수 있도록 마련한 방.","휴계실","S"],
+["웃어른","나이나 지위, 신분, 항렬 따위가 자기보다 높아서 모시는 어른.","윗어른","S"],
+["야반도주","남의 눈을 피하여 한밤중에 도망함.","야밤도주","S"],
+["일사불란","질서가 정연하여 조금도 흐트러지지 아니함.","일사분란","S"],
+["성대모사","자기 목소리로 남의 목소리나 짐승 소리를 흉내 내는 일.","성대묘사","S"],
+["삼수갑산","몹시 어려운 지경. 본래 우리나라에서 가장 험한 산골이라 이르던 곳.","산수갑산","S"],
+["환골탈태","용모가 몰라보게 좋아지거나 딴사람처럼 됨.","환골탈퇴","S"],
+["포복절도","배를 그러안고 넘어질 정도로 몹시 웃음.","포복졸도","S"],
+["절체절명","어찌할 수 없는 절박한 경우.","절대절명","S"],
+["동고동락","괴로움도 즐거움도 함께함.","동거동락","S"],
+["어쭙잖다","비웃음을 살 만큼 언행이 분수에 넘치는 데가 있다.","어줍잖다","S"],
+["애먼","일의 결과가 다른 데로 돌아가 억울하게 느껴지는. (애먼 사람 잡지 마)","엄한","S"],
+["치르다","주어야 할 돈을 내주다. 무슨 일을 겪어 내다.","치루다","S"],
+["잠그다","여닫는 물건을 열지 못하도록 자물쇠를 채우다.","잠구다","S"],
+["바람","어떤 일이 이루어지기를 바라는 마음. ('바라다'의 명사형)","바램","S"],
+["들르다","지나는 길에 잠깐 들어가 머무르다.","들리다","S"],
+["하마터면","조금만 잘못하였더라면.","하마트면","S"],
+["널찍하다","꽤 너르다.","넓직하다","S"],
+["오지랖","웃옷의 앞자락. '오지랖이 넓다'는 쓸데없이 아무 일에나 참견한다는 뜻.","오지랍","S"],
+["헤매다","갈 곳을 몰라 이리저리 돌아다니다.","헤메다","S"],
+["객쩍다","행동이나 말, 생각이 쓸데없고 싱겁다.","객적다","S"],
+["안성맞춤","요구하거나 생각한 대로 잘 만든 물건. 조건이나 상황이 잘 어울림.","안성마춤","S"],
+["십상","일이나 물건이 어디에 꼭 맞는 것. (…하기 십상이다)","쉽상","S"],
+["요컨대","중요한 점을 말하자면.","요컨데","S"],
+["뒤치다꺼리","뒤에서 일을 보살펴서 도와주는 일.","뒤치닥거리","S"],
+["결재","결정할 권한이 있는 상관이 안건을 허가하거나 승인함. (돈을 치르는 건 '결제')",null,"V"],
+["결제","증권이나 대금을 주고받아 거래를 끝냄. (상관의 승인은 '결재')",null,"V"],
+["방증","직접 증거는 아니지만 주변 상황을 밝혀 간접적으로 증명에 도움을 줌.",null,"V"],
+["반증","어떤 주장이 옳지 않음을 반대되는 근거를 들어 증명함. ('간접 증거'는 방증)",null,"V"],
+["심심하다","(甚深) 마음의 표현 정도가 매우 깊고 간절하다. '심심한 사과'는 깊은 사과.",null,"V"],
+["금일","오늘. ('금요일'이 아니에요)",null,"V"],
+["사흘","세 날. ('4일'이 아니에요. 4일은 나흘)",null,"V"],
+["나흘","네 날.",null,"V"],
+["무운","전쟁 따위에서 이기고 지는 운수. '무운을 빈다'는 싸움에서 이기기를 빈다는 뜻.",null,"V"],
+["중식","점심. 점심으로 먹는 끼니.",null,"V"],
+["혜안","사물을 꿰뚫어 보는 안목과 식견.",null,"V"],
+["반추","어떤 일을 되풀이하여 음미하고 생각함.",null,"V"],
+["하릴없다","달리 어떻게 할 도리가 없다. 조금도 틀림이 없다. ('할 일 없다'와 다른 말)",null,"V"],
+["타산지석","남의 하찮은 말이나 행동도 자신을 닦는 데 도움이 될 수 있음.",null,"V"],
+["시쳇말","그 시대에 유행하는 말.",null,"V"],
+["윤슬","햇빛이나 달빛에 비치어 반짝이는 잔물결.",null,"N"],
+["시나브로","모르는 사이에 조금씩 조금씩.",null,"N"],
+["미쁘다","믿음성이 있다.",null,"N"],
+["너나들이","서로 너니 나니 하고 부르며 터놓고 지내는 사이.",null,"N"],
+["마뜩잖다","마음에 들 만하지 아니하다.",null,"N"],
+["곰살궂다","태도나 성질이 부드럽고 친절하다.",null,"N"],
+["데면데면하다","사람을 대하는 태도가 친밀감 없이 예사롭다.",null,"N"],
+["살갑다","마음씨가 부드럽고 상냥하다.",null,"N"],
+["도담도담","어린아이가 탈 없이 잘 놀며 자라는 모양.",null,"N"],
+["함초롬하다","젖거나 서려 있는 모양이 가지런하고 차분하다.",null,"N"],
+["해사하다","얼굴이 희고 곱다랗다. 표정이나 웃음소리가 맑고 깨끗하다.",null,"N"],
+["가납사니","쓸데없는 말을 지껄이기 좋아하는 수다스러운 사람.",null,"N"],
+["오롯이","모자람이 없이 온전하게.",null,"N"],
+["애오라지","'겨우', '오로지'를 강조하여 이르는 말.",null,"N"],
+["바투","두 대상 사이가 썩 가깝게. 시간이나 길이가 아주 짧게.",null,"N"],
+["짐짓","마음으로는 그렇지 않으나 일부러 그렇게.",null,"N"],
+["사위다","불이 사그라져서 재가 되다.",null,"N"],
+["여우비","볕이 나 있는 날 잠깐 오다가 그치는 비.",null,"N"],
+["는개","안개보다는 굵고 이슬비보다는 가는 비.",null,"N"],
+["그루잠","깨었다가 다시 든 잠.",null,"N"],
+["너울","바다의 크고 사나운 물결.",null,"N"],
+["아람","밤이나 상수리 따위가 충분히 익어 저절로 떨어질 정도가 된 상태.",null,"N"],
+["에움길","굽은 길. 빙 둘러서 가는 길.",null,"N"],
+["곰비임비","물건이 거듭 쌓이거나 일이 계속 일어나는 모양.",null,"N"],
+["갈무리","물건을 잘 정리하거나 간수함. 일을 처리하여 마무리함.",null,"N"],
+["톺아보다","샅샅이 더듬어 뒤지면서 살피다.",null,"N"],
+["나비잠","갓난아이가 두 팔을 머리 위로 벌리고 자는 잠.",null,"N"],
+["볼우물","보조개.",null,"N"],
+["개밥바라기","저녁에 서쪽 하늘에 보이는 금성.",null,"N"],
+["알음알음","서로 아는 관계. 각자가 가진 친분 관계.",null,"N"],
+["주전부리","때를 가리지 않고 군음식을 자꾸 먹음.",null,"N"],
+["흐벅지다","탐스럽게 두툼하고 부드럽다. 푸지거나 만족스럽다.",null,"N"],
+["각골난망", "남에게 입은 은혜가 뼈에 새길 만큼 커서 잊히지 아니함.", null, "H"],
+["견강부회", "이치에 맞지 않는 말을 억지로 끌어 붙여 조건에 맞도록 함.", null, "H"],
+["결초보은", "죽은 뒤에라도 은혜를 잊지 않고 갚음.", null, "H"],
+["고식지계", "우선 당장 편한 것만을 택하는 꾀나 방법.", null, "H"],
+["곡학아세", "바른 길에서 벗어난 학문으로 세상 사람에게 아첨함.", null, "H"],
+["괄목상대", "남의 학식이나 재주가 놀랄 만큼 부쩍 늚.", null, "H"],
+["교각살우", "잘못을 고치려다 정도가 지나쳐 오히려 일을 그르침.", null, "H"],
+["구밀복검", "입에는 꿀, 배 속에는 칼. 말로는 친한 듯하나 속으로는 해칠 생각이 있음.", null, "H"],
+["군계일학", "많은 사람 가운데서 뛰어난 인물.", null, "H"],
+["권토중래", "실패한 뒤 힘을 가다듬어 다시 그 일에 착수함.", null, "H"],
+["난형난제", "누구를 형, 누구를 아우라 하기 어려움. 우열을 가리기 힘듦.", null, "H"],
+["대기만성", "큰 그릇은 늦게 이루어짐. 크게 될 사람은 늦게 성공함.", null, "H"],
+["동병상련", "어려운 처지의 사람끼리 서로 돕고 동정함.", null, "H"],
+["마이동풍", "남의 말을 귀담아듣지 않고 흘려버림.", null, "H"],
+["망양보뢰", "양 잃고 우리 고치기. 일을 그르친 뒤에 뉘우쳐도 소용없음.", null, "H"],
+["반포지효", "자식이 자라서 어버이가 길러 준 은혜를 갚는 효성.", null, "H"],
+["백골난망", "죽어서 백골이 되어도 잊을 수 없을 만큼 큰 은덕에 대한 고마움.", null, "H"],
+["부화뇌동", "줏대 없이 남의 의견에 따라 움직임.", null, "H"],
+["사필귀정", "모든 일은 반드시 바른길로 돌아감.", null, "H"],
+["새옹지마", "인생의 길흉화복은 변화가 많아 예측하기 어려움.", null, "H"],
+["수구초심", "고향을 그리워하는 마음. 여우가 죽을 때 머리를 살던 굴 쪽으로 둔다는 데서 옴.", null, "H"],
+["순망치한", "입술이 없으면 이가 시림. 하나가 망하면 다른 하나도 온전하기 어려움.", null, "H"],
+["아전인수", "자기 논에 물 대기. 자기에게만 이롭게 생각하거나 행동함.", null, "H"],
+["오리무중", "짙은 안개 속에 있는 것처럼 갈피를 잡을 수 없음.", null, "H"],
+["와신상담", "마음먹은 일을 이루려고 온갖 어려움과 괴로움을 참고 견딤.", null, "H"],
+["우공이산", "어떤 일이든 끊임없이 노력하면 반드시 이루어짐.", null, "H"],
+["읍참마속", "큰 목적을 위하여 자기가 아끼는 사람을 버림.", null, "H"],
+["자가당착", "같은 사람의 말이나 행동이 앞뒤가 맞지 않고 모순됨.", null, "H"],
+["전전반측", "누워서 이리저리 뒤척이며 잠을 이루지 못함.", null, "H"],
+["조삼모사", "간사한 꾀로 남을 속여 희롱함.", null, "H"],
+["주마간산", "말 타고 달리며 산 구경. 자세히 살피지 않고 대충 보고 지나감.", null, "H"],
+["지록위마", "사슴을 가리켜 말이라 함. 윗사람을 농락하여 권세를 마음대로 함.", null, "H"],
+["청출어람", "제자나 후배가 스승이나 선배보다 나음.", null, "H"],
+["토사구팽", "필요할 때는 쓰고 필요 없을 때는 야박하게 버림.", null, "H"],
+["파죽지세", "거침없이 물리치고 나아가는 기세.", null, "H"],
+["표리부동", "겉으로 드러나는 언행과 속으로 가지는 생각이 다름.", null, "H"],
+["호가호위", "남의 권세를 빌려 위세를 부림.", null, "H"],
+["형설지공", "고생하면서도 부지런하고 꾸준하게 공부하는 자세.", null, "H"],
+["반면교사", "다른 사람의 잘못된 모습에서 가르침을 얻음.", null, "H"],
+["혈혈단신", "의지할 곳 없는 외로운 홀몸.", "홀홀단신", "S"],
+["풍비박산", "사방으로 날아 흩어짐.", "풍지박산", "S"],
+["유도신문", "원하는 답을 하도록 의도적으로 암시하며 묻는 것.", "유도심문", "S"],
+["토사곽란", "위로는 토하고 아래로는 설사하며 배가 질리고 아픈 병.", "토사광란", "S"],
+["어리바리", "정신이 또렷하지 못하거나 기운이 없어 몸을 제대로 놀리지 못하는 모양.", "어리버리", "S"],
+["오두방정", "몹시 방정맞은 행동.", "오도방정", "S"],
+["빈털터리", "재산을 다 없애고 아무것도 가진 것이 없는 사람.", "빈털털이", "S"],
+["흐리멍덩하다", "정신이 맑지 못하고 흐릿하다. 일의 결과가 분명하지 아니하다.", "흐리멍텅하다", "S"],
+["괴팍하다", "붙임성이 없이 까다롭고 별나다.", "괴퍅하다", "S"],
+["해코지", "남을 해치고자 하는 짓.", "해꼬지", "S"],
+["사달", "사고나 탈.", "사단", "S"],
+["갈음", "다른 것으로 바꾸어 대신함. ('가름'은 나누거나 승부를 정하는 일)", null, "V"],
+["일절", "아주, 전혀, 절대로. 금지하거나 부인할 때 씀. ('모든 것'은 일체)", null, "V"],
+["회자", "칭찬을 받으며 사람들의 입에 자주 오르내림. 좋은 일에 씀.", null, "V"],
+["재원", "재주가 뛰어난 젊은 여자.", null, "V"],
+["미증유", "지금까지 한 번도 있어 본 적이 없음.", null, "V"],
+["효시", "어떤 일이 시작되어 나온 맨 처음.", null, "V"],
+["백미", "여럿 가운데에서 가장 뛰어난 사람이나 물건.", null, "V"],
+["칠칠하다", "성질이나 일 처리가 반듯하고 야무지다. 흔히 '칠칠치 못하다'로 씀.", null, "V"],
+["뭉그적대다", "나아가지 못하고 제자리에서 느리게 자꾸 비비대다. 게으르게 꾸물대다.", "뭉기적대다", "S"],
+["가방을 메다", "메다: 어깨에 걸치거나 올려놓다. ('매다'는 끈을 묶는 것)", "가방을 매다", "S"],
+["정답을 맞히다", "맞히다: 문제에 대한 답을 틀리지 않게 하다. ('맞추다'는 서로 비교하는 것)", "정답을 맞추다", "S"],
+["병이 낫다", "낫다: 병이나 상처가 고쳐져 본래대로 되다. ('낳다'는 아이를 낳는 것)", "병이 낳다", "S"],
+["봬요", "'뵈어요'가 줄어든 말.", "뵈요", "S"],
+["안 돼", "'안 되어'가 줄어든 말.", "안 되", "S"],
+["할게요", "'-ㄹ게요'는 소리가 [께]로 나도 '게'로 적음.", "할께요", "S"],
+["거예요", "'것이에요'가 줄어든 말.", "거에요", "S"],
+["웬만하면", "허용되는 범위에서 크게 벗어나지 아니하면.", "왠만하면", "S"]
+].map(([word,mean,wrong,cat])=>({word,mean,wrong,cat}));
+
+const CAT={S:"맞춤법",V:"헷갈리는 말",N:"순우리말",H:"사자성어"};
+const $=id=>document.getElementById(id);
+const stage=$("stage"),input=$("typing"),mascot=$("mascot"),bubble=$("bubble");
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const SPR={
+ base:["..............................", "........KK.KKKKKKK.KK.........", ".......KkkKcccccccKkkK........", "......KkkkccccccccckkkK.......", ".....KkkkkccccccccckkkkK......", "......KkkkccccccccckkkK.......", ".......KKckkkkkkkkkcKK........", ".......KcccccccccccccK........", ".......KcccccccccccccK........", ".......KcccccccccccccK........", ".......KkkkkkkkkkkkkkK........", "........KKSSSSSSSSSKK.........", "........KSKKKSSSSKKKK.........", "........KSSSSSSSSSSSK.........", ".......KSSSSSSSSSSSSSK........", ".......KSSSSSSSSSSSSSK........", "........KSSSSSssSSSSK.........", ".........KSSSKSSKSSK..........", ".........KSSKSSSSKSK..........", "..........KKSSKKSKK...........", ".......KKKrWWWKKWWrKKK........", "......KGGRRrWWKWWrRRGGK.......", ".....KRGGGRrrWKKrrRGGGRK......", ".....KRGGGRRGgKgGRRGGGRK......", "....KRRRRRRGgGgKgGRRRRRRK.....", "....KrrrRRRGGgGgGGRRRrrrK.....", "...KrrrrRRRGGGgGgGRRRrrrrK....", "...KrrrrRRRRggGGgRRRRrrrrK....", "..KrrrrrRRRRGgggGRRRRrrrrrK...", "..KrrrrrRRRRRRRRRRRRRrrrrrK...", ".KGGGGGgGGgGGgGGgGGgGGgGGGGK..", ".KrrrrrrRRRRRRRRRRRRRrrrrrrK..", ".KrrrrrrRRRRRRRRRRRRRrrrrrrK..", "..KKKKKKKKKKKKKKKKKKKKKKKKK..."],
+ n:["14:11","14:12","14:17","14:18","15:10P","15:19P"],
+ h:["13:11","13:12","13:17","13:18","15:10P","15:19P","18:14r","18:15r"],
+ p:["13:11","14:11","13:18","14:18","14:12","14:17","12:22B","13:22B","13:23B"]
+};
+(function(){
+  const C={R:"#e0453a",r:"#b03028",G:"#ffd23f",g:"#cd961e",c:"#1c2427",k:"#2b3336",s:"#e8b494",Y:"#d9a326",A:"#3b474b",S:"#ffd9b8",K:"#0c1a1c",W:"#ffffff",P:"#ffb3ad",B:"#7fd4ff"};
+  let h="";SPR.base.forEach((row,y)=>[...row].forEach((c,x)=>{if(C[c])h+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${C[c]}"/>`}));
+  for(const k of ["n","h","p"]){h+=`<g class="f f${k}">`;for(const t of SPR[k]){const m=t.match(/(\d+):(\d+)(\w?)/);h+=`<rect x="${m[2]}" y="${m[1]}" width="1" height="1" fill="${C[m[3]||"K"]}"/>`}h+="</g>"}
+  document.getElementById("mascot").innerHTML=h;
+})();
+const THEMES=[{n:"맞춤법",c:"S"},{n:"순우리말",c:"N"},{n:"헷갈리는 말",c:"V"},{n:"사자성어",c:"H"}];
+const theme=st=>st<=THEMES.length?THEMES[st-1]:{n:"총출동",c:null};
+const goal=st=>8+st*2;
+const BRICKS=12, BASE_WATER=30;
+const pick=a=>a[Math.random()*a.length|0];
+const LINES={
+  pop:["정확해요. 국어 선생님이 기립박수 중","맞춤법 지킴이 출근 완료","방금 국립국어원에서 좋아요 눌렀대요","손가락에 사전 장착하셨나요","깔끔. 아주 깔끔.","오 이건 좀 치시네요"],
+  fix:["틀린 말을 바로잡았다! 정의 구현","설겆이를 설거지로… 이것이 교정의 맛","교정 부호 장인 등장"],
+  miss:["어허 통재라…","과인의 벽돌이…","백성이 이 말을 모르다니","애통하도다"],
+  wrong:["어허, 틀렸느니라","과인이 그리 쓰라 하였느냐","훈민정음에 그런 말은 없느니라","고쳐 쓰거라!"],
+  whiff:["오타는 인생의 일부","그런 말은 안 내려왔는데요?","손가락이 앞서갔네요"],
+  combo:["콤보 장인","손가락에 불남","타자 학원 다니셨죠?"]
+};
+let mode=store.get("mcb-mode")==="fix"?"fix":"basic";
+let S=null,raf=0,last=0,bag=[],spawnCount=0;
+
+for(let i=0;i<34;i++){const d=document.createElement("i");d.className="drop";d.style.left=(Math.random()*100)+"%";d.style.height=(8+Math.random()*10|0)+"px";d.style.opacity=(.4+Math.random()*.6).toFixed(2);d.style.animationDuration=(1.1+Math.random()*1.4).toFixed(2)+"s";d.style.animationDelay=(-Math.random()*2.5).toFixed(2)+"s";stage.prepend(d)}
+function renderBricks(){
+  const el=$("bricks");el.innerHTML="";
+  const cells=Math.max(4,Math.ceil(S.bricks/4)*4);
+  for(let i=0;i<cells;i++){const b=document.createElement("i");if(i<cells-S.bricks)b.className="off";el.appendChild(b)}
+}
+function crumble(){
+  const list=[...$("bricks").children],b=list.find(x=>!x.classList.contains("off"));
+  if(!b)return;
+  b.classList.add("crack");
+  setTimeout(()=>{
+    const sr=stage.getBoundingClientRect(),r=b.getBoundingClientRect();
+    b.classList.add("off");
+    for(let i=0;i<6;i++){
+      const c=document.createElement("i");c.className="chunk";
+      c.style.left=(r.left-sr.left+(i%3)*r.width/3)+"px";c.style.top=(r.top-sr.top+(i<3?0:r.height/2))+"px";
+      c.style.width=(r.width/3)+"px";c.style.height=(r.height/2)+"px";
+      c.style.setProperty("--dx",((i%3)-1)*14+(Math.random()*10-5)+"px");c.style.setProperty("--rot",(Math.random()*240-120)+"deg");
+      stage.appendChild(c);setTimeout(()=>c.remove(),800);
+    }
+    setTimeout(()=>{if(S.bricks>0&&S.bricks%4===0)renderBricks()},500);
+  },260);
+}
+function setWater(){stage.style.setProperty("--wh",Math.round(S.wDisp)+"px")}
+function floodLine(){const t=$("tower");return t.offsetHeight+14-30}
+function addWater(d){S.water=Math.max(BASE_WATER,S.water+d)}
+function hud(){$("sScore").textContent=S.score.toLocaleString();$("sLevel").textContent=S.level;$("progBar").style.width=Math.min(100,S.cleared/goal(S.level)*100)+"%"}
+function face(f,ms){mascot.dataset.f=f;clearTimeout(face.t);if(ms)face.t=setTimeout(()=>mascot.dataset.f=S&&S.bricks<=2?"p":"n",ms)}
+function anim(c){mascot.classList.remove("bob","hurt");void mascot.offsetWidth;mascot.classList.add(c)}
+function talk(t,ms=1800){bubble.textContent=t;bubble.classList.remove("bad");bubble.classList.add("show");clearTimeout(talk.t);talk.t=setTimeout(()=>bubble.classList.remove("show"),ms)}
+function banner(big,small,ms=1100){const b=$("banner");b.querySelector("span").textContent=big;b.querySelector("small").textContent=small||"";b.classList.add("show");clearTimeout(banner.t);banner.t=setTimeout(()=>b.classList.remove("show"),ms)}
+
+function nextEntry(){
+  if(!bag.length){const c=theme(S.level).c,minLen=S.level<5?0:Math.min(5,2+Math.floor((S.level-2)/2));bag=WORDS.filter(w=>(!c||w.cat===c)&&w.word.replace(/ /g,"").length>=minLen);if(bag.length<12)bag=WORDS.filter(w=>!c||w.cat===c);for(let i=bag.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[bag[i],bag[j]]=[bag[j],bag[i]]}}
+  const on=new Set(S.words.map(w=>w.e.word));
+  for(let i=0;i<bag.length;i++)if(!on.has(bag[i].word))return bag.splice(i,1)[0];
+  return bag.pop();
+}
+const BONUS=[{k:"freeze",t:"얼음"},{k:"bomb",t:"국어원 출동"},{k:"heal",t:"벽돌 배송"}];
+function spawn(){
+  spawnCount++;
+  let e=nextEntry();
+  let fixed=mode==="fix"&&e.wrong&&Math.random()<.55;
+  const bonus=spawnCount>4&&Math.random()<.09?pick(BONUS.filter(b=>b.k!=="heal"||S.bricks<BRICKS)):null;
+  const big=!bonus&&spawnCount>3&&Math.random()<Math.min(.22,.08+S.level*.02)?true:false;
+  if(big){const pool=WORDS.filter(x=>x.word.replace(/ /g,"").length>=5||x.cat==="H");e=pick(pool);fixed=false}
+  const el=document.createElement("div");el.className="w"+(bonus?" bonus":"")+(big?" big":"");el.textContent=fixed?e.wrong:e.word;
+  stage.appendChild(el);
+  const fw=stage.clientWidth,ww=el.offsetWidth;let x=0;
+  for(let t=0;t<8;t++){x=Math.random()*Math.max(0,fw-ww-10)+5;if(!S.words.some(o=>o.y<60&&Math.abs(o.x-x)<Math.max(o.w,ww)))break}
+  const w={el,e,shown:el.textContent,fixed,bonus,big,x,y:-30,w:ww,h:el.offsetHeight,v:(big?1.7:1)*(30+S.level*11)*(Math.random()<.2?1.45:.7+Math.random()*.5)/(1+Math.max(0,e.word.length-4)*.06)};
+  el.style.transform=`translate(${x}px,${w.y}px)`;S.words.push(w);
+}
+function loop(t){
+  if(!S||!S.running)return;
+  const dt=Math.min(50,t-(last||t));last=t;
+  if(!S.paused&&!S.between){
+    if(stage.dataset.bg==="4"&&Math.random()<dt/6000){stage.classList.remove("flash");void stage.offsetWidth;stage.classList.add("flash")}
+    if(S.freeze>0){S.freeze-=dt;$("iceGauge").style.transform=`scaleX(${Math.max(0,S.freeze/3000)})`;if(S.freeze<=0){stage.classList.remove("frozen");stage.classList.add("thaw");setTimeout(()=>stage.classList.remove("thaw"),500)}}
+    else{
+      S.spawnT-=dt;
+      if(S.spawnT<=0){spawn();S.spawnT=Math.max(520,2200-S.level*230)*(.75+Math.random()*.4)}
+      S.water+=(0.9+S.level*0.55)*dt/1000;
+      S.wDisp+=(S.water-S.wDisp)*Math.min(1,dt/180);setWater();
+      const fl=floodLine();stage.classList.toggle("danger",S.wDisp>fl-45);
+      if(S.wDisp>=fl){S.flood=true;gameOver();return}
+      const ground=stage.clientHeight-S.wDisp+4;
+      for(const w of S.words.slice()){w.y+=w.v*dt/1000;w.el.style.transform=`translate(${w.x}px,${w.y}px)`;if(w.y+w.h>=ground)miss(w)}
+      if(bubble.classList.contains("show")){
+        const sr=stage.getBoundingClientRect(),br=bubble.getBoundingClientRect(),bx=br.left-sr.left,by=br.top-sr.top;
+        if(S.words.some(w=>w.x<bx+br.width&&w.x+w.w>bx&&w.y<by+br.height&&w.y+w.h>by))bubble.classList.remove("show");
+      }
+    }
+  }
+  raf=requestAnimationFrame(loop);
+}
+const drop=w=>S.words=S.words.filter(o=>o!==w);
+function miss(w){
+  drop(w);w.el.classList.add("melt");setTimeout(()=>w.el.remove(),650);
+  S.bricks--;addWater(w.big?42:16);log(w.e,"miss");showTip(w,"miss");
+  crumble();face("p",1200);anim("hurt");if(Math.random()<.5)talk(pick(LINES.miss),1200);hud();
+  if(S.bricks<=0)setTimeout(gameOver,350);
+}
+function burst(w,label){
+  const r=stage.getBoundingClientRect(),b=w.el.getBoundingClientRect();
+  const m=document.createElement("div");m.className="boom";m.textContent=label;m.style.left=Math.max(4,b.left-r.left+b.width/2-22)+"px";m.style.top=(b.top-r.top-20)+"px";
+  stage.appendChild(m);w.el.classList.add("gone");w.el.style.transform+=" scale(1.2)";
+  setTimeout(()=>{w.el.remove();m.remove()},800);
+}
+function pop(w,quiet){
+  drop(w);if(w.big){addWater(-60);banner("수위 쭉!","폭탄 단어 성공",1000)}
+  const pts=Math.round((10+w.e.word.length*2)*S.level*(w.fixed?2:1)*(w.big?3:1));
+  S.score+=pts;S.popped++;log(w.e,"pop");
+  burst(w,"+"+pts);
+  if(!quiet){
+    showTip(w,"pop");face("h",900);anim("bob");
+  }
+  if(w.bonus)fire(w.bonus);
+  S.cleared++;if(!S.between&&S.cleared>=goal(S.level))setTimeout(stageClear,quiet?50:350);
+  hud();
+}
+function fire(b){
+  if(b.k==="freeze"){S.freeze=3000;stage.classList.add("frozen");banner("얼음!","3초 동안 꽁꽁")}
+  if(b.k==="heal"){S.bricks=Math.min(BRICKS,S.bricks+1);renderBricks();banner("벽돌 배송","+1")}
+  if(b.k==="bomb"){banner("국어원 출동");for(const w of S.words.slice())pop(w,true)}
+}
+function stageClear(){
+  if(S.between||!S.running)return;S.between=true;
+  for(const w of S.words.slice()){drop(w);w.el.classList.add("melt");setTimeout(()=>w.el.remove(),600)}
+  const bonus=S.bricks*50*S.level;S.score+=bonus;
+  S.bricks=Math.min(BRICKS,S.bricks+2);S.water=BASE_WATER;renderBricks();hud();
+  face("h");banner("CLEAR!","보너스 +"+bonus.toLocaleString(),1300);
+  setTimeout(()=>{if(S.between&&S.running)nextStage()},1500);
+}
+function setBg(){stage.dataset.bg=String((S.level-1)%5)}
+function nextStage(){
+  $("clearOv").hidden=true;S.level++;S.cleared=0;S.between=false;S.spawnT=900;bag=[];last=0;hud();setBg();
+  banner("STAGE "+S.level,theme(S.level).n,1500);input.focus();
+}
+function log(e,st){const k=S.learned.findIndex(x=>x.e===e);if(k>-1)S.learned.splice(k,1);S.learned.unshift({e,st})}
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function showTip(w,st){
+  const e=w.e;
+  const d=$("define");
+  d.innerHTML=`<div class="dw"><b>${esc(e.word)}</b>${e.wrong?`<s>${esc(e.wrong)}</s>`:""}${st==="miss"?`<em>놓침</em>`:""}</div><p>${esc(e.mean)}</p>`;
+  d.classList.toggle("bad",st==="miss");d.classList.remove("pop");void d.offsetWidth;d.classList.add("pop");
+}
+function shake(){input.classList.remove("shake");void input.offsetWidth;input.classList.add("shake");clearTimeout(shake.t);shake.t=setTimeout(()=>input.classList.remove("shake"),350)}
+function submit(){
+  if(!S||!S.running||S.paused||S.between)return;
+  const v=input.value.trim();if(!v)return;
+  input.value="";markHits();
+  const ns=t=>t.replace(/\s+/g,""),nv=ns(v);
+  const hits=S.words.filter(w=>ns(w.e.word)===nv&&!(w.fixed&&ns(w.shown)===nv));
+  if(hits.length){pop(hits.reduce((a,b)=>a.y>b.y?a:b));return}
+  shake();penalty();
+  if(S.words.some(w=>w.fixed&&ns(w.shown)===nv)){talk(pick(LINES.wrong));face("p",900)}
+}
+function penalty(){
+  // 틀리면 모든 단어가 훅 내려옴
+  const d=Math.max(26,stage.clientHeight*.06);
+  for(const w of S.words){w.y+=d;w.el.classList.remove("dunk");void w.el.offsetWidth;w.el.classList.add("dunk")}
+  stage.classList.remove("jolt");void stage.offsetWidth;stage.classList.add("jolt");
+}
+function markHits(){}
+input.addEventListener("input",markHits);
+input.addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.isComposing||e.keyCode===229)){e.preventDefault();setTimeout(submit,0)}});
+$("form").addEventListener("submit",e=>{e.preventDefault();setTimeout(submit,0)});
+
+function reset(){
+  stage.querySelectorAll(".w,.boom").forEach(n=>n.remove());
+  S={running:false,paused:false,between:false,cleared:0,words:[],score:0,level:1,bricks:BRICKS,popped:0,spawnT:500,freeze:0,learned:[],water:BASE_WATER,wDisp:BASE_WATER,flood:false};
+  bag=[];spawnCount=0;last=0;stage.classList.remove("frozen");setBg();renderBricks();setWater();hud();face("n");bubble.classList.remove("show");$("define").classList.remove("bad");$("define").innerHTML=`<p class="hint0">터뜨린 단어의 뜻이 여기에 나와요</p>`;
+}
+function start(){
+  reset();S.running=true;
+  ["startOv","overOv","pauseOv","clearOv"].forEach(id=>$(id).hidden=true);
+  input.value="";input.focus();banner("STAGE 1",theme(1).n,1500);
+  cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
+}
+function pause(on){if(!S||!S.running)return;S.paused=on;stage.classList.toggle("paused",on);$("pauseOv").hidden=!on;if(!on){last=0;input.focus()}}
+function gameOver(){
+  if(!S.running)return;S.running=false;cancelAnimationFrame(raf);
+  const key="mcb-best-"+mode,best=+(store.get(key)||0),rec=S.score>best&&S.score>0;
+  if(rec)store.set(key,S.score);
+  $("oTitle").textContent=S.flood?"한글비 홍수":S.bricks<=0?"벽돌이 다 녹았다":"오늘은 여기까지";
+  $("oScore").textContent=S.score.toLocaleString();$("oPop").textContent=S.popped;$("oLevel").textContent=S.level;
+  const p=S.popped;
+  $("oVerdict").textContent=p<5?"칭호: 설겆이 하는 사람. 괜찮아요, 아래 단어장부터.":p<15?"칭호: 금새 배우는 사람… 아니 '금세' 배우는 사람":p<30?"칭호: 맞춤법 단속반":p<50?"칭호: 걸어 다니는 표준국어대사전":"칭호: 국립국어원 비밀 요원";
+  $("oBest").textContent=rec?"새 최고 점수!":`최고 점수 ${best.toLocaleString()}점 · ${mode==="fix"?"틀린말 바로쓰기":"받아쓰기"}`;
+  const items=S.learned.slice().sort((a,b)=>(a.st==="miss"?0:1)-(b.st==="miss"?0:1));
+  $("oList").innerHTML=items.length?items.map(({e,st})=>`<div class="row"><div class="h"><b>${esc(e.word)}</b>${e.wrong?`<s>${esc(e.wrong)}</s>`:""}${st==="miss"?"<em>놓친 말</em>":""}</div><p>${esc(e.mean)}</p></div>`).join(""):`<div class="row"><p>이번 판에 만난 낱말이 없어요.</p></div>`;
+  $("pauseOv").hidden=true;$("overOv").hidden=false;input.blur();
+}
+function setMode(m){
+  mode=m;store.set("mcb-mode",m);
+  $("mBasic").setAttribute("aria-pressed",m==="basic");$("mFix").setAttribute("aria-pressed",m==="fix");
+  const b=+(store.get("mcb-best-"+m)||0);$("bestTxt").textContent=b?`최고 ${b.toLocaleString()}점`:"";
+}
+$("mBasic").onclick=()=>setMode("basic");$("mFix").onclick=()=>setMode("fix");
+$("startBtn").onclick=start;$("againBtn").onclick=start;
+$("homeBtn").onclick=goHome;
+function goHome(){if(S)S.running=false;cancelAnimationFrame(raf);["overOv","pauseOv","clearOv"].forEach(id=>$(id).hidden=true);$("startOv").hidden=false;reset();setMode(mode);input.blur()}
+$("homeTop").onclick=goHome;$("nextBtn").onclick=nextStage;$("restartTop").onclick=start;
+$("pauseBtn").onclick=()=>pause(!(S&&S.paused));$("resumeBtn").onclick=()=>pause(false);$("quitBtn").onclick=gameOver;
+document.addEventListener("visibilitychange",()=>{if(document.hidden)pause(true)});
+reset();setMode(mode);
+</script>
+
+</body>
+</html>
