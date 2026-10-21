@@ -36,7 +36,7 @@ body{background:#eceded;color:var(--ink);font-family:var(--f-body);overflow:hidd
 .win>.tbar{background:var(--ink);border-bottom-color:var(--ink)}
 .win>.tbar .gname{color:#fff}
 .win>.tbar .gsub{color:#8fa7a4}
-.win>.tbar .ibtn{background:var(--gold);border-color:var(--gold);box-shadow:none}
+.win>.tbar .ibtn{background:#fff;border-color:#fff;box-shadow:none}
 .win>.tbar .ibtn:hover{filter:brightness(1.08)}
 .win>.tbar .stat{border-color:#fff;box-shadow:none}
 .gname{font-weight:400;text-shadow:1px 0 0 currentColor;letter-spacing:.02em}
@@ -200,10 +200,10 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sp-wrap{width:100%;max-width:640px}
 .sp-play{display:flex;flex-direction:column;align-items:center;gap:22px}
 .sp-dots{display:flex;gap:4px}
-.sp-dots i{width:22px;height:10px;border:2px solid var(--ink);border-radius:2px;background:var(--win)}
+.sp-dots i{width:12px;height:12px;border-radius:50%!important;border:2px solid var(--ink);border-radius:2px;background:var(--win)}
 .sp-dots i.done{background:var(--gold)}
 .sp-dots i.now{background:#fff1b8}
-.sp-sent{white-space:pre-wrap;width:100%;text-align:center;font-family:var(--f-type);font-size:32px;line-height:1.5;word-break:keep-all;-webkit-font-smoothing:none;min-height:1.5em}
+.sp-sent{white-space:pre-wrap;width:100%;min-height:3em;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center;font-family:var(--f-type);font-size:32px;line-height:1.5;word-break:keep-all;-webkit-font-smoothing:none;min-height:1.5em}
 .sp-sent i{font-style:normal;color:#9aa9a7}
 .sp-sent i.ok{color:var(--ink)}
 .sp-sent i.bad{color:#fff;background:var(--red);border-radius:2px}
@@ -212,7 +212,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 #spInput{box-sizing:border-box;width:100%;height:64px;border:2.5px solid var(--ink);border-radius:10px;background:var(--win);color:var(--ink);font-family:var(--f-type);font-size:28px;text-align:center;padding:0 16px;box-shadow:4px 4px 0 var(--ink)}
 #spInput::placeholder{font-size:16px;color:#9aa9a7}
 #spInput:focus{outline:none}
-.sp-next{min-height:1.4em;font-family:var(--f-type);font-size:16px;color:#9aa9a7;text-align:center;-webkit-font-smoothing:none}
+.sp-next{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.4em;font-family:var(--f-type);font-size:16px;color:#9aa9a7;text-align:center;-webkit-font-smoothing:none}
 .sp-next:not(:empty)::before{content:"다음  ";color:var(--muted)}
 .sp-stats{display:flex;border:2px solid var(--ink);border-radius:99px;background:var(--win);overflow:hidden;font-variant-numeric:tabular-nums}
 .sp-stats div{display:flex;align-items:baseline;gap:6px;padding:6px 16px}
@@ -236,10 +236,12 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sp-stats b.lives{min-width:0;display:flex;gap:3px;align-self:center}
 .sp-stats b.lives i{width:9px;height:9px;background:var(--red);border:1.5px solid var(--ink);border-radius:1px}
 .sp-stats b.lives i.off{background:transparent;border-color:#b9c7c5}
-.sp-msg{position:absolute;left:0;right:0;top:9%;text-align:center;z-index:5;pointer-events:none;opacity:0;transition:opacity .25s;font-family:var(--f-disp);font-size:32px;color:var(--gold);-webkit-text-stroke:6px var(--ink);paint-order:stroke fill;text-shadow:4px 4px 0 var(--ink);-webkit-font-smoothing:none}
-.sp-msg small{display:block;font-size:16px;color:#fff;-webkit-text-stroke:4px var(--ink);margin-top:6px;text-shadow:2px 2px 0 var(--ink)}
-.sp-msg.show{opacity:1}
-.sp-msg.bad{color:var(--red)}
+.sp-msg{position:absolute;left:50%;top:9%;transform:translateX(-50%);z-index:5;pointer-events:none;display:none;text-align:center;white-space:nowrap;
+  background:var(--gold);color:var(--ink);border:2.5px solid var(--ink);border-radius:8px;box-shadow:3px 3px 0 var(--ink);padding:8px 18px;font-family:var(--f-disp);font-size:24px;line-height:1.2;-webkit-font-smoothing:none}
+.sp-msg small{display:block;font-size:14px;margin-top:2px;opacity:.8}
+.sp-msg.show{display:block;animation:msgIn .18s steps(2,end)}
+@keyframes msgIn{from{transform:translateX(-50%) translateY(6px)}}
+.sp-msg.bad{background:var(--red);color:#fff}
 .speed.shake .sp-wrap{animation:shk .3s}
 .sum.sum4{grid-template-columns:repeat(4,1fr)}
 @media (max-width:480px){.sum.sum4{grid-template-columns:repeat(2,1fr)}}
@@ -262,8 +264,17 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .rank-list li em{font-style:normal;font-size:11px;color:var(--muted)}
 .rank-list .empty{color:var(--muted);justify-content:center}
 .rank-list .empty::before{content:none}
+.r-head{display:flex;justify-content:center;align-items:center;gap:10px}
+.r-go{font-family:"Press Start 2P",monospace;font-size:14px;color:var(--red)}
+.r-stage{font-family:"Press Start 2P",monospace;font-size:10px;background:var(--ink);color:#fff;border-radius:6px;padding:6px 8px}
+.r-hero{display:flex;flex-direction:column;align-items:center;gap:10px;padding:6px 0 2px}
+.r-hero span{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--muted);letter-spacing:.1em}
+.r-hero b{font-family:"Press Start 2P",monospace;font-weight:400;font-size:40px;color:var(--ink);text-shadow:3px 3px 0 var(--gold)}
+.sp-stats.r-strip{position:static;border:2px solid var(--ink)!important;border-radius:99px!important;overflow:hidden;align-self:center}
+.rank-tabs button{font-family:"Press Start 2P",monospace!important;font-size:9px!important;padding:10px 0!important}
+.rank-list li b{font-family:"Press Start 2P",monospace!important;font-size:11px}
 .sp-result{display:flex;flex-direction:column;gap:16px;border:2.5px solid var(--ink);border-radius:10px;background:var(--win);padding:26px 22px;box-shadow:5px 5px 0 var(--ink)}
-.sp-result h2{margin:0;text-align:center;font-family:var(--f-disp);font-weight:400;font-size:32px}
+.sp-result h2{display:none;margin:0;text-align:center;font-family:var(--f-disp);font-weight:400;font-size:32px}
 @media (max-width:480px){.sp-sent{font-size:21px}#spInput{font-size:20px;height:54px}.speed{padding:20px 14px}.sp-stats div{padding:6px 10px}}
 #startBtn{height:56px;font-size:24px}
 .mode[aria-pressed="true"] span{color:var(--ink)}
@@ -339,17 +350,17 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
         </div>
       </div>
       <div class="sp-result" id="spResult" hidden>
-        <h2 id="spRTitle">결과</h2>
-        <div class="sum sum4">
-          <div><span>SCORE</span><b id="spRScore">0</b></div>
-          <div><span>평균 타수</span><b id="spRAvg">0</b></div>
-          <div><span>정확도</span><b id="spRAcc">0%</b></div>
-          <div><span>성공</span><b id="spROk">0</b></div>
+        <div class="r-head"><span class="r-go">GAME OVER</span><span class="r-stage" id="spRTitle">STAGE 1</span></div>
+        <div class="r-hero"><span>SCORE</span><b id="spRScore">0</b></div>
+        <div class="sp-stats r-strip">
+          <div class="c-speed"><span>AVG</span><b id="spRAvg">0</b></div>
+          <div class="c-goal"><span>ACC</span><b id="spRAcc">0%</b></div>
+          <div class="c-life"><span>CLEAR</span><b id="spROk">0</b></div>
         </div>
         <div class="best" id="spRBest"></div>
         <form class="sp-name" id="spNameForm" autocomplete="off"><input id="spName" maxlength="10" placeholder="이름" aria-label="이름"><button class="btn" type="submit" id="spSave">랭킹 등록</button></form>
         <div class="rank">
-          <div class="rank-tabs" role="tablist"><button data-k="score" aria-selected="true">점수</button><button data-k="kpm">속도</button><button data-k="acc">정확도</button><button data-k="ok">횟수</button></div>
+          <div class="rank-tabs" role="tablist"><button data-k="score" aria-selected="true">SCORE</button><button data-k="kpm">SPEED</button><button data-k="acc">ACC</button><button data-k="ok">COUNT</button></div>
           <ol class="rank-list" id="rankList"></ol>
         </div>
         <div class="row2"><button class="btn" id="spAgain">한 번 더</button><button class="btn ghost" id="spHome">처음으로</button></div>
@@ -828,7 +839,7 @@ function gameOver(){
 function setMode(m){
   mode=m;store.set("mcb-mode",m);$("modes").dataset.m=m;
   $("mBasic").setAttribute("aria-checked",m==="basic");$("mSpeed").setAttribute("aria-checked",m==="speed");
-  const b=+(store.get("mcb-best-"+m)||0);$("bestTxt").textContent=b?(m==="speed"?`최고 STAGE ${b}`:`최고 ${b.toLocaleString()}점`):"";
+  const b=+(store.get(m==="speed"?"mcb-best-speedst":"mcb-best-"+m)||0);$("bestTxt").textContent=b?(m==="speed"?`최고 STAGE ${b}`:`최고 ${b.toLocaleString()}점`):"";
 }
 $("mBasic").onclick=()=>setMode("basic");$("mSpeed").onclick=()=>setMode("speed");
 function begin(){mode==="speed"?startSpeed():start()}
@@ -848,6 +859,7 @@ function spHud(){
   $("spLives").innerHTML=Array.from({length:SP_LIVES},(_,k)=>`<i class="${k<SP.lives?"":"off"}"></i>`).join("");
 }
 function spShow(){
+  if(!SP||!$("spResult").hidden)return;
   const t=SP.list[SP.i];
   $("spDots").innerHTML=Array.from({length:SP_N},(_,k)=>`<i class="${k<SP.i?"done":k===SP.i?"now":""}"></i>`).join("");
   $("spNext").textContent=SP.list[SP.i+1]||"";
@@ -908,8 +920,8 @@ function spEnd(){
   const avg=SP.res.length?Math.round(SP.res.reduce((a,b)=>a+b,0)/SP.res.length):0,acc=SP.cAll?Math.round(SP.cOk/SP.cAll*100):0;
   const score=Math.round(SP.pts*acc/100);
   SP.final={score,kpm:avg,acc,ok:SP.ok,stage:SP.stage};
-  const best=+(store.get("mcb-best-speed")||0),rec=SP.stage>best;if(rec)store.set("mcb-best-speed",SP.stage);
-  $("spRScore").textContent=score.toLocaleString();$("spRAvg").textContent=avg.toLocaleString();$("spRAcc").textContent=acc+"%";$("spROk").textContent=SP.ok;
+  const best=+(store.get("mcb-best-speedst")||0),rec=SP.stage>best;if(rec)store.set("mcb-best-speedst",SP.stage);
+  $("spRScore").textContent=score.toLocaleString();$("spRAvg").textContent=avg.toLocaleString();$("spRAvg").textContent=avg;$("spRAcc").textContent=acc+"%";$("spROk").textContent=SP.ok;
   $("spRTitle").textContent="STAGE "+SP.stage;
   $("spRBest").textContent=rec?"새 최고 기록!":`최고 기록 STAGE ${best}`;
   $("spName").value=store.get("mcb-name")||"";$("spNameForm").classList.remove("saved");rkMine=null;rkTab="score";rkRender();
