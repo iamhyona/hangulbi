@@ -13,7 +13,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://iamhyona.github.io/hangulbi/">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0c1a1c">
@@ -282,7 +283,8 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .rank-list .empty{color:var(--muted);justify-content:center}
 .rank-list .empty::before{content:none}
 .r-head{display:flex;flex-direction:column;align-items:center;gap:10px}
-.r-head .r-go{font-family:"Press Start 2P",monospace;font-size:26px;color:var(--ink)!important;letter-spacing:.02em}
+.r-head{gap:18px!important;padding:4px 0 6px}
+.r-head .r-go{font-family:"Press Start 2P",monospace;font-size:44px;line-height:1.25;text-align:center;color:var(--ink)!important}
 .r-go{font-family:"Press Start 2P",monospace;font-size:14px;color:var(--red)}
 .r-stage{font-family:"Press Start 2P",monospace;font-size:10px;background:var(--ink);color:#fff;border-radius:6px;padding:6px 8px}
 .r-hero3{display:grid;grid-template-columns:repeat(3,1fr);border:2.5px solid var(--ink);border-radius:12px;background:var(--win);overflow:hidden}
@@ -297,13 +299,14 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .r-strip div+div{border-left:2px solid var(--ink)}
 .r-strip span{font-family:"Press Start 2P",monospace;font-size:9px;color:var(--muted)}
 .r-strip b{font-family:"Press Start 2P",monospace;font-weight:400;font-size:12px}
-.ranks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ranks{display:grid;grid-template-columns:1fr;gap:12px}
+.sp-result .sec{border-top:2px dashed #c9d0d0;padding-top:20px;margin-top:4px}
 .rank-h{font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.06em;padding:9px 12px;background:var(--ink);color:#fff}
 .ranks .rank-list{max-height:170px;padding:4px 12px}
-.sp-result .row2{margin-top:14px}
+.sp-result .row2{margin-top:18px}
 .sp-result .sp-name{justify-content:center}
 .r-strip b+span{font-family:var(--f-disp);font-size:13px;color:var(--ink);margin-left:-5px}
-@media (max-width:480px){.ranks{grid-template-columns:1fr}.r-hero3 b{font-size:16px}.r-hero3 span{font-size:8px}.r-hero3 em{font-size:11px}.r-strip div{padding:7px 10px}}
+@media (max-width:480px){.r-head .r-go{font-size:34px}.r-hero3 b{font-size:16px}.r-hero3 span{font-size:8px}.r-hero3 em{font-size:11px}.r-strip div{padding:7px 10px}}
 .sp-stats.r-strip{position:static;border:2px solid var(--ink)!important;border-radius:99px!important;overflow:hidden;align-self:center}
 .rank-tabs button{font-family:"Press Start 2P",monospace!important;font-size:9px!important;padding:10px 0!important}
 .rank-list li b{font-family:"Press Start 2P",monospace!important;font-size:11px}
@@ -384,23 +387,23 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
         </div>
       </div>
       <div class="sp-result" id="spResult" hidden>
-        <div class="r-head"><span class="r-go">GAME OVER</span><span class="r-stage" id="spRTitle">STAGE 1</span></div>
+        <div class="r-head"><span class="r-stage" id="spRTitle">STAGE 1</span><span class="r-go">GAME<br>OVER</span></div>
         <div class="r-hero3">
           <div><span>BEST SPEED</span><p><b id="spRMax">0</b><em>타</em></p></div>
           <div><span>AVG SPEED</span><p><b id="spRAvg">0</b><em>타</em></p></div>
           <div><span>SCORE</span><p><b id="spRScore">0</b><em>점</em></p></div>
         </div>
-        <div class="r-strip">
+        <div class="r-strip" hidden>
           <div><span>ACC</span><b id="spRAcc">0%</b></div>
           <div><span>CLEAR</span><b id="spROk">0</b></div>
         </div>
         <div class="best" id="spRBest" hidden></div>
-        <form class="sp-name" id="spNameForm" autocomplete="off"><input id="spName" maxlength="10" placeholder="이름" aria-label="이름"><button class="btn" type="submit" id="spSave">랭킹 등록</button></form>
-        <div class="ranks">
+        <form class="sp-name sec" id="spNameForm" autocomplete="off"><input id="spName" maxlength="10" placeholder="이름" aria-label="이름"><button class="btn" type="submit" id="spSave">랭킹 등록</button></form>
+        <div class="ranks sec">
           <div class="rank"><div class="rank-h">SPEED RANK</div><ol class="rank-list" id="rankSpeed"></ol></div>
           <div class="rank"><div class="rank-h">SCORE RANK</div><ol class="rank-list" id="rankScore"></ol></div>
         </div>
-        <div class="row2"><button class="btn" id="spAgain">한 번 더</button><button class="btn ghost" id="spHome">처음으로</button></div>
+        <div class="row2 sec"><button class="btn" id="spAgain">한 번 더</button><button class="btn ghost" id="spHome">처음으로</button></div>
       </div>
     </div>
   </div>
