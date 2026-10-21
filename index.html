@@ -264,7 +264,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sum.sum4{grid-template-columns:repeat(4,1fr)}
 @media (max-width:480px){.sum.sum4{grid-template-columns:repeat(2,1fr)}}
 .sp-name{display:flex;gap:8px}
-#spName{box-sizing:border-box;flex:0 1 180px;min-width:0;height:46px;border:2.5px solid var(--ink);border-radius:8px;font-family:var(--f-type);font-size:18px;padding:0 12px;background:var(--win);color:var(--ink)}
+#spName,#oName{box-sizing:border-box;flex:0 1 180px;min-width:0;height:46px;border:2.5px solid var(--ink);border-radius:8px;font-family:var(--f-type);font-size:18px;padding:0 12px;background:var(--win);color:var(--ink)}
 .sp-name .btn{height:46px;white-space:nowrap}
 .sp-name.saved{opacity:.5;pointer-events:none}
 .rank{border:2px solid var(--ink);border-radius:10px;overflow:hidden}
@@ -304,7 +304,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .rank-h{font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.06em;padding:9px 12px;background:var(--ink);color:#fff}
 .ranks .rank-list{max-height:170px;padding:4px 12px}
 .sp-result .row2{margin-top:18px}
-.sp-result .sp-name{justify-content:center}
+.sp-result .sp-name,#oNameForm{justify-content:center}
 .r-strip b+span{font-family:var(--f-disp);font-size:13px;color:var(--ink);margin-left:-5px}
 @media (max-width:480px){.r-head .r-go{font-size:34px}.r-hero3 b{font-size:16px}.r-hero3 span{font-size:8px}.r-hero3 em{font-size:11px}.r-strip div{padding:7px 10px}}
 .sp-stats.r-strip{position:static;border:2px solid var(--ink)!important;border-radius:99px!important;overflow:hidden;align-self:center}
@@ -465,6 +465,8 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
       </div>
       <div class="verdict" id="oVerdict" hidden></div>
       <div class="best" id="oBest"></div>
+      <form class="sp-name" id="oNameForm" autocomplete="off"><input id="oName" maxlength="10" placeholder="이름" aria-label="이름"><button class="btn" type="submit">랭킹 등록</button></form>
+      <div class="ranks"><div class="rank"><div class="rank-h">SCORE RANK</div><ol class="rank-list" id="rankRain"></ol></div></div>
       <div class="ltitle">이번 판 단어장</div>
       <div class="list" id="oList"></div>
       <div class="row2"><button class="btn" id="againBtn">한 판 더</button><button class="btn ghost" id="homeBtn">처음으로</button></div>
@@ -874,8 +876,19 @@ function gameOver(){
   $("oBest").textContent=rec?"새 최고 점수!":`최고 점수 ${best.toLocaleString()}점 · ${mode==="fix"?"틀린말 바로쓰기":"받아쓰기"}`;
   const items=S.learned.slice().sort((a,b)=>(a.st==="miss"?0:1)-(b.st==="miss"?0:1));
   $("oList").innerHTML=items.length?items.map(({e,st})=>`<div class="row"><div class="h"><b>${esc(e.word)}</b>${e.wrong?`<s>${esc(e.wrong)}</s>`:""}${st==="miss"?"<em>놓친 말</em>":""}</div><p>${esc(e.mean)}</p></div>`).join(""):`<div class="row"><p>이번 판에 만난 낱말이 없어요.</p></div>`;
+  S.final={score:S.score,words:S.popped,stage:S.level};
+  $("oName").value=store.get("mcb-name")||"";$("oNameForm").classList.toggle("saved",S.score<=0);rrMine=null;rrRender();
   $("pauseOv").hidden=true;$("overOv").hidden=false;input.blur();
 }
+const RR="mcb-rank-rain";let rrMine=null;
+function rrLoad(){try{return JSON.parse(store.get(RR)||"[]")}catch(e){return[]}}
+function rrRender(){const l=rrLoad().slice(0,10);
+  $("rankRain").innerHTML=l.length?l.map(r=>`<li class="${r.id===rrMine?"me":""}">${esc(r.name)} <em>ST.${r.stage}</em><b>${r.score.toLocaleString()}</b></li>`).join(""):`<li class="empty">아직 기록이 없어요</li>`}
+$("oNameForm").addEventListener("submit",e=>{e.preventDefault();if(!S||!S.final||rrMine||S.final.score<=0)return;
+  const name=($("oName").value.trim()||"익명").slice(0,10);store.set("mcb-name",name);
+  const r={id:Date.now()+"",name,...S.final,date:new Date().toISOString().slice(0,10)};
+  const all=rrLoad();all.push(r);all.sort((a,b)=>b.score-a.score);store.set(RR,JSON.stringify(all.slice(0,50)));
+  rrMine=r.id;$("oNameForm").classList.add("saved");rrRender()});
 function setMode(m){
   mode=m;store.set("mcb-mode",m);$("modes").dataset.m=m;
   $("mBasic").setAttribute("aria-checked",m==="basic");$("mSpeed").setAttribute("aria-checked",m==="speed");
