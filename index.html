@@ -190,21 +190,32 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .modes .mode{position:relative;z-index:1;border:0;border-radius:99px;background:transparent;padding:10px 6px;color:var(--ink);transition:color .2s}
 .modes .mode[aria-checked="true"]{color:#fff}
 .win.speedmode .stage,.win.speedmode .dict,.win.speedmode .stat,.win.speedmode #pauseBtn{display:none}
-.speed{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px;padding:22px 20px;background:var(--paper);overflow:auto}
-.sp-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:var(--f-disp);font-size:16px;-webkit-font-smoothing:none}
-.sp-prog{border:2px solid var(--ink);border-radius:7px;background:var(--win);padding:3px 10px;box-shadow:2px 2px 0 var(--ink)}
-.sp-hint{color:var(--muted);font-size:12px}
-.sp-sent{font-family:var(--f-type);font-size:26px;line-height:1.6;background:var(--win);border:2.5px solid var(--ink);border-radius:10px;padding:18px 20px;box-shadow:4px 4px 0 var(--ink);word-break:keep-all;-webkit-font-smoothing:none;min-height:3.2em}
-.sp-sent i{font-style:normal;color:var(--muted)}
-.sp-sent i.ok{color:#1f8a5b}
+.speed{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:32px 24px;background:var(--paper);overflow:auto}
+.sp-wrap{width:100%;max-width:640px}
+.sp-play{display:flex;flex-direction:column;align-items:center;gap:22px}
+.sp-dots{display:flex;gap:8px}
+.sp-dots i{width:22px;height:10px;border:2px solid var(--ink);border-radius:2px;background:var(--win)}
+.sp-dots i.done{background:var(--ink)}
+.sp-dots i.now{background:var(--gold)}
+.sp-sent{width:100%;text-align:center;font-family:var(--f-type);font-size:32px;line-height:1.5;word-break:keep-all;-webkit-font-smoothing:none;min-height:1.5em}
+.sp-sent i{font-style:normal;color:#9aa9a7}
+.sp-sent i.ok{color:var(--ink)}
 .sp-sent i.bad{color:#fff;background:var(--red);border-radius:2px}
-.sp-sent i.cur{box-shadow:inset 0 -3px 0 var(--gold)}
-#spForm{display:flex;gap:8px}
-#spInput{box-sizing:border-box;flex:1;min-width:0;height:50px;border:2.5px solid var(--ink);border-radius:8px;background:var(--win);color:var(--ink);font-family:var(--f-type);font-size:24px;padding:0 12px}
-#spInput:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
-.sp-result{display:flex;flex-direction:column;gap:14px;border:2.5px solid var(--ink);border-radius:10px;background:var(--win);padding:18px;box-shadow:4px 4px 0 var(--ink)}
-.sp-result h2{margin:0;font-family:var(--f-disp);font-weight:400;font-size:32px}
-@media (max-width:480px){.sp-sent{font-size:19px;padding:14px}.speed{padding:16px 12px}}
+.sp-sent i.cur{box-shadow:inset 0 -4px 0 var(--gold);color:var(--ink)}
+#spForm{width:100%}
+#spInput{box-sizing:border-box;width:100%;height:64px;border:2.5px solid var(--ink);border-radius:10px;background:var(--win);color:var(--ink);font-family:var(--f-type);font-size:28px;text-align:center;padding:0 16px;box-shadow:4px 4px 0 var(--ink)}
+#spInput::placeholder{font-size:16px;color:#9aa9a7}
+#spInput:focus{outline:none}
+.sp-next{min-height:1.4em;font-family:var(--f-type);font-size:16px;color:#9aa9a7;text-align:center;-webkit-font-smoothing:none}
+.sp-next:not(:empty)::before{content:"다음  ";color:var(--muted)}
+.sp-stats{display:flex;border:2px solid var(--ink);border-radius:99px;background:var(--win);overflow:hidden;font-variant-numeric:tabular-nums}
+.sp-stats div{display:flex;align-items:baseline;gap:6px;padding:6px 16px}
+.sp-stats div+div{border-left:2px solid var(--ink)}
+.sp-stats span{font-size:12px;color:var(--muted)}
+.sp-stats b{font-family:var(--f-disp);font-weight:400;font-size:16px;min-width:2.5ch;text-align:right;-webkit-font-smoothing:none}
+.sp-result{display:flex;flex-direction:column;gap:16px;border:2.5px solid var(--ink);border-radius:10px;background:var(--win);padding:26px 22px;box-shadow:5px 5px 0 var(--ink)}
+.sp-result h2{margin:0;text-align:center;font-family:var(--f-disp);font-weight:400;font-size:32px}
+@media (max-width:480px){.sp-sent{font-size:21px}#spInput{font-size:20px;height:54px}.speed{padding:20px 14px}.sp-stats div{padding:6px 10px}}
 #startBtn{height:56px;font-size:24px}
 .mode[aria-pressed="true"] span{color:var(--ink)}
 .best{font-family:var(--f-disp);font-size:16px;color:var(--ink);-webkit-font-smoothing:none;font-variant-numeric:tabular-nums;text-align:center}
@@ -261,26 +272,30 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
     </form>
   </div>
   <div class="speed" id="speed" hidden>
-    <div class="sp-head"><span class="sp-prog" id="spProg">1 / 5</span><span class="sp-hint">문장을 그대로 치고 Enter</span></div>
-    <div class="sp-sent" id="spSent"></div>
-    <div class="sum sp-stats">
-      <div><span>타수</span><b id="spKpm">0</b></div>
-      <div><span>정확도</span><b id="spAcc">-</b></div>
-      <div><span>최고</span><b id="spBest">0</b></div>
-    </div>
-    <form id="spForm" autocomplete="off">
-      <input id="spInput" type="text" enterkeyhint="done" autocapitalize="off" spellcheck="false" placeholder="여기에 입력" aria-label="문장 입력">
-      <button class="btn" type="submit">입력</button>
-    </form>
-    <div class="sp-result" id="spResult" hidden>
-      <h2 id="spRTitle">결과</h2>
-      <div class="sum">
-        <div><span>평균 타수</span><b id="spRAvg">0</b></div>
-        <div><span>최고 타수</span><b id="spRMax">0</b></div>
-        <div><span>정확도</span><b id="spRAcc">0%</b></div>
+    <div class="sp-wrap">
+      <div class="sp-play" id="spPlay">
+        <div class="sp-dots" id="spDots" aria-label="진행"></div><span id="spProg" hidden></span>
+        <div class="sp-sent" id="spSent"></div>
+        <form id="spForm" autocomplete="off">
+          <input id="spInput" type="text" enterkeyhint="done" autocapitalize="off" spellcheck="false" placeholder="위 문장을 그대로 치고 Enter" aria-label="문장 입력">
+        </form>
+        <div class="sp-next" id="spNext"></div>
+        <div class="sp-stats">
+          <div><span>타수</span><b id="spKpm">0</b></div>
+          <div><span>정확도</span><b id="spAcc">-</b></div>
+          <div><span>최고</span><b id="spBest">0</b></div>
+        </div>
       </div>
-      <div class="best" id="spRBest"></div>
-      <div class="row2"><button class="btn" id="spAgain">한 번 더</button><button class="btn ghost" id="spHome">처음으로</button></div>
+      <div class="sp-result" id="spResult" hidden>
+        <h2 id="spRTitle">결과</h2>
+        <div class="sum">
+          <div><span>평균 타수</span><b id="spRAvg">0</b></div>
+          <div><span>최고 타수</span><b id="spRMax">0</b></div>
+          <div><span>정확도</span><b id="spRAcc">0%</b></div>
+        </div>
+        <div class="best" id="spRBest"></div>
+        <div class="row2"><button class="btn" id="spAgain">한 번 더</button><button class="btn ghost" id="spHome">처음으로</button></div>
+      </div>
     </div>
   </div>
  </div>
@@ -755,15 +770,17 @@ function begin(){mode==="speed"?startSpeed():start()}
 function startSpeed(){
   if(S){S.running=false}cancelAnimationFrame(raf);
   ["startOv","overOv","pauseOv","clearOv"].forEach(id=>$(id).hidden=true);
-  document.querySelector(".win").classList.add("speedmode");$("speed").hidden=false;$("spResult").hidden=true;
+  document.querySelector(".win").classList.add("speedmode");$("speed").hidden=false;$("spResult").hidden=true;$("spPlay").hidden=false;
   const pool=SENTS.slice();for(let i=pool.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[pool[i],pool[j]]=[pool[j],pool[i]]}
   SP={list:pool.slice(0,SP_N),i:0,t0:0,res:[]};$("spBest").textContent=(+(store.get("mcb-best-speed")||0)).toLocaleString();
   spShow();
 }
 function spShow(){
-  const t=SP.list[SP.i];$("spProg").textContent=`${SP.i+1} / ${SP_N}`;
+  const t=SP.list[SP.i];
+  $("spDots").innerHTML=Array.from({length:SP_N},(_,k)=>`<i class="${k<SP.i?"done":k===SP.i?"now":""}"></i>`).join("");
+  $("spNext").textContent=SP.list[SP.i+1]||"";
   $("spSent").innerHTML=[...t].map(c=>`<i>${c===" "?"&nbsp;":esc(c)}</i>`).join("");
-  const inp=$("spInput");inp.value="";inp.disabled=false;$("spForm").hidden=false;inp.focus();SP.t0=0;spPaint();$("spKpm").textContent="0";$("spAcc").textContent="-";
+  const inp=$("spInput");inp.value="";inp.disabled=false;$("spPlay").hidden=false;inp.focus();SP.t0=0;spPaint();$("spKpm").textContent="0";$("spAcc").textContent="-";
 }
 function spAccOf(v,t){let ok=0;for(let i=0;i<t.length;i++)if(v[i]===t[i])ok++;return ok/Math.max(t.length,v.length)}
 function spPaint(){
@@ -792,7 +809,7 @@ function spEnd(){
   $("spRAvg").textContent=avg.toLocaleString();$("spRMax").textContent=mx.toLocaleString();$("spRAcc").textContent=acc+"%";
   $("spRTitle").textContent=avg>=500?"손가락이 번개":avg>=300?"타자 장인":avg>=150?"꽤 빠른 손":"천천히 정확하게";
   $("spRBest").textContent=rec?"새 최고 기록!":`최고 기록 ${best.toLocaleString()}타`;
-  $("spForm").hidden=true;$("spResult").hidden=false;$("spInput").blur();
+  $("spPlay").hidden=true;$("spResult").hidden=false;$("spInput").blur();
 }
 $("spAgain").onclick=startSpeed;$("spHome").onclick=()=>goHome();
 $("startBtn").onclick=begin;$("againBtn").onclick=start;
