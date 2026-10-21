@@ -33,6 +33,8 @@ body{background:#e4eeec;color:var(--ink);font-family:var(--f-body);overflow:hidd
 .stat b{font-size:16px;color:var(--ink)}
 .stat b#sScore{min-width:3ch;text-align:right}
 .stat{font-family:var(--f-disp);font-size:16px;font-variant-numeric:tabular-nums}.stat b{font-weight:400;margin-left:4px}
+.gname{font-weight:400;text-shadow:1px 0 0 currentColor;letter-spacing:.02em}
+.gsub{font-family:var(--f-disp);font-size:12px;color:var(--muted);margin-left:4px;-webkit-font-smoothing:none}
 .ibtn{width:30px;height:30px;border-radius:7px;border:2px solid var(--ink);background:var(--win);display:grid;place-items:center;cursor:pointer;color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
 .ibtn:active{transform:translate(2px,2px);box-shadow:none}
 .ibtn svg{width:14px;height:14px}
@@ -143,8 +145,9 @@ body{background:#e4eeec;color:var(--ink);font-family:var(--f-body);overflow:hidd
 .define em{font-style:normal;font-size:11px;font-weight:700;color:#fff;background:var(--red);border-radius:99px;padding:1px 7px}
 .define p{margin:0;font-family:"PretendardSub","Pretendard",var(--f-body);font-size:13px;line-height:1.4;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .define p.hint0{color:var(--muted)}
-.define.pop{animation:dpop .25s ease-out}
-@keyframes dpop{from{transform:translateY(4px);opacity:.2}}
+.define{border-radius:6px;margin:0 -6px;padding:0 6px}
+.define.pop{animation:dpop .55s steps(1,end)}
+@keyframes dpop{0%{opacity:1;background:#ffe27a}35%{opacity:.15;background:transparent}70%{opacity:1;background:#ffe27a}100%{background:transparent}}
 .card{min-height:58px;display:flex;flex-direction:column;gap:3px}
 .card .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .card .word{font-family:var(--f-type);font-weight:400;font-size:22px}
@@ -213,7 +216,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 <div class="app">
  <div class="win">
   <div class="tbar">
-    <span class="ttl">한글비타자게임</span>
+    <span class="ttl"><b class="gname">한글비타자게임</b> <small class="gsub">(박현아가 심심해서 만든 게임)</small></span>
     <span class="stat">STAGE <b id="sLevel">1</b></span>
     <span class="stat">점수 <b id="sScore">0</b></span>
     <button class="ibtn" id="homeTop" aria-label="처음 화면으로"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5 1 7.6h2.2V14h3.6v-4h2.4v4h3.6V7.6H15z"/></svg></button>
@@ -248,7 +251,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
     <div class="tbar"><span class="ttl">PARKHYONA.EXE</span></div>
     <div class="body">
       <h1>한글비타자게임</h1>
-      <div class="maker">박현아가 만든 게임</div>
+      <div class="maker">박현아가 심심해서 만든 게임</div>
       <div class="modes">
         <button class="mode" id="mBasic" aria-pressed="true"><b>받아쓰기</b></button>
         <button class="mode" id="mFix" aria-pressed="false"><b>틀린말 바로쓰기</b></button>
@@ -571,7 +574,7 @@ function spawn(){
   stage.appendChild(el);
   const fw=stage.clientWidth,ww=el.offsetWidth;let x=0;
   for(let t=0;t<8;t++){x=Math.random()*Math.max(0,fw-ww-10)+5;if(!S.words.some(o=>o.y<60&&Math.abs(o.x-x)<Math.max(o.w,ww)))break}
-  const w={el,e,shown:el.textContent,fixed,bonus,big,x,y:-30,w:ww,h:el.offsetHeight,v:(big?1.7:1)*(30+S.level*11)*(Math.random()<.2?1.45:.7+Math.random()*.5)/(1+Math.max(0,e.word.length-4)*.06)};
+  const w={el,e,shown:el.textContent,fixed,bonus,big,x,y:-30,w:ww,h:el.offsetHeight,v:(big?1.7:1)*(40+S.level*11)*(Math.random()<.2?1.45:.7+Math.random()*.5)/(1+Math.max(0,e.word.length-4)*.06)};
   el.style.transform=`translate(${x}px,${w.y}px)`;S.words.push(w);
 }
 function loop(t){
@@ -582,7 +585,7 @@ function loop(t){
     if(S.freeze>0){S.freeze-=dt;$("iceGauge").style.transform=`scaleX(${Math.max(0,S.freeze/3000)})`;if(S.freeze<=0){stage.classList.remove("frozen");stage.classList.add("thaw");setTimeout(()=>stage.classList.remove("thaw"),500)}}
     else{
       S.spawnT-=dt;
-      if(S.spawnT<=0){spawn();S.spawnT=Math.max(520,2200-S.level*230)*(.75+Math.random()*.4)}
+      if(S.spawnT<=0){spawn();S.spawnT=Math.max(520,2050-S.level*220)*(.75+Math.random()*.4)}
       S.water+=(0.9+S.level*0.55)*dt/1000;
       S.wDisp+=(S.water-S.wDisp)*Math.min(1,dt/180);setWater();
       const fl=floodLine();stage.classList.toggle("danger",S.wDisp>fl-45);
