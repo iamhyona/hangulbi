@@ -4,6 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>한글비타자게임</title>
+<meta name="description" content="박현아가 심심해서 만든 비상업적 용도 손가락 풀기 게임. 한글을 사랑합시다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="한글비타자게임">
+<meta property="og:description" content="박현아가 심심해서 만든 비상업적 용도 손가락 풀기 게임. 한글을 사랑합시다.">
+<meta property="og:image" content="https://iamhyona.github.io/hangulbi/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://iamhyona.github.io/hangulbi/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0c1a1c">
+<meta name="apple-mobile-web-app-title" content="한글비">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>한글비타자게임</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard-dynamic-subset.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@400;500;700;800&family=DM+Mono:wght@500&family=Press+Start+2P&display=swap">
@@ -175,6 +191,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 
 .overlay{position:fixed;inset:0;background:rgba(12,26,28,.45);display:grid;place-items:center;z-index:20;
   padding:16px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+#startOv{background:#eceded}
 .dlg{width:100%;max-width:440px;max-height:100%;display:flex;flex-direction:column;background:var(--win);border:2.5px solid var(--ink);border-radius:10px;box-shadow:6px 6px 0 var(--ink);overflow:hidden}
 .dlg .tbar{background:var(--ink);color:#fff}
 .dlg .tbar .ttl{text-align:left;letter-spacing:.06em;font-size:14px}
@@ -246,8 +263,8 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sum.sum4{grid-template-columns:repeat(4,1fr)}
 @media (max-width:480px){.sum.sum4{grid-template-columns:repeat(2,1fr)}}
 .sp-name{display:flex;gap:8px}
-#spName{box-sizing:border-box;flex:1;min-width:0;height:46px;border:2.5px solid var(--ink);border-radius:8px;font-family:var(--f-type);font-size:18px;padding:0 12px;background:var(--win);color:var(--ink)}
-.sp-name .btn{height:46px}
+#spName{box-sizing:border-box;flex:0 1 180px;min-width:0;height:46px;border:2.5px solid var(--ink);border-radius:8px;font-family:var(--f-type);font-size:18px;padding:0 12px;background:var(--win);color:var(--ink)}
+.sp-name .btn{height:46px;white-space:nowrap}
 .sp-name.saved{opacity:.5;pointer-events:none}
 .rank{border:2px solid var(--ink);border-radius:10px;overflow:hidden}
 .rank-tabs{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:2px solid var(--ink)}
@@ -264,12 +281,29 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .rank-list li em{font-style:normal;font-size:11px;color:var(--muted)}
 .rank-list .empty{color:var(--muted);justify-content:center}
 .rank-list .empty::before{content:none}
-.r-head{display:flex;justify-content:center;align-items:center;gap:10px}
+.r-head{display:flex;flex-direction:column;align-items:center;gap:10px}
+.r-head .r-go{font-family:"Press Start 2P",monospace;font-size:26px;color:var(--ink)!important;letter-spacing:.02em}
 .r-go{font-family:"Press Start 2P",monospace;font-size:14px;color:var(--red)}
 .r-stage{font-family:"Press Start 2P",monospace;font-size:10px;background:var(--ink);color:#fff;border-radius:6px;padding:6px 8px}
-.r-hero{display:flex;flex-direction:column;align-items:center;gap:10px;padding:6px 0 2px}
-.r-hero span{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--muted);letter-spacing:.1em}
-.r-hero b{font-family:"Press Start 2P",monospace;font-weight:400;font-size:40px;color:var(--ink);text-shadow:3px 3px 0 var(--gold)}
+.r-hero3{display:grid;grid-template-columns:repeat(3,1fr);border:2.5px solid var(--ink);border-radius:12px;background:var(--win);overflow:hidden}
+.r-hero3>div{display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px 6px 12px}
+.r-hero3>div+div{border-left:2px solid var(--ink)}
+.r-hero3 span{font-family:"Press Start 2P",monospace;font-size:9px;color:var(--muted);letter-spacing:.08em;white-space:nowrap}
+.r-hero3 p{margin:0;display:flex;align-items:baseline;gap:4px}
+.r-hero3 b{font-family:"Press Start 2P",monospace;font-weight:400;font-size:24px;color:var(--ink)}
+.r-hero3 em{font-style:normal;font-family:var(--f-disp);font-size:14px}
+.r-strip{display:flex;align-self:center;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:var(--win)}
+.r-strip div{display:flex;align-items:center;gap:8px;padding:8px 16px}
+.r-strip div+div{border-left:2px solid var(--ink)}
+.r-strip span{font-family:"Press Start 2P",monospace;font-size:9px;color:var(--muted)}
+.r-strip b{font-family:"Press Start 2P",monospace;font-weight:400;font-size:12px}
+.ranks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rank-h{font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.06em;padding:9px 12px;background:var(--ink);color:#fff}
+.ranks .rank-list{max-height:170px;padding:4px 12px}
+.sp-result .row2{margin-top:14px}
+.sp-result .sp-name{justify-content:center}
+.r-strip b+span{font-family:var(--f-disp);font-size:13px;color:var(--ink);margin-left:-5px}
+@media (max-width:480px){.ranks{grid-template-columns:1fr}.r-hero3 b{font-size:16px}.r-hero3 span{font-size:8px}.r-hero3 em{font-size:11px}.r-strip div{padding:7px 10px}}
 .sp-stats.r-strip{position:static;border:2px solid var(--ink)!important;border-radius:99px!important;overflow:hidden;align-self:center}
 .rank-tabs button{font-family:"Press Start 2P",monospace!important;font-size:9px!important;padding:10px 0!important}
 .rank-list li b{font-family:"Press Start 2P",monospace!important;font-size:11px}
@@ -351,17 +385,20 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
       </div>
       <div class="sp-result" id="spResult" hidden>
         <div class="r-head"><span class="r-go">GAME OVER</span><span class="r-stage" id="spRTitle">STAGE 1</span></div>
-        <div class="r-hero"><span>SCORE</span><b id="spRScore">0</b></div>
-        <div class="sp-stats r-strip">
-          <div class="c-speed"><span>AVG</span><b id="spRAvg">0</b></div>
-          <div class="c-goal"><span>ACC</span><b id="spRAcc">0%</b></div>
-          <div class="c-life"><span>CLEAR</span><b id="spROk">0</b></div>
+        <div class="r-hero3">
+          <div><span>BEST SPEED</span><p><b id="spRMax">0</b><em>타</em></p></div>
+          <div><span>AVG SPEED</span><p><b id="spRAvg">0</b><em>타</em></p></div>
+          <div><span>SCORE</span><p><b id="spRScore">0</b><em>점</em></p></div>
         </div>
-        <div class="best" id="spRBest"></div>
+        <div class="r-strip">
+          <div><span>ACC</span><b id="spRAcc">0%</b></div>
+          <div><span>CLEAR</span><b id="spROk">0</b></div>
+        </div>
+        <div class="best" id="spRBest" hidden></div>
         <form class="sp-name" id="spNameForm" autocomplete="off"><input id="spName" maxlength="10" placeholder="이름" aria-label="이름"><button class="btn" type="submit" id="spSave">랭킹 등록</button></form>
-        <div class="rank">
-          <div class="rank-tabs" role="tablist"><button data-k="score" aria-selected="true">SCORE</button><button data-k="kpm">SPEED</button><button data-k="acc">ACC</button><button data-k="ok">COUNT</button></div>
-          <ol class="rank-list" id="rankList"></ol>
+        <div class="ranks">
+          <div class="rank"><div class="rank-h">SPEED RANK</div><ol class="rank-list" id="rankSpeed"></ol></div>
+          <div class="rank"><div class="rank-h">SCORE RANK</div><ol class="rank-list" id="rankScore"></ol></div>
         </div>
         <div class="row2"><button class="btn" id="spAgain">한 번 더</button><button class="btn ghost" id="spHome">처음으로</button></div>
       </div>
@@ -648,7 +685,7 @@ const LINES={
   combo:["콤보 장인","손가락에 불남","타자 학원 다니셨죠?"]
 };
 let mode=store.get("mcb-mode")==="speed"?"speed":"basic";
-const SENTS=["가는 말이 고와야 오는 말이 곱다.", "낮말은 새가 듣고 밤말은 쥐가 듣는다.", "천 리 길도 한 걸음부터.", "백지장도 맞들면 낫다.", "세 살 버릇 여든까지 간다.", "아니 땐 굴뚝에 연기 날까.", "소 잃고 외양간 고친다.", "등잔 밑이 어둡다.", "말 한마디로 천 냥 빚을 갚는다.", "고생 끝에 낙이 온다.", "빈 수레가 요란하다.", "하늘이 무너져도 솟아날 구멍이 있다.", "윗물이 맑아야 아랫물이 맑다.", "구슬이 서 말이라도 꿰어야 보배다.", "벼는 익을수록 고개를 숙인다.", "호랑이도 제 말 하면 온다.", "믿는 도끼에 발등 찍힌다.", "원숭이도 나무에서 떨어질 때가 있다.", "설거지를 끝내고 금세 잠이 들었다.", "며칠 뒤에 다시 봬요.", "웬일로 오늘은 일찍 일어났다.", "가방을 메고 도서관에 들렀다.", "오랜만에 친구와 떡볶이를 먹었다.", "희한하게도 비가 그치자 무지개가 떴다.", "곰곰이 생각해 보니 내가 틀렸다.", "어이없는 실수로 정답을 맞히지 못했다.", "훈민정음은 1446년에 반포되었다.", "세종대왕은 백성을 위해 훈민정음을 만들었다.", "웬만하면 오늘 안에 끝낼게요.", "내일 회의는 오전 열 시로 할게요.", "오늘 밤 별빛 아래서 너를 기다릴게", "멈추지 않을 거야 우린 이제 시작이야", "네 이름을 부르면 세상이 환해져", "달려가 끝이 보이지 않아도 괜찮아", "작은 불빛 하나로도 충분히 빛나", "너와 나 같은 꿈을 꾸는 밤", "창문 너머 쏟아지는 햇살처럼 웃어 줘", "비가 와도 우린 계속 춤을 출 거야", "멀리 있어도 마음은 늘 곁에 있어", "무대 위 조명이 켜지면 심장이 뛰어", "오늘의 나를 믿어 내일은 더 빛날 테니까", "한 걸음씩 다가가 너의 세상으로", "우리만의 노래를 크게 불러 봐", "시간이 멈춘 것처럼 이 순간을 기억해", "바람에 실려 온 너의 목소리", "두려워하지 마 내가 옆에 있잖아", "끝없는 여름밤 파도 소리처럼", "너라는 이름의 계절이 왔어", "수많은 별 중에 너를 찾았어", "다시 시작해도 괜찮아 넘어져도 괜찮아", "가랑비에 옷 젖는 줄 모른다.", "개구리 올챙이 적 생각 못 한다.", "고래 싸움에 새우 등 터진다.", "공든 탑이 무너지랴.", "꿩 먹고 알 먹는다.", "누워서 떡 먹기.", "돌다리도 두들겨 보고 건너라.", "되로 주고 말로 받는다.", "말이 씨가 된다.", "발 없는 말이 천 리 간다.", "배보다 배꼽이 더 크다.", "사공이 많으면 배가 산으로 간다.", "서당 개 삼 년이면 풍월을 읊는다.", "수박 겉 핥기.", "시작이 반이다.", "열 번 찍어 안 넘어가는 나무 없다.", "오르지 못할 나무는 쳐다보지도 마라.", "우물을 파도 한 우물을 파라.", "작은 고추가 더 맵다.", "제 눈에 안경.", "쥐구멍에도 볕 들 날 있다.", "콩 심은 데 콩 나고 팥 심은 데 팥 난다.", "하룻강아지 범 무서운 줄 모른다.", "급할수록 돌아가라.", "까마귀 날자 배 떨어진다.", "낫 놓고 기역 자도 모른다.", "도토리 키 재기.", "가는 날이 장날이다.", "티끌 모아 태산.", "우물 안 개구리.", "퇴근길 지하철에서 좋아하는 노래를 들었다.", "주말에는 늦잠을 자고 브런치를 먹을 거예요.", "오늘 회의는 생각보다 일찍 끝났다.", "택배가 도착했다는 문자를 받았다.", "비 오는 날에는 따뜻한 국물이 생각난다.", "새로 산 운동화를 신고 산책을 나갔다.", "커피 한 잔과 함께 하루를 시작한다.", "이번 주말에 친구 집에 들를게요.", "그 영화는 생각보다 훨씬 재미있었다.", "고양이가 창가에서 햇볕을 쬐고 있다.", "내일은 오늘보다 조금 더 일찍 일어나야지.", "시험이 끝나면 바다를 보러 갈 거야.", "엄마가 끓여 준 된장찌개가 제일 맛있다.", "눈이 오면 동네 아이들이 눈사람을 만든다.", "도서관에서 빌린 책을 반납하러 갔다.", "휴대폰 배터리가 금세 닳아 버렸다.", "강아지와 함께 공원을 한 바퀴 돌았다.", "편의점에서 삼각김밥 두 개를 샀다.", "오늘따라 하늘이 유난히 파랗다.", "가끔은 아무 생각 없이 쉬어도 괜찮다.", "한글날은 매년 10월 9일이다.", "한글의 기본 글자는 자음 14자와 모음 10자다.", "훈민정음은 백성을 가르치는 바른 소리라는 뜻이다."];
+const SENTS=["가는 말이 고와야 오는 말이 곱다.", "낮말은 새가 듣고 밤말은 쥐가 듣는다.", "천 리 길도 한 걸음부터.", "백지장도 맞들면 낫다.", "세 살 버릇 여든까지 간다.", "아니 땐 굴뚝에 연기 날까.", "소 잃고 외양간 고친다.", "등잔 밑이 어둡다.", "말 한마디로 천 냥 빚을 갚는다.", "고생 끝에 낙이 온다.", "빈 수레가 요란하다.", "하늘이 무너져도 솟아날 구멍이 있다.", "윗물이 맑아야 아랫물이 맑다.", "구슬이 서 말이라도 꿰어야 보배다.", "벼는 익을수록 고개를 숙인다.", "호랑이도 제 말 하면 온다.", "믿는 도끼에 발등 찍힌다.", "원숭이도 나무에서 떨어질 때가 있다.", "설거지를 끝내고 금세 잠이 들었다.", "며칠 뒤에 다시 봬요.", "웬일로 오늘은 일찍 일어났다.", "가방을 메고 도서관에 들렀다.", "오랜만에 친구와 떡볶이를 먹었다.", "희한하게도 비가 그치자 무지개가 떴다.", "곰곰이 생각해 보니 내가 틀렸다.", "어이없는 실수로 정답을 맞히지 못했다.", "훈민정음은 1446년에 반포되었다.", "세종대왕은 백성을 위해 훈민정음을 만들었다.", "웬만하면 오늘 안에 끝낼게요.", "내일 회의는 오전 열 시로 할게요.", "오늘 밤 별빛 아래서 너를 기다릴게", "멈추지 않을 거야 우린 이제 시작이야", "네 이름을 부르면 세상이 환해져", "달려가 끝이 보이지 않아도 괜찮아", "작은 불빛 하나로도 충분히 빛나", "너와 나 같은 꿈을 꾸는 밤", "창문 너머 쏟아지는 햇살처럼 웃어 줘", "비가 와도 우린 계속 춤을 출 거야", "멀리 있어도 마음은 늘 곁에 있어", "무대 위 조명이 켜지면 심장이 뛰어", "오늘의 나를 믿어 내일은 더 빛날 테니까", "한 걸음씩 다가가 너의 세상으로", "우리만의 노래를 크게 불러 봐", "시간이 멈춘 것처럼 이 순간을 기억해", "바람에 실려 온 너의 목소리", "두려워하지 마 내가 옆에 있잖아", "끝없는 여름밤 파도 소리처럼", "너라는 이름의 계절이 왔어", "수많은 별 중에 너를 찾았어", "다시 시작해도 괜찮아 넘어져도 괜찮아", "가랑비에 옷 젖는 줄 모른다.", "개구리 올챙이 적 생각 못 한다.", "고래 싸움에 새우 등 터진다.", "공든 탑이 무너지랴.", "꿩 먹고 알 먹는다.", "누워서 떡 먹기.", "돌다리도 두들겨 보고 건너라.", "되로 주고 말로 받는다.", "말이 씨가 된다.", "발 없는 말이 천 리 간다.", "배보다 배꼽이 더 크다.", "사공이 많으면 배가 산으로 간다.", "서당 개 삼 년이면 풍월을 읊는다.", "수박 겉 핥기.", "시작이 반이다.", "열 번 찍어 안 넘어가는 나무 없다.", "오르지 못할 나무는 쳐다보지도 마라.", "우물을 파도 한 우물을 파라.", "작은 고추가 더 맵다.", "제 눈에 안경.", "쥐구멍에도 볕 들 날 있다.", "콩 심은 데 콩 나고 팥 심은 데 팥 난다.", "하룻강아지 범 무서운 줄 모른다.", "급할수록 돌아가라.", "까마귀 날자 배 떨어진다.", "낫 놓고 기역 자도 모른다.", "도토리 키 재기.", "가는 날이 장날이다.", "티끌 모아 태산.", "우물 안 개구리.", "퇴근길 지하철에서 좋아하는 노래를 들었다.", "주말에는 늦잠을 자고 브런치를 먹을 거예요.", "오늘 회의는 생각보다 일찍 끝났다.", "택배가 도착했다는 문자를 받았다.", "비 오는 날에는 따뜻한 국물이 생각난다.", "새로 산 운동화를 신고 산책을 나갔다.", "커피 한 잔과 함께 하루를 시작한다.", "이번 주말에 친구 집에 들를게요.", "그 영화는 생각보다 훨씬 재미있었다.", "고양이가 창가에서 햇볕을 쬐고 있다.", "내일은 오늘보다 조금 더 일찍 일어나야지.", "시험이 끝나면 바다를 보러 갈 거야.", "엄마가 끓여 준 된장찌개가 제일 맛있다.", "눈이 오면 동네 아이들이 눈사람을 만든다.", "도서관에서 빌린 책을 반납하러 갔다.", "휴대폰 배터리가 금세 닳아 버렸다.", "강아지와 함께 공원을 한 바퀴 돌았다.", "편의점에서 삼각김밥 두 개를 샀다.", "오늘따라 하늘이 유난히 파랗다.", "가끔은 아무 생각 없이 쉬어도 괜찮다.", "한글날은 매년 10월 9일이다.", "한글의 기본 글자는 자음 14자와 모음 10자다.", "훈민정음은 백성을 가르치는 바른 소리라는 뜻이다.", "간장 공장 공장장은 강 공장장이고 된장 공장 공장장은 장 공장장이다.", "경찰청 철창살은 외철창살이냐 쌍철창살이냐.", "내가 그린 기린 그림은 잘 그린 기린 그림이다.", "저 콩깍지는 깐 콩깍지인가 안 깐 콩깍지인가.", "서울특별시 특허허가과 허가과장 허과장.", "앞집 팥죽은 붉은 팥 풋팥죽이고 뒷집 콩죽은 햇콩 단콩 콩죽.", "한영양장점 옆 한양양장점.", "작은 토끼 토끼통 옆에는 큰 토끼 토끼통이 있다.", "고려고 교복은 고급 교복이다.", "그는 금세 웬만한 일에는 놀라지 않게 되었다.", "며칠 동안 곰곰이 생각한 끝에 결정했다.", "희한한 일이 일어나서 어이가 없었다.", "오랜만에 설거지를 깨끗이 끝냈다.", "안 되는 건 안 돼요.", "조금 더 있다가 가도 돼요?", "이따가 만나서 얘기해요.", "내로라하는 선수들이 한자리에 모였다.", "결재 서류를 올리고 카드로 결제했다.", "가르치는 것과 가리키는 것은 다르다.", "문제의 정답을 정확히 맞혔다.", "넥타이를 매고 가방을 메고 출근했다.", "아이가 병이 나아서 다시 학교에 갔다.", "부모님께 안부 전화를 드렸다.", "날씨가 추우니 따뜻하게 입어요.", "왠지 오늘은 좋은 일이 생길 것 같다.", "시안 수정본은 내일 오전까지 보내 드릴게요.", "인쇄 감리는 다음 주 화요일 오후 두 시입니다.", "최종 파일은 공유 폴더에 올려 두었습니다.", "회의록 정리해서 메일로 공유해 주세요.", "이번 앨범 패키지는 투명 커버로 진행합니다.", "견적서 확인 부탁드립니다.", "마감이 코앞인데 아이디어가 떠오르지 않는다.", "오늘도 야근 없이 칼퇴하자.", "포스터 색감이 모니터와 인쇄본에서 다르게 보인다.", "샘플이 도착하면 바로 사진 찍어서 보내 드릴게요.", "점심 메뉴로 김치찌개 어때요?", "우와, 벌써 금요일이라니!", "이번 휴가에는 어디로 떠나 볼까?", "혹시 내일 시간 괜찮으세요?", "오늘 날씨 진짜 좋지 않아요?", "이게 정말 최선입니까?", "누가 내 우유를 마셨지?", "드디어 첫눈이 왔어요!", "지하철 2호선을 타고 세 정거장 가면 돼요.", "회의는 오후 3시 30분에 시작합니다.", "택배 송장 번호를 문자로 보내 드렸어요.", "하루 물 2리터 마시기, 오늘도 성공!", "마트에서 사과 3개와 우유 1개를 샀다.", "바람이 불어 나뭇잎이 우수수 떨어진다.", "새벽 공기가 차가워서 정신이 맑아졌다.", "바닷가 모래 위에 발자국이 길게 남았다.", "봄비가 내리자 꽃망울이 터졌다.", "한여름 매미 소리가 골목을 가득 채웠다.", "눈 덮인 산길을 천천히 걸었다.", "노을이 지는 강가에 앉아 하루를 돌아봤다.", "별이 쏟아질 것 같은 밤하늘이었다.", "아침 햇살이 커튼 사이로 스며들었다.", "가을 하늘은 높고 바람은 선선하다.", "비빔밥에는 고추장을 듬뿍 넣어야 맛있다.", "떡볶이 국물에 김말이를 찍어 먹었다.", "겨울에는 붕어빵과 호떡이 생각난다.", "삼겹살에는 역시 김치와 마늘이지.", "엄마표 김밥은 소풍날의 행복이었다.", "너의 눈빛 하나에 내 세상이 흔들려", "오늘 밤은 아무 걱정 없이 춤춰", "하늘 끝까지 날아오를 거야", "너와 나의 이야기는 이제 시작이야", "눈부신 이 순간을 영원히 기억할게", "멀어져도 우린 같은 하늘 아래 있어", "빗소리에 너의 이름을 불러 봐", "주인공은 바로 너야 고개를 들어", "뜨거운 여름처럼 우리도 타올라", "넘어져도 괜찮아 다시 일어나면 돼", "너에게 가는 길은 언제나 설레", "꿈꾸던 무대 위에 우리가 서 있어", "대한민국의 수도는 서울이다.", "태극기의 가운데에는 태극 문양이 있다.", "한라산은 제주도에 있는 산이다.", "독도는 대한민국 동쪽 끝에 있는 섬이다.", "한글은 1443년에 창제되었다.", "고구려, 백제, 신라를 삼국이라고 부른다.", "신라는 676년에 삼국 통일을 이루었다.", "고려는 918년에 왕건이 세운 나라다.", "조선은 1392년에 이성계가 세운 나라다.", "세종대왕은 조선의 제4대 왕이다.", "이순신 장군은 명량 해전에서 열세 척의 배로 승리했다.", "거북선은 임진왜란 때 활약한 조선의 전투선이다.", "임진왜란은 1592년에 일어났다.", "3·1 운동은 1919년에 일어났다.", "대한민국 임시 정부는 1919년 상하이에서 수립되었다.", "1945년 8월 15일, 우리나라는 광복을 맞았다.", "대한민국 정부는 1948년에 수립되었다.", "6·25 전쟁은 1950년에 일어났다.", "1988년 서울에서 하계 올림픽이 열렸다.", "2002년 한일 월드컵에서 대한민국은 4강에 올랐다.", "2018년 평창에서 동계 올림픽이 열렸다.", "장영실은 해시계와 물시계를 만든 조선의 과학자다.", "측우기는 세종 때 만들어진 비의 양을 재는 기구다.", "팔만대장경은 해인사에 보관되어 있다.", "경복궁은 조선 왕조의 으뜸 궁궐이었다.", "첨성대는 신라 시대에 세워진 천문 관측대로 알려져 있다.", "석굴암과 불국사는 1995년 유네스코 세계유산에 등재되었다.", "훈민정음 해례본은 유네스코 세계기록유산이다.", "광개토대왕은 고구려의 영토를 크게 넓혔다.", "을지문덕은 살수에서 수나라 군대를 크게 물리쳤다.", "강감찬 장군은 귀주에서 거란군을 물리쳤다.", "안중근 의사는 1909년 하얼빈에서 이토 히로부미를 저격했다.", "유관순 열사는 3·1 운동에 참여한 독립운동가다.", "김구 선생은 대한민국 임시 정부의 주석을 지냈다.", "정약용은 수원 화성을 지을 때 거중기를 활용했다.", "내일 아침 기온은 영하로 떨어져 출근길 빙판길에 주의가 필요합니다.", "연휴 첫날 고속도로는 귀성 차량으로 정체가 이어지고 있습니다.", "올여름 휴가철 해수욕장에 피서객이 몰렸습니다.", "봄꽃 축제를 찾은 시민들이 꽃길을 걸으며 휴일을 즐겼습니다.", "새 학기를 맞아 문구점마다 학생들로 붐볐습니다.", "한파 특보가 내려진 가운데 수도관 동파에 주의해야 합니다.", "오늘은 대체로 맑겠고 낮에는 다소 포근하겠습니다.", "태풍의 영향으로 남해안에 강한 비바람이 예상됩니다.", "추석을 앞두고 전통시장이 장을 보려는 사람들로 활기를 띠었습니다.", "첫눈이 내린 도심에서 시민들이 사진을 찍으며 즐거워했습니다.", "어린이날을 맞아 놀이공원이 가족 나들이객으로 붐볐습니다.", "장마가 시작되면서 우산 판매가 크게 늘었습니다.", "창밖에 내리는 비처럼 너의 목소리가 스며들어", "우리가 함께 걷던 그 길 위에 아직 노래가 남아 있어", "끝없이 펼쳐진 밤하늘 아래 너와 나 둘이서", "시간이 흘러도 변하지 않을 약속을 할게", "멈춰 있던 내 심장이 다시 뛰기 시작해", "모두가 잠든 밤 나 혼자 너를 그리고 있어", "빛나는 너의 내일을 내가 응원할게", "작은 용기 하나로 세상이 달라질 수 있어", "그대 웃음소리에 봄이 오는 것 같아요", "오늘이 마지막인 것처럼 크게 노래해"];
 const SP_N=5;let SP=null;
 const J2=new Set([9,10,11,14,15,16,19]),T2=new Set([3,5,6,9,10,11,12,13,14,15,18]);
 function keys(str){let n=0;for(const ch of str){const c=ch.charCodeAt(0);if(c>=0xAC00&&c<=0xD7A3){const s=c-0xAC00,jo=s%28,ju=((s/28)|0)%21;n+=1+(J2.has(ju)?2:1)+(jo?(T2.has(jo)?2:1):0)}else n+=1}return n}
@@ -845,7 +882,15 @@ $("mBasic").onclick=()=>setMode("basic");$("mSpeed").onclick=()=>setMode("speed"
 function begin(){mode==="speed"?startSpeed():start()}
 const SP_LIVES=5;
 const spTarget=st=>120+(st-1)*40;
-function spDeck(){if(!SP.bag||SP.bag.length<SP_N){const p=SENTS.slice();for(let i=p.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[p[i],p[j]]=[p[j],p[i]]}SP.bag=p}return SP.bag.splice(0,SP_N)}
+const SP_BANDS=[[0,13],[0,18],[10,24],[14,30],[18,99]];
+function spDeck(){
+  if(!SP.used)SP.used=new Set();
+  const [lo,hi]=SP_BANDS[Math.min(SP.stage,SP_BANDS.length)-1],len=x=>x.replace(/ /g,"").length;
+  let pool=SENTS.filter(x=>!SP.used.has(x)&&len(x)>=lo&&len(x)<=hi);
+  if(pool.length<SP_N)pool=SENTS.filter(x=>!SP.used.has(x));
+  if(pool.length<SP_N){SP.used.clear();pool=SENTS.slice()}
+  for(let i=pool.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[pool[i],pool[j]]=[pool[j],pool[i]]}
+  const out=pool.slice(0,SP_N);out.forEach(x=>SP.used.add(x));return out}
 function spMsg(big,small,bad,ms=1100){const m=$("spMsg");m.innerHTML=esc(big)+(small?`<small>${esc(small)}</small>`:"");m.classList.toggle("bad",!!bad);m.classList.add("show");clearTimeout(spMsg.t);spMsg.t=setTimeout(()=>m.classList.remove("show"),ms)}
 function startSpeed(){
   if(S){S.running=false}cancelAnimationFrame(raf);
@@ -908,23 +953,22 @@ $("spInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.isComposing||
 $("spForm").addEventListener("submit",e=>{e.preventDefault();setTimeout(spSubmit,0)});
 const RK="mcb-rank-speed";
 function rkLoad(){try{return JSON.parse(store.get(RK)||"[]")}catch(e){return[]}}
-let rkTab="score",rkMine=null;
+let rkMine=null;
 function rkRender(){
-  const list=rkLoad().slice().sort((a,b)=>b[rkTab]-a[rkTab]||b.score-a.score).slice(0,10);
-  const fmt=r=>rkTab==="acc"?r.acc+"%":rkTab==="kpm"?r.kpm.toLocaleString()+"타":rkTab==="ok"?r.ok+"문장":r.score.toLocaleString();
-  $("rankList").innerHTML=list.length?list.map(r=>`<li class="${r.id===rkMine?"me":""}">${esc(r.name)} <em>STAGE ${r.stage}</em><b>${fmt(r)}</b></li>`).join(""):`<li class="empty">아직 기록이 없어요</li>`;
-  document.querySelectorAll(".rank-tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.k===rkTab));
+  const all=rkLoad();
+  const one=(k,fmt)=>{const l=all.slice().sort((a,b)=>b[k]-a[k]).slice(0,10);return l.length?l.map(r=>`<li class="${r.id===rkMine?"me":""}">${esc(r.name)} <em>ST.${r.stage}</em><b>${fmt(r)}</b></li>`).join(""):`<li class="empty">아직 기록이 없어요</li>`};
+  $("rankSpeed").innerHTML=one("kpm",r=>r.kpm.toLocaleString()+"타");
+  $("rankScore").innerHTML=one("score",r=>r.score.toLocaleString());
 }
-document.querySelectorAll(".rank-tabs button").forEach(b=>b.onclick=()=>{rkTab=b.dataset.k;rkRender()});
-function spEnd(){
+function spEnd(){clearTimeout(spMsg.t);$("spMsg").classList.remove("show");
   const avg=SP.res.length?Math.round(SP.res.reduce((a,b)=>a+b,0)/SP.res.length):0,acc=SP.cAll?Math.round(SP.cOk/SP.cAll*100):0;
   const score=Math.round(SP.pts*acc/100);
   SP.final={score,kpm:avg,acc,ok:SP.ok,stage:SP.stage};
   const best=+(store.get("mcb-best-speedst")||0),rec=SP.stage>best;if(rec)store.set("mcb-best-speedst",SP.stage);
-  $("spRScore").textContent=score.toLocaleString();$("spRAvg").textContent=avg.toLocaleString();$("spRAvg").textContent=avg;$("spRAcc").textContent=acc+"%";$("spROk").textContent=SP.ok;
+  $("spRScore").textContent=score.toLocaleString();$("spRAvg").textContent=avg.toLocaleString();$("spRAvg").textContent=avg;$("spRMax").textContent=SP.res.length?Math.max(...SP.res):0;$("spRAcc").textContent=acc+"%";$("spROk").textContent=SP.ok;
   $("spRTitle").textContent="STAGE "+SP.stage;
   $("spRBest").textContent=rec?"새 최고 기록!":`최고 기록 STAGE ${best}`;
-  $("spName").value=store.get("mcb-name")||"";$("spNameForm").classList.remove("saved");rkMine=null;rkTab="score";rkRender();
+  $("spName").value=store.get("mcb-name")||"";$("spNameForm").classList.remove("saved");rkMine=null;rkRender();
   $("spPlay").hidden=true;$("spResult").hidden=false;$("spInput").blur();
 }
 $("spNameForm").addEventListener("submit",e=>{e.preventDefault();if(!SP||!SP.final||rkMine)return;
