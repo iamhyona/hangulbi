@@ -33,6 +33,12 @@ body{background:#e4eeec;color:var(--ink);font-family:var(--f-body);overflow:hidd
 .stat b{font-size:16px;color:var(--ink)}
 .stat b#sScore{min-width:3ch;text-align:right}
 .stat{font-family:var(--f-disp);font-size:16px;font-variant-numeric:tabular-nums}.stat b{font-weight:400;margin-left:4px}
+.win>.tbar{background:var(--ink);border-bottom-color:var(--ink)}
+.win>.tbar .gname{color:#fff}
+.win>.tbar .gsub{color:#8fa7a4}
+.win>.tbar .ibtn{background:var(--gold);border-color:var(--gold);box-shadow:none}
+.win>.tbar .ibtn:hover{filter:brightness(1.08)}
+.win>.tbar .stat{border-color:#fff;box-shadow:none}
 .gname{font-weight:400;text-shadow:1px 0 0 currentColor;letter-spacing:.02em}
 .gsub{font-family:var(--f-disp);font-size:12px;color:var(--muted);margin-left:4px;-webkit-font-smoothing:none}
 .ibtn{width:30px;height:30px;border-radius:7px;border:2px solid var(--ink);background:var(--win);display:grid;place-items:center;cursor:pointer;color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
@@ -189,8 +195,8 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .modes[data-m="speed"]::before{transform:translateX(100%)}
 .modes .mode{position:relative;z-index:1;border:0;border-radius:99px;background:transparent;padding:10px 6px;color:var(--ink);transition:color .2s}
 .modes .mode[aria-checked="true"]{color:#fff}
-.win.speedmode .stage,.win.speedmode .dict,.win.speedmode .stat,.win.speedmode #pauseBtn{display:none}
-.speed{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:32px 24px;background:var(--paper);overflow:auto}
+.win.speedmode .stage,.win.speedmode .dict,.win.speedmode .stat{display:none}
+.speed{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:32px 24px;background:linear-gradient(#e3f5f2,#c6e9e4);overflow:auto}
 .sp-wrap{width:100%;max-width:640px}
 .sp-play{display:flex;flex-direction:column;align-items:center;gap:22px}
 .sp-dots{display:flex;gap:8px}
@@ -220,7 +226,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sp-stats b.lives{min-width:0;display:flex;gap:3px;align-self:center}
 .sp-stats b.lives i{width:9px;height:9px;background:var(--red);border:1.5px solid var(--ink);border-radius:1px}
 .sp-stats b.lives i.off{background:transparent;border-color:#b9c7c5}
-.sp-msg{position:absolute;left:0;right:0;top:22%;text-align:center;z-index:5;pointer-events:none;opacity:0;transition:opacity .25s;font-family:var(--f-disp);font-size:32px;color:var(--gold);-webkit-text-stroke:6px var(--ink);paint-order:stroke fill;text-shadow:4px 4px 0 var(--ink);-webkit-font-smoothing:none}
+.sp-msg{position:absolute;left:0;right:0;top:9%;text-align:center;z-index:5;pointer-events:none;opacity:0;transition:opacity .25s;font-family:var(--f-disp);font-size:32px;color:var(--gold);-webkit-text-stroke:6px var(--ink);paint-order:stroke fill;text-shadow:4px 4px 0 var(--ink);-webkit-font-smoothing:none}
 .sp-msg small{display:block;font-size:16px;color:#fff;-webkit-text-stroke:4px var(--ink);margin-top:6px;text-shadow:2px 2px 0 var(--ink)}
 .sp-msg.show{opacity:1}
 .sp-msg.bad{color:var(--red)}
@@ -621,7 +627,7 @@ const LINES={
   combo:["콤보 장인","손가락에 불남","타자 학원 다니셨죠?"]
 };
 let mode=store.get("mcb-mode")==="speed"?"speed":"basic";
-const SENTS=["가는 말이 고와야 오는 말이 곱다.","낮말은 새가 듣고 밤말은 쥐가 듣는다.","천 리 길도 한 걸음부터.","백지장도 맞들면 낫다.","세 살 버릇 여든까지 간다.","아니 땐 굴뚝에 연기 날까.","소 잃고 외양간 고친다.","등잔 밑이 어둡다.","말 한마디로 천 냥 빚을 갚는다.","고생 끝에 낙이 온다.","빈 수레가 요란하다.","하늘이 무너져도 솟아날 구멍이 있다.","윗물이 맑아야 아랫물이 맑다.","구슬이 서 말이라도 꿰어야 보배다.","벼는 익을수록 고개를 숙인다.","호랑이도 제 말 하면 온다.","믿는 도끼에 발등 찍힌다.","원숭이도 나무에서 떨어질 때가 있다.","설거지를 끝내고 금세 잠이 들었다.","며칠 뒤에 다시 봬요.","웬일로 오늘은 일찍 일어났다.","가방을 메고 도서관에 들렀다.","오랜만에 친구와 떡볶이를 먹었다.","희한하게도 비가 그치자 무지개가 떴다.","곰곰이 생각해 보니 내가 틀렸다.","어이없는 실수로 정답을 맞히지 못했다.","훈민정음은 1446년에 반포되었다.","세종대왕은 백성을 위해 훈민정음을 만들었다.","웬만하면 오늘 안에 끝낼게요.","내일 회의는 오전 열 시로 할게요."];
+const SENTS=["가는 말이 고와야 오는 말이 곱다.", "낮말은 새가 듣고 밤말은 쥐가 듣는다.", "천 리 길도 한 걸음부터.", "백지장도 맞들면 낫다.", "세 살 버릇 여든까지 간다.", "아니 땐 굴뚝에 연기 날까.", "소 잃고 외양간 고친다.", "등잔 밑이 어둡다.", "말 한마디로 천 냥 빚을 갚는다.", "고생 끝에 낙이 온다.", "빈 수레가 요란하다.", "하늘이 무너져도 솟아날 구멍이 있다.", "윗물이 맑아야 아랫물이 맑다.", "구슬이 서 말이라도 꿰어야 보배다.", "벼는 익을수록 고개를 숙인다.", "호랑이도 제 말 하면 온다.", "믿는 도끼에 발등 찍힌다.", "원숭이도 나무에서 떨어질 때가 있다.", "설거지를 끝내고 금세 잠이 들었다.", "며칠 뒤에 다시 봬요.", "웬일로 오늘은 일찍 일어났다.", "가방을 메고 도서관에 들렀다.", "오랜만에 친구와 떡볶이를 먹었다.", "희한하게도 비가 그치자 무지개가 떴다.", "곰곰이 생각해 보니 내가 틀렸다.", "어이없는 실수로 정답을 맞히지 못했다.", "훈민정음은 1446년에 반포되었다.", "세종대왕은 백성을 위해 훈민정음을 만들었다.", "웬만하면 오늘 안에 끝낼게요.", "내일 회의는 오전 열 시로 할게요.", "오늘 밤 별빛 아래서 너를 기다릴게", "멈추지 않을 거야 우린 이제 시작이야", "네 이름을 부르면 세상이 환해져", "달려가 끝이 보이지 않아도 괜찮아", "작은 불빛 하나로도 충분히 빛나", "너와 나 같은 꿈을 꾸는 밤", "창문 너머 쏟아지는 햇살처럼 웃어 줘", "비가 와도 우린 계속 춤을 출 거야", "멀리 있어도 마음은 늘 곁에 있어", "무대 위 조명이 켜지면 심장이 뛰어", "오늘의 나를 믿어 내일은 더 빛날 테니까", "한 걸음씩 다가가 너의 세상으로", "우리만의 노래를 크게 불러 봐", "시간이 멈춘 것처럼 이 순간을 기억해", "바람에 실려 온 너의 목소리", "두려워하지 마 내가 옆에 있잖아", "끝없는 여름밤 파도 소리처럼", "너라는 이름의 계절이 왔어", "수많은 별 중에 너를 찾았어", "다시 시작해도 괜찮아 넘어져도 괜찮아", "가랑비에 옷 젖는 줄 모른다.", "개구리 올챙이 적 생각 못 한다.", "고래 싸움에 새우 등 터진다.", "공든 탑이 무너지랴.", "꿩 먹고 알 먹는다.", "누워서 떡 먹기.", "돌다리도 두들겨 보고 건너라.", "되로 주고 말로 받는다.", "말이 씨가 된다.", "발 없는 말이 천 리 간다.", "배보다 배꼽이 더 크다.", "사공이 많으면 배가 산으로 간다.", "서당 개 삼 년이면 풍월을 읊는다.", "수박 겉 핥기.", "시작이 반이다.", "열 번 찍어 안 넘어가는 나무 없다.", "오르지 못할 나무는 쳐다보지도 마라.", "우물을 파도 한 우물을 파라.", "작은 고추가 더 맵다.", "제 눈에 안경.", "쥐구멍에도 볕 들 날 있다.", "콩 심은 데 콩 나고 팥 심은 데 팥 난다.", "하룻강아지 범 무서운 줄 모른다.", "급할수록 돌아가라.", "까마귀 날자 배 떨어진다.", "낫 놓고 기역 자도 모른다.", "도토리 키 재기.", "가는 날이 장날이다.", "티끌 모아 태산.", "우물 안 개구리.", "퇴근길 지하철에서 좋아하는 노래를 들었다.", "주말에는 늦잠을 자고 브런치를 먹을 거예요.", "오늘 회의는 생각보다 일찍 끝났다.", "택배가 도착했다는 문자를 받았다.", "비 오는 날에는 따뜻한 국물이 생각난다.", "새로 산 운동화를 신고 산책을 나갔다.", "커피 한 잔과 함께 하루를 시작한다.", "이번 주말에 친구 집에 들를게요.", "그 영화는 생각보다 훨씬 재미있었다.", "고양이가 창가에서 햇볕을 쬐고 있다.", "내일은 오늘보다 조금 더 일찍 일어나야지.", "시험이 끝나면 바다를 보러 갈 거야.", "엄마가 끓여 준 된장찌개가 제일 맛있다.", "눈이 오면 동네 아이들이 눈사람을 만든다.", "도서관에서 빌린 책을 반납하러 갔다.", "휴대폰 배터리가 금세 닳아 버렸다.", "강아지와 함께 공원을 한 바퀴 돌았다.", "편의점에서 삼각김밥 두 개를 샀다.", "오늘따라 하늘이 유난히 파랗다.", "가끔은 아무 생각 없이 쉬어도 괜찮다.", "한글날은 매년 10월 9일이다.", "한글의 기본 글자는 자음 14자와 모음 10자다.", "훈민정음은 백성을 가르치는 바른 소리라는 뜻이다."];
 const SP_N=5;let SP=null;
 const J2=new Set([9,10,11,14,15,16,19]),T2=new Set([3,5,6,9,10,11,12,13,14,15,18]);
 function keys(str){let n=0;for(const ch of str){const c=ch.charCodeAt(0);if(c>=0xAC00&&c<=0xD7A3){const s=c-0xAC00,jo=s%28,ju=((s/28)|0)%21;n+=1+(J2.has(ju)?2:1)+(jo?(T2.has(jo)?2:1):0)}else n+=1}return n}
@@ -788,7 +794,14 @@ function start(){
   input.value="";input.focus();banner("STAGE 1",theme(1).n,1500);
   cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
 }
-function pause(on){if(!S||!S.running)return;S.paused=on;stage.classList.toggle("paused",on);$("pauseOv").hidden=!on;if(!on){last=0;input.focus()}}
+function pause(on){
+  if(document.querySelector(".win").classList.contains("speedmode")){
+    if(!SP||!$("spResult").hidden)return;
+    if(on&&!SP.paused){SP.paused=true;SP.pausedAt=performance.now()}
+    else if(!on&&SP.paused){SP.paused=false;SP.t0+=performance.now()-SP.pausedAt;$("spInput").focus()}
+    $("pauseOv").hidden=!SP.paused;return;
+  }
+  if(!S||!S.running)return;S.paused=on;stage.classList.toggle("paused",on);$("pauseOv").hidden=!on;if(!on){last=0;input.focus()}}
 function gameOver(){
   if(!S.running)return;S.running=false;cancelAnimationFrame(raf);
   const key="mcb-best-"+mode,best=+(store.get(key)||0),rec=S.score>best&&S.score>0;
@@ -811,13 +824,13 @@ $("mBasic").onclick=()=>setMode("basic");$("mSpeed").onclick=()=>setMode("speed"
 function begin(){mode==="speed"?startSpeed():start()}
 const SP_LIVES=5;
 const spTarget=st=>120+(st-1)*40;
-function spDeck(){const p=SENTS.slice();for(let i=p.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[p[i],p[j]]=[p[j],p[i]]}return p.slice(0,SP_N)}
+function spDeck(){if(!SP.bag||SP.bag.length<SP_N){const p=SENTS.slice();for(let i=p.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[p[i],p[j]]=[p[j],p[i]]}SP.bag=p}return SP.bag.splice(0,SP_N)}
 function spMsg(big,small,bad,ms=1100){const m=$("spMsg");m.innerHTML=esc(big)+(small?`<small>${esc(small)}</small>`:"");m.classList.toggle("bad",!!bad);m.classList.add("show");clearTimeout(spMsg.t);spMsg.t=setTimeout(()=>m.classList.remove("show"),ms)}
 function startSpeed(){
   if(S){S.running=false}cancelAnimationFrame(raf);
   ["startOv","overOv","pauseOv","clearOv"].forEach(id=>$(id).hidden=true);
   document.querySelector(".win").classList.add("speedmode");$("speed").hidden=false;$("spResult").hidden=true;$("spPlay").hidden=false;
-  SP={stage:1,list:spDeck(),i:0,lives:SP_LIVES,res:[],ok:0,busy:false,cOk:0,cAll:0,pts:0};
+  SP={stage:1,bag:null,i:0,lives:SP_LIVES,res:[],ok:0,busy:false,cOk:0,cAll:0,pts:0,paused:false};SP.list=spDeck();
   spMsg("STAGE 1","목표 "+spTarget(1)+"타",false,1400);spShow();
 }
 function spHud(){
@@ -838,9 +851,9 @@ function spPaint(){
   for(let i=0;i<els.length;i++){const e=els[i];e.className=i<v.length-1?(v[i]===t[i]?"ok":"bad"):i===v.length-1?(v[i]===t[i]?"ok":""):i===v.length?"cur":""}
 }
 function spTick(){
-  if(!SP||SP.busy||$("speed").hidden||!$("spResult").hidden)return;
+  if(!SP||SP.busy||SP.paused||$("speed").hidden||!$("spResult").hidden)return;
   const el=performance.now()-SP.t0,left=Math.max(0,1-el/SP.limit);
-  $("spTimer").style.transform=`scaleX(${left})`;$("spTimer").parentElement.classList.toggle("low",left<.25);
+  const tb=$("spTimer");tb.style.transform=`scaleX(${left})`;tb.style.background=left>.6?"#3cc47c":left>.35?"#ffd23f":left>.15?"#ff9a3c":"#ff5a4e";
   const v=$("spInput").value;$("spKpm").textContent=v?Math.round(keys(v)/Math.max(1000,el)*60000):0;
   if(left<=0)spFail("시간 초과");
 }
@@ -902,7 +915,7 @@ $("startBtn").onclick=begin;$("againBtn").onclick=start;
 $("homeBtn").onclick=goHome;
 function goHome(){if(S)S.running=false;cancelAnimationFrame(raf);SP=null;document.querySelector(".win").classList.remove("speedmode");$("speed").hidden=true;["overOv","pauseOv","clearOv"].forEach(id=>$(id).hidden=true);$("startOv").hidden=false;reset();setMode(mode);input.blur()}
 $("homeTop").onclick=goHome;$("nextBtn").onclick=nextStage;$("restartTop").onclick=()=>{document.querySelector(".win").classList.contains("speedmode")?startSpeed():start()};
-$("pauseBtn").onclick=()=>pause(!(S&&S.paused));$("resumeBtn").onclick=()=>pause(false);$("quitBtn").onclick=gameOver;
+$("pauseBtn").onclick=()=>{const sm=document.querySelector(".win").classList.contains("speedmode");pause(sm?!(SP&&SP.paused):!(S&&S.paused))};$("resumeBtn").onclick=()=>pause(false);$("quitBtn").onclick=()=>{if(document.querySelector(".win").classList.contains("speedmode")&&SP){SP.paused=false;$("pauseOv").hidden=true;spEnd()}else gameOver()};
 document.addEventListener("visibilitychange",()=>{if(document.hidden)pause(true)});
 reset();setMode(mode);
 </script>
