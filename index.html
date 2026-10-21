@@ -199,11 +199,11 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .speed{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:32px 24px;background:#f4f5f5;overflow:auto}
 .sp-wrap{width:100%;max-width:640px}
 .sp-play{display:flex;flex-direction:column;align-items:center;gap:22px}
-.sp-dots{display:flex;gap:8px}
+.sp-dots{display:flex;gap:4px}
 .sp-dots i{width:22px;height:10px;border:2px solid var(--ink);border-radius:2px;background:var(--win)}
-.sp-dots i.done{background:var(--ink)}
-.sp-dots i.now{background:var(--gold)}
-.sp-sent{width:100%;text-align:center;font-family:var(--f-type);font-size:32px;line-height:1.5;word-break:keep-all;-webkit-font-smoothing:none;min-height:1.5em}
+.sp-dots i.done{background:var(--gold)}
+.sp-dots i.now{background:#fff1b8}
+.sp-sent{white-space:pre-wrap;width:100%;text-align:center;font-family:var(--f-type);font-size:32px;line-height:1.5;word-break:keep-all;-webkit-font-smoothing:none;min-height:1.5em}
 .sp-sent i{font-style:normal;color:#9aa9a7}
 .sp-sent i.ok{color:var(--ink)}
 .sp-sent i.bad{color:#fff;background:var(--red);border-radius:2px}
@@ -220,7 +220,9 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sp-stats span{font-size:12px;color:var(--muted)}
 .sp-stats b{font-family:var(--f-disp);font-weight:400;font-size:16px;min-width:2.5ch;text-align:right;-webkit-font-smoothing:none}
 .speed{position:relative}
-.sp-stats{font-family:"Press Start 2P",var(--f-mono),monospace}
+.sp-stats{font-family:"Press Start 2P",var(--f-mono),monospace;position:absolute;left:0;right:0;bottom:0;border:0!important;border-top:2px solid var(--ink)!important;border-radius:0!important;z-index:3}
+.sp-stats div{flex:1;justify-content:center}
+.speed{padding-bottom:72px!important;padding-top:40px!important}
 .sp-stats div{align-items:center;gap:8px;padding:9px 14px}
 .sp-stats span{font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.04em;color:inherit;opacity:.75}
 .sp-stats b{font-family:"Press Start 2P",monospace;font-size:12px;min-width:3ch}
@@ -228,7 +230,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sp-stats .c-goal{background:var(--gold);color:var(--ink)}
 .sp-stats .c-speed{background:#7fcfc9;color:var(--ink)}
 .sp-stats .c-life{background:#ffe1dc;color:var(--ink)}
-.sp-timer{width:100%;height:10px;border:2px solid var(--ink);border-radius:99px;background:var(--win);overflow:hidden;margin-top:-8px}
+.sp-timer{position:absolute;left:0;right:0;top:0;height:8px;border-bottom:2px solid var(--ink);background:rgba(255,255,255,.6);overflow:hidden;z-index:3}
 .sp-timer i{display:block;height:100%;width:100%;background:var(--gold);transform-origin:left}
 .sp-timer.low i{background:var(--red)}
 .sp-stats b.lives{min-width:0;display:flex;gap:3px;align-self:center}
@@ -849,7 +851,7 @@ function spShow(){
   const t=SP.list[SP.i];
   $("spDots").innerHTML=Array.from({length:SP_N},(_,k)=>`<i class="${k<SP.i?"done":k===SP.i?"now":""}"></i>`).join("");
   $("spNext").textContent=SP.list[SP.i+1]||"";
-  $("spSent").innerHTML=[...t].map(c=>`<i>${c===" "?"&nbsp;":esc(c)}</i>`).join("");
+  $("spSent").innerHTML=[...t].map(c=>`<i>${esc(c)}</i>`).join("");
   const inp=$("spInput");inp.value="";inp.disabled=false;$("spPlay").hidden=false;inp.focus();
   SP.t0=performance.now();SP.limit=Math.max(4000,keys(t)/spTarget(SP.stage)*60000)+1500;SP.busy=false;
   spPaint();spHud();$("spKpm").textContent="0";
