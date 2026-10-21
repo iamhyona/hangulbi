@@ -24,7 +24,8 @@
 html,body{height:100%}
 body{background:#e4eeec;color:var(--ink);font-family:var(--f-body);overflow:hidden}
 .app{height:100%;max-width:820px;margin:0 auto;display:flex;flex-direction:column;
-  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));padding-block:10px 12px}
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));padding-block:28px 32px}
+@media (max-width:480px){.app{padding-block:12px 16px}}
 .win{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--win);border:2.5px solid var(--ink);border-radius:10px;box-shadow:4px 4px 0 var(--ink);overflow:hidden}
 .tbar{display:flex;align-items:center;gap:7px;padding:7px 10px;border-bottom:2.5px solid var(--ink);background:var(--win)}
 .tbar .ttl{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--f-disp);font-size:16px}
