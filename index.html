@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0c1a1c">
+<meta name="theme-color" content="#0e0f14">
 <meta name="apple-mobile-web-app-title" content="한글비">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>한글비타자게임</title>
@@ -335,12 +335,125 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}}
 </style>
 <style>html,body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box;height:100%}</style>
-<script>/* 카톡 등 인앱 브라우저: 실제 보이는 높이로 화면 맞춤 */(function(){var d=document.documentElement;function f(){d.style.setProperty('--app-h',window.innerHeight+'px')}f();addEventListener('resize',f);addEventListener('orientationchange',function(){setTimeout(f,300)});addEventListener('pageshow',f);setTimeout(f,250);setTimeout(f,1000)})();</script>
+<script>/* 실제 보이는 높이로 화면 맞춤 — 모바일 키보드가 올라오면 그만큼 줄여서 입력칸이 안 가려지게 */(function(){var d=document.documentElement,v=window.visualViewport;function f(){var h=v?v.height:window.innerHeight;d.style.setProperty('--app-h',Math.round(h)+'px');d.classList.toggle('kb',!!v&&window.innerHeight-h>120);if(v&&v.offsetTop)window.scrollTo(0,0)}f();addEventListener('resize',f);if(v){v.addEventListener('resize',f);v.addEventListener('scroll',f)}addEventListener('orientationchange',function(){setTimeout(f,300)});addEventListener('pageshow',f);setTimeout(f,250);setTimeout(f,1000)})();</script>
 <style>html,body{height:var(--app-h,100%)!important}</style>
+<style>
+/* ===== 다른 게임들과 같은 톤: 어두운 화면 · 픽셀 글씨 · 금색 버튼 ===== */
+:root{--ink:#eceef8;--win:#1a1c26;--paper:#141620;--muted:#8f93ad;--line:#363743;--line2:#2a2c3a;--bg0:#0e0f14;--gold:#f2b000;color-scheme:dark}
+html,body{background:var(--bg0)!important}
+body{color:var(--ink)}
+.app{padding-block:4px 14px;max-width:760px}
+@media (max-width:480px){.app{padding-block:2px 10px;padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}}
+/* 맨 위 무지개 줄 + 크레딧 (앱 모드에선 ◀ GAMES) */
+.lcd-label{display:flex;align-items:center;gap:8px;padding:11px 4px 9px;white-space:nowrap;overflow:hidden;box-sizing:border-box;width:100%;flex-shrink:0}
+.lcd-label .ln{flex:1 1 0;min-width:0;height:7px;background:linear-gradient(90deg,#e8284f 0 14.28%,#f26a0d 14.28% 28.57%,#f2b000 28.57% 42.85%,#10b870 42.85% 57.14%,#00a8e0 57.14% 71.42%,#2a5ef0 71.42% 85.71%,#8a3cf0 85.71% 100%);-webkit-mask-image:repeating-linear-gradient(90deg,#000 0 3px,transparent 3px 4px),repeating-linear-gradient(0deg,#000 0 3px,transparent 3px 4px);-webkit-mask-composite:source-in;mask-image:repeating-linear-gradient(90deg,#000 0 3px,transparent 3px 4px),repeating-linear-gradient(0deg,#000 0 3px,transparent 3px 4px);mask-composite:intersect}
+.lcd-label .ln:last-child{transform:scaleX(-1)}
+.lcd-label .copy{flex:0 0 auto;font-family:"Press Start 2P",monospace;font-size:8px;letter-spacing:1px;color:#b4b4cc;line-height:1}
+/* 창 */
+.win{background:#13141b;border:2px solid var(--line);border-radius:16px;box-shadow:none}
+.win>.tbar{background:#101118;border-bottom:2px solid var(--line2);padding:8px 10px}
+.win>.tbar .gname{color:#fff}.win>.tbar .gsub{color:#6f7390}
+.stat,.win>.tbar .stat{background:#1a1c26;border:2px solid var(--line);box-shadow:none;color:#c9cbe0;border-radius:9px}
+.stat b{color:#fff}
+.ibtn,.win>.tbar .ibtn{background:#1a1c26;border:2px solid var(--line);color:#e9ebf5;box-shadow:none;border-radius:9px}
+.ibtn:active{transform:scale(.94)}
+/* 무대: 밤하늘 톤 */
+.stage{--sea:#203a6e;--sea2:#0e1a38;--wtext:#fff;--wshadow:2px 2px 0 rgba(0,0,0,.55)}
+.stage[data-bg="1"]{--sea:#5b2c55;--sea2:#24122e}
+.stage[data-bg="2"]{--sea:#3a2e78;--sea2:#17123d}
+.stage[data-bg="3"]{--sea:#101a3c;--sea2:#060a1c}
+.stage[data-bg="4"]{--sea:#1c4a52;--sea2:#0b2226}
+.stage[data-bg="1"] .sun{background:#ffb35c;box-shadow:0 0 30px rgba(255,170,80,.35)}
+.prog{background:rgba(255,255,255,.08);border-bottom:0}
+.prog i{background:var(--gold);border-right:0}
+.bricks i{border-color:#0a0b10}
+.chunk{border-color:#0a0b10}
+.w.bonus{color:var(--gold);text-shadow:2px 2px 0 #000}
+.w.big{border-color:#0a0b10;box-shadow:none}
+.boom{color:#111;border-color:#0a0b10;box-shadow:none}
+.bubble{background:#1a1c26;border-color:var(--line);color:#eceef8;box-shadow:none}
+.banner span{-webkit-text-stroke:6px #0a0b10;text-shadow:4px 4px 0 #0a0b10}
+.banner small{-webkit-text-stroke:4px #0a0b10;text-shadow:2px 2px 0 #0a0b10}
+.icebar{background:#1a2a36;border-color:var(--line);box-shadow:none}
+.icebar .gauge{border-color:var(--line);background:#0e0f14}
+.stage.frozen .w{background:#1d3442;border:2px solid #8fd0ec;outline:0;color:#e3f6ff;text-shadow:none}
+/* 아래 입력부 */
+.dict{border-top:2px solid var(--line2);background:#101118}
+.define p{color:#d6d8e8}.define p.hint0{color:#6f7390}
+#typing,#spInput,#spName,#oName{background:#0b0c11;border:2px solid #4a4d63;color:#fff;box-shadow:none}
+#typing:focus,#spInput:focus,#spName:focus,#oName:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,176,0,.18)}
+#typing::placeholder,#spInput::placeholder{color:#5d6180}
+.btn{background:var(--gold);border:2px solid var(--gold);color:#111;box-shadow:none;border-radius:10px}
+.btn:active{transform:scale(.97);box-shadow:none}
+.btn.ghost{background:transparent;border-color:#4a4d63;color:#e9ebf5}
+/* 창 띄우기 */
+.overlay{background:rgba(5,6,10,.72)}
+#startOv{background:var(--bg0)}
+.dlg{background:#13141b;border:2px solid var(--line);border-radius:16px;box-shadow:none}
+.dlg .tbar{background:#101118;border-bottom:2px solid var(--line2)}
+.dlg h1,.dlg h2{color:#fff}
+.dlg p{color:var(--muted)}
+.hb-logo{display:flex;justify-content:center;margin:2px auto 4px}
+.hb-logo svg{display:block;width:min(92%,330px);height:auto}
+#startOv h1{font-size:30px;margin-top:6px}
+.maker{color:var(--muted)}
+.modes{background:#0b0c11;border:2px solid var(--line)}
+.modes::before{background:var(--gold)}
+.modes .mode{color:#c9cbe0}
+.modes .mode[aria-checked="true"]{color:#111}
+.best{color:#c9cbe0}
+/* 빠르게치기 */
+.speed{background:#101118}
+.sp-sent i{color:#4f5372}.sp-sent i.ok{color:#fff}.sp-sent i.cur{color:#fff}
+.sp-dots i{border-color:#4a4d63;background:transparent}.sp-dots i.done{background:var(--gold);border-color:var(--gold)}.sp-dots i.now{background:#5a4a14;border-color:var(--gold)}
+.sp-next{color:#5d6180}.sp-next:not(:empty)::before{color:var(--muted)}
+.sp-timer{background:rgba(255,255,255,.06);border-bottom:0}
+.sp-stats{border-top:2px solid var(--line2)!important;background:#101118}
+.sp-stats .c-stage{background:#101118;color:#fff}.sp-stats .c-goal{background:var(--gold);color:#111}.sp-stats .c-speed{background:#3fc9b0;color:#0b1a18}.sp-stats .c-life{background:#2a1a20;color:#fff}
+.sp-stats b.lives i{border-color:#0a0b10}.sp-stats b.lives i.off{border-color:#4a4d63}
+.sp-msg{color:#111;border-color:#0a0b10;box-shadow:none}
+.sp-result{background:#13141b;border:2px solid var(--line);box-shadow:none;border-radius:16px}
+.sp-result .sec{border-top:2px dashed var(--line)}
+.r-head .r-go{color:#fff!important}
+.r-stage{background:#20222e;color:#fff}
+.r-hero3,.r-strip,.sp-stats.r-strip{background:#1a1c26;border-color:var(--line)!important}
+.r-hero3>div+div,.r-strip div+div{border-left-color:var(--line)}
+.r-hero3 b{color:#fff}.r-hero3 span,.r-strip span{color:var(--muted)}
+/* 결과·랭킹 */
+.sum>div{background:#1a1c26;border-color:var(--line);box-shadow:none}
+.sum b{color:#fff}
+.verdict{background:#1a1c26;border-color:var(--line);color:#eceef8}
+.list{border-color:var(--line)}.list .row{border-bottom-color:#262836}.list .row p{color:#c9cbe0}
+.rank{border:2px solid var(--line);border-radius:12px}
+.rank-h{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#1a1c26;color:#fff}
+.dvt{display:flex;gap:4px}
+.dvt button{font-family:"Press Start 2P",monospace;font-size:8px;letter-spacing:.04em;color:#8f93ad;background:transparent;border:1.5px solid #4a4d63;border-radius:6px;padding:4px 6px;cursor:pointer}
+.dvt button[aria-pressed="true"]{color:#111;background:var(--gold);border-color:var(--gold)}
+.rank-list li{border-bottom-color:#262836;color:#e3e5f2}
+.rank-list li.me{color:var(--gold)}
+.rank-list li::before{color:#6f7390}
+.rank-list li:nth-child(1)::before{color:var(--gold)}
+.rank-list li em{color:#6f7390}
+.rank-list .empty{color:#6f7390}
+.ltitle{color:var(--muted)}
+/* 모바일: 키보드가 올라와 있을 땐 위아래를 줄여서 떨어지는 단어 칸을 확보 */
+html.kb .lcd-label{display:none}
+html.kb .app{padding-block:4px 4px}
+html.kb .define{height:46px}
+html.kb .define p{font-size:14px}
+html.kb .define b{font-size:17px}
+html.kb .dict{padding:6px 10px 8px;gap:6px}
+html.kb #typing,html.kb .dict .btn{height:44px}
+html.kb .speed{padding-top:26px!important;padding-bottom:56px!important}
+html.kb .sp-play{gap:12px}
+html.kb .sp-stats div{padding:6px 8px}
+@media (max-width:480px){#startOv h1{font-size:24px}.dlg h2{font-size:24px}.rank-h{font-size:8px}}
+</style>
 </head>
 <body>
 
 <div class="app">
+ <div class="lcd-label"><i class="ln"></i><span class="copy">© 2026 PARK HYONA</span><i class="ln"></i></div>
  <div class="win">
   <div class="tbar">
     <span class="ttl"><b class="gname">한글비타자게임</b> <small class="gsub">(박현아가 심심해서 만든 게임)</small></span>
@@ -366,7 +479,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   <div class="dict">
     <div class="define" id="define"><p class="hint0">터뜨린 단어의 뜻이 여기에 나와요</p></div>
     <form id="form" autocomplete="off">
-      <input id="typing" type="text" enterkeyhint="done" autocapitalize="off" spellcheck="false" placeholder="여기에 입력" aria-label="낱말 입력">
+      <input id="typing" type="text" enterkeyhint="send" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" placeholder="여기에 입력" aria-label="낱말 입력">
       <button class="btn" type="submit">입력</button>
     </form>
   </div>
@@ -378,7 +491,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
         <div class="sp-sent" id="spSent"></div>
         <div class="sp-timer"><i id="spTimer"></i></div>
         <form id="spForm" autocomplete="off">
-          <input id="spInput" type="text" enterkeyhint="done" autocapitalize="off" spellcheck="false" placeholder="위 문장을 그대로 치고 스페이스바" aria-label="문장 입력">
+          <input id="spInput" type="text" enterkeyhint="send" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" placeholder="위 문장을 그대로 치고 스페이스바" aria-label="문장 입력">
         </form>
         <div class="sp-next" id="spNext"></div>
         <div class="sp-stats">
@@ -402,8 +515,8 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
         <div class="best" id="spRBest" hidden></div>
         <form class="sp-name sec" id="spNameForm" autocomplete="off"><input id="spName" maxlength="10" placeholder="이름" aria-label="이름"><button class="btn" type="submit" id="spSave">랭킹 등록</button></form>
         <div class="ranks sec">
-          <div class="rank"><div class="rank-h">SPEED RANK</div><ol class="rank-list" id="rankSpeed"></ol></div>
-          <div class="rank"><div class="rank-h">SCORE RANK</div><ol class="rank-list" id="rankScore"></ol></div>
+          <div class="rank"><div class="rank-h"><span>SPEED RANK</span><span class="dvt"><button type="button" data-dv="p">PC</button><button type="button" data-dv="m">MOBILE</button></span></div><ol class="rank-list" id="rankSpeed"></ol></div>
+          <div class="rank"><div class="rank-h"><span>SCORE RANK</span><span class="dvt"><button type="button" data-dv="p">PC</button><button type="button" data-dv="m">MOBILE</button></span></div><ol class="rank-list" id="rankScore"></ol></div>
         </div>
         <div class="row2 sec"><button class="btn" id="spAgain">한 번 더</button><button class="btn ghost" id="spHome">처음으로</button></div>
       </div>
@@ -416,6 +529,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
   <div class="dlg">
     <div class="tbar"><span class="ttl">PARKHYONA.EXE</span></div>
     <div class="body">
+      <div class="hb-logo phS-logo" data-word="HANGULBI"></div>
       <h1>한글비타자게임</h1>
       <div class="maker">박현아가 심심해서 만든 게임</div>
       <div class="startgrp">
@@ -468,7 +582,7 @@ button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
       <div class="verdict" id="oVerdict" hidden></div>
       <div class="best" id="oBest"></div>
       <form class="sp-name" id="oNameForm" autocomplete="off"><input id="oName" maxlength="10" placeholder="이름" aria-label="이름"><button class="btn" type="submit">랭킹 등록</button></form>
-      <div class="ranks"><div class="rank"><div class="rank-h">SCORE RANK</div><ol class="rank-list" id="rankRain"></ol></div></div>
+      <div class="ranks"><div class="rank"><div class="rank-h"><span>SCORE RANK</span><span class="dvt"><button type="button" data-dv="p">PC</button><button type="button" data-dv="m">MOBILE</button></span></div><ol class="rank-list" id="rankRain"></ol></div></div>
       <div class="ltitle">이번 판 단어장</div>
       <div class="list" id="oList"></div>
       <div class="row2"><button class="btn" id="againBtn">한 판 더</button><button class="btn ghost" id="homeBtn">처음으로</button></div>
@@ -846,6 +960,7 @@ function markHits(){}
 input.addEventListener("input",markHits);
 input.addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.isComposing||e.keyCode===229)){e.preventDefault();setTimeout(submit,0)}});
 $("form").addEventListener("submit",e=>{e.preventDefault();setTimeout(submit,0)});
+$("form").querySelector(".btn").addEventListener("pointerdown",e=>{e.preventDefault();input.focus()}); // 모바일: 입력 버튼 눌러도 키보드 유지
 
 function reset(){
   stage.querySelectorAll(".w,.boom").forEach(n=>n.remove());
@@ -879,18 +994,29 @@ function gameOver(){
   const items=S.learned.slice().sort((a,b)=>(a.st==="miss"?0:1)-(b.st==="miss"?0:1));
   $("oList").innerHTML=items.length?items.map(({e,st})=>`<div class="row"><div class="h"><b>${esc(e.word)}</b>${e.wrong?`<s>${esc(e.wrong)}</s>`:""}${st==="miss"?"<em>놓친 말</em>":""}</div><p>${esc(e.mean)}</p></div>`).join(""):`<div class="row"><p>이번 판에 만난 낱말이 없어요.</p></div>`;
   S.final={score:S.score,words:S.popped,stage:S.level};
-  $("oName").value=store.get("mcb-name")||"";$("oNameForm").classList.toggle("saved",S.score<=0);rrMine=null;rrRender();
+  $("oName").value=store.get("mcb-name")||"";$("oNameForm").classList.toggle("saved",S.score<=0);rrMine=null;MINE=null;rView=DV;dvSync();rrRender();netTop();
   $("pauseOv").hidden=true;$("overOv").hidden=false;input.blur();
 }
+const RANK_URL="https://script.google.com/macros/s/AKfycbzkdjVleobj98oyxlC77cUf5txCRiSB6D1zgRWU56pX22ElXAx9R8xFRGnV0nKAUbwC/exec";
+/* 랭킹은 PC와 모바일을 따로 운영 (같은 기기 기록끼리 겨루기) */
+const DV=(()=>{try{return matchMedia("(pointer:coarse)").matches||/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?"m":"p"}catch(e){return "p"}})();
+let rView=DV,ONL=null,MINE=null;
+function netAdd(m,s,v,n){return fetch(`${RANK_URL}?g=hangulbi&a=add&n=${encodeURIComponent(n)}&s=${s}&v=${v}&m=${m}`).catch(()=>{})}
+function netTop(){return fetch(`${RANK_URL}?g=hangulbi`).then(r=>r.json()).then(j=>{ONL=j.top||[];rrRender();rkRender()}).catch(()=>{})}
+function netRows(kind){return ONL?ONL.filter(r=>r.m===kind+"-"+rView).sort((a,b)=>b.s-a.s).slice(0,10):null}
+function liOnl(rows,fmt){return rows.length?rows.map(r=>`<li class="${MINE&&MINE.n===r.n&&MINE.s===r.s?"me":""}">${esc(r.n)} <em>ST.${r.v}</em><b>${fmt(r.s)}</b></li>`).join(""):`<li class="empty">아직 기록이 없어요</li>`}
+function dvSync(){document.querySelectorAll(".dvt button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.dv===rView))}
+document.querySelectorAll(".dvt button").forEach(b=>b.addEventListener("click",()=>{rView=b.dataset.dv;dvSync();rrRender();rkRender()}));dvSync();
 const RR="mcb-rank-rain";let rrMine=null;
 function rrLoad(){try{return JSON.parse(store.get(RR)||"[]")}catch(e){return[]}}
-function rrRender(){const l=rrLoad().slice(0,10);
+function rrRender(){const o=netRows("rain");if(o){$("rankRain").innerHTML=liOnl(o,v=>v.toLocaleString());return}const l=rrLoad().slice(0,10);
   $("rankRain").innerHTML=l.length?l.map(r=>`<li class="${r.id===rrMine?"me":""}">${esc(r.name)} <em>ST.${r.stage}</em><b>${r.score.toLocaleString()}</b></li>`).join(""):`<li class="empty">아직 기록이 없어요</li>`}
 $("oNameForm").addEventListener("submit",e=>{e.preventDefault();if(!S||!S.final||rrMine||S.final.score<=0)return;
   const name=($("oName").value.trim()||"익명").slice(0,10);store.set("mcb-name",name);
   const r={id:Date.now()+"",name,...S.final,date:new Date().toISOString().slice(0,10)};
   const all=rrLoad();all.push(r);all.sort((a,b)=>b.score-a.score);store.set(RR,JSON.stringify(all.slice(0,50)));
-  rrMine=r.id;$("oNameForm").classList.add("saved");rrRender()});
+  rrMine=r.id;$("oNameForm").classList.add("saved");rrRender();
+  MINE={n:name,s:r.score};rView=DV;dvSync();netAdd("rain-"+DV,r.score,r.stage,name).then(netTop)});
 function setMode(m){
   mode=m;store.set("mcb-mode",m);$("modes").dataset.m=m;
   $("mBasic").setAttribute("aria-checked",m==="basic");$("mSpeed").setAttribute("aria-checked",m==="speed");
@@ -973,6 +1099,7 @@ const RK="mcb-rank-speed";
 function rkLoad(){try{return JSON.parse(store.get(RK)||"[]")}catch(e){return[]}}
 let rkMine=null;
 function rkRender(){
+  const ok=netRows("kpm"),os=netRows("spd");if(ok&&os){$("rankSpeed").innerHTML=liOnl(ok,v=>v.toLocaleString()+"타");$("rankScore").innerHTML=liOnl(os,v=>v.toLocaleString());return}
   const all=rkLoad();
   const one=(k,fmt)=>{const l=all.slice().sort((a,b)=>b[k]-a[k]).slice(0,10);return l.length?l.map(r=>`<li class="${r.id===rkMine?"me":""}">${esc(r.name)} <em>ST.${r.stage}</em><b>${fmt(r)}</b></li>`).join(""):`<li class="empty">아직 기록이 없어요</li>`};
   $("rankSpeed").innerHTML=one("kpm",r=>r.kpm.toLocaleString()+"타");
@@ -986,14 +1113,15 @@ function spEnd(){clearTimeout(spMsg.t);$("spMsg").classList.remove("show");
   $("spRScore").textContent=score.toLocaleString();$("spRAvg").textContent=avg.toLocaleString();$("spRAvg").textContent=avg;$("spRMax").textContent=SP.res.length?Math.max(...SP.res):0;$("spRAcc").textContent=acc+"%";$("spROk").textContent=SP.ok;
   $("spRTitle").textContent="STAGE "+SP.stage;
   $("spRBest").textContent=rec?"새 최고 기록!":`최고 기록 STAGE ${best}`;
-  $("spName").value=store.get("mcb-name")||"";$("spNameForm").classList.remove("saved");rkMine=null;rkRender();
+  $("spName").value=store.get("mcb-name")||"";$("spNameForm").classList.remove("saved");rkMine=null;MINE=null;rView=DV;dvSync();rkRender();netTop();
   $("spPlay").hidden=true;$("spResult").hidden=false;$("spInput").blur();
 }
 $("spNameForm").addEventListener("submit",e=>{e.preventDefault();if(!SP||!SP.final||rkMine)return;
   const name=($("spName").value.trim()||"익명").slice(0,10);store.set("mcb-name",name);
   const r={id:Date.now()+"",name,...SP.final,date:new Date().toISOString().slice(0,10)};
   const all=rkLoad();all.push(r);all.sort((a,b)=>b.score-a.score);store.set(RK,JSON.stringify(all.slice(0,50)));
-  rkMine=r.id;$("spNameForm").classList.add("saved");rkRender()});
+  rkMine=r.id;$("spNameForm").classList.add("saved");rkRender();
+  MINE={n:name,s:r.score};rView=DV;dvSync();Promise.all([r.score>0?netAdd("spd-"+DV,r.score,r.stage,name):0,r.kpm>0?netAdd("kpm-"+DV,r.kpm,r.stage,name):0]).then(netTop)});
 $("spAgain").onclick=startSpeed;$("spHome").onclick=()=>goHome();
 $("startBtn").onclick=begin;$("againBtn").onclick=start;
 $("homeBtn").onclick=goHome;
