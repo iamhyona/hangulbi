@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1792835000";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1792836000";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -123,6 +123,8 @@ html.kb .card{padding:10px 10px 9px}
 html.kb .sent{font-size:16px;line-height:1.45}
 .sent i{font-style:normal}
 .sent i.ok{color:#fff}
+#ovMode .phS{gap:16px;justify-content:center}#ovMode .mBtns{display:flex;flex-direction:column;gap:12px;align-items:center;width:100%}#ovMode .tabs.lvs{width:232px;max-width:100%}#ovMode .tabs.lvs button.on[data-l=e]{background:#5fe08a;border-color:#5fe08a}#ovMode .tabs.lvs button.on[data-l=h]{background:#ff5a6e;border-color:#ff5a6e;color:#111} /* 난이도 색 = 랭킹 뱃지 색 */
+.field.fog .w:not(.hit){filter:blur(4px);opacity:.8} /* 대전 공격: 안개 */
 .prog.tm{height:6px;border-radius:3px} /* 빠르게치기: 맨 위 시간 바 */
 .sp{justify-content:center!important;gap:12px!important;padding:6px 0 10px!important} /* 문장을 남는 공간 가운데에 */
 .sp .card{padding:20px 14px!important}.sp .sent{font-size:20px!important;line-height:1.5!important}
@@ -212,10 +214,16 @@ html.kb .spinfo{display:none}
     </form>
 
     <div class="ov show" id="ovTitle"><div class="phS"><i class="phS-sp a"></i><div class="phS-logo" data-word="HANGULBI"></div><div class="phS-show hg" id="show"></div><i class="phS-sp b"></i>
-      <div class="phS-btns"><button class="phS-b" id="bSpeed">SPEED TYPING</button><button class="phS-b" id="bRain">HANGUL RAIN</button><button class="phS-b" id="bOnline">ONLINE PLAY</button><button class="phS-b gold" id="bRank">RANKING</button></div>
+      <div class="phS-btns"><button class="phS-b" id="bSingle">SINGLE PLAY</button><button class="phS-b" id="bOnline">ONLINE PLAY</button><button class="phS-b gold" id="bRank">RANKING</button></div>
       <div class="phS-best" id="bestTxt"></div>
       <i class="phS-sp c"></i><div class="phS-credit">이 게임은 서울 마포구에 사는 박현아가 만든<br>비상업용 게임이에요. 헷갈리는 우리말을<br>빠르고 바르게 쳐 보세요.</div></div></div>
 
+    <div class="ov" id="ovMode"><div class="phS">
+      <div class="sub" id="mTitle">SINGLE PLAY</div>
+      <div class="tabs lvs" id="lvSel"><button data-l="e">EASY</button><button data-l="n">NORMAL</button><button data-l="h">HARD</button></div>
+      <div class="mBtns"><button class="phS-b" id="bSpeed">SPEED TYPING</button><button class="phS-b" id="bRain">HANGUL RAIN</button></div>
+      <button class="x" id="bModeX">✕</button></div>
+    </div>
     <div class="ov" id="ovPause">
       <div class="big">PAUSE</div>
       <button class="btn" id="bResume">RESUME</button>
@@ -477,8 +485,10 @@ const THEMES=["S","N","V","H"];
 const theme=st=>st<=THEMES.length?THEMES[st-1]:null;
 const goal=st=>8+st*2;
 let R=null,raf=0,last=0,bag=[];
+let LV="n",PLV="n";try{LV=localStorage.getItem("hb-lv")||"n"}catch(e){} /* 난이도: 고른 것 · 지금 판 */
+const LVF=(e,n,h)=>({e,n,h})[PLV]||n;
 const MOBI=()=>{try{return matchMedia("(pointer:coarse)").matches||/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)}catch(e){return false}}; /* 모바일: 키보드 때문에 화면이 짧아서 */
-function fallTime(){return Math.max(4.2,10.5-R.level*.85)*(MOBI()?1.3:1)} // 모바일은 30% 천천히 // 바닥까지 걸리는 시간(초): 화면이 짧아져도 난이도는 같게
+function fallTime(){return Math.max(4.2,10.5-R.level*.85)*(MOBI()?1.3:1)*LVF(1.3,1,.78)} // 난이도: 이지 천천히 · 하드 빠르게 // 모바일은 30% 천천히 // 바닥까지 걸리는 시간(초): 화면이 짧아져도 난이도는 같게
 function nextEntry(){
   if(!bag.length){const c=theme(R.level);bag=shuf(WORDS.filter(w=>!c||w.cat===c))}
   const on=new Set(R.words.map(w=>w.e.word));
@@ -511,7 +521,7 @@ function loop(t){
   if(!R.between){
     if(R.freeze>0){R.freeze-=dt;if(R.freeze<=0)field.classList.remove("frozen")}
     else{
-      R.spawnT-=dt;if(R.spawnT<=0){spawn();R.spawnT=Math.max(.55,2.1-R.level*.2)*(.75+Math.random()*.45)*(MOBI()?1.4:1)} /* 모바일은 낱말 간격 40% 넓게 */
+      R.spawnT-=dt;if(R.spawnT<=0){spawn();R.spawnT=Math.max(.55,2.1-R.level*.2)*(.75+Math.random()*.45)*(MOBI()?1.4:1)*LVF(1.25,1,.8)} /* 모바일은 낱말 간격 40% 넓게 · 난이도 */
       const ft=fallTime();let danger=false;
       for(const w of R.words.slice()){w.p+=dt*w.sp/ft;place(w);if(w.p>.78)danger=true;if(w.p>=1)miss(w)}
       field.classList.toggle("danger",danger);
@@ -523,7 +533,7 @@ const drop=w=>R.words=R.words.filter(o=>o!==w);
 function miss(w){
   drop(w);w.el.classList.add("diss");splash(w);setTimeout(()=>w.el.remove(),620);
   R.lives--;R.combo=0;log(w.e,"miss");tip(w.e,"miss");sfx.miss();if(navigator.vibrate)try{navigator.vibrate(40)}catch(e){}
-  hud();if(R.lives<=0){STATE="over";setTimeout(rainEnd,400)}
+  hud();if(R.lives<=0){STATE="over";if(VS){cancelAnimationFrame(raf);raf=0;setTimeout(()=>PHVS.over(R.score,true),500);return}setTimeout(rainEnd,400)}
 }
 function pop(w,quiet){
   drop(w);R.combo++;
@@ -531,7 +541,7 @@ function pop(w,quiet){
   R.score+=pts;R.popped++;log(w.e,"pop");
   const b=document.createElement("div");b.className="pts";b.textContent="+"+pts;b.style.left=Math.max(2,Math.min(field.clientWidth-50,w.x+w.w/2-18))+"px";b.style.top=Math.max(0,Math.round(w.p*(field.clientHeight-w.h))-6)+"px";field.appendChild(b);setTimeout(()=>b.remove(),720);
   w.el.classList.add("hit","gone");setTimeout(()=>w.el.remove(),360);
-  if(!quiet){tip(w.e,"pop");sfx.ok()}
+  if(!quiet){tip(w.e,"pop");sfx.ok();if(VS&&window.PHVS&&PHVS.active){VS.n++;if(VS.n%2===0)PHVS.send({t:"atk",k:VS.n%4===0?"fog":"drop"})}} /* 대전: 2개 터뜨릴 때마다 공격 */
   if(w.bonus)fire(w.bonus);
   R.cleared++;if(!R.between&&R.cleared>=goal(R.level))setTimeout(stageClear,quiet?40:300);
   hud();
@@ -543,7 +553,7 @@ function fire(k){
 }
 function banner(b,s,bad,ms=1100){const el=$("banner");el.querySelector("b").textContent=b;el.querySelector("small").textContent=s||"";el.classList.toggle("bad",!!bad);el.classList.remove("show");void el.offsetWidth;el.classList.add("show");clearTimeout(banner.t);banner.t=setTimeout(()=>el.classList.remove("show"),ms)}
 function stageClear(){
-  if(R.between||STATE!=="play")return;R.between=true;sfx.clear();
+  if(R.between||STATE!=="play")return;if(VS&&R.level>=VS_RAIN){STATE="over";cancelAnimationFrame(raf);raf=0;sfx.clear();PHVS.claimWin(R.score);return} /* 대전: 먼저 클리어 */R.between=true;sfx.clear();
   for(const w of R.words.slice()){drop(w);w.el.classList.add("diss");splash(w);setTimeout(()=>w.el.remove(),620)}
   const bonus=R.lives*50*R.level;R.score+=bonus;R.lives=Math.min(LIVES,R.lives+1);hud();
   banner("CLEAR!","보너스 +"+bonus.toLocaleString());
@@ -560,7 +570,7 @@ function rainSubmit(v){
   field.classList.remove("jolt");void field.offsetWidth;field.classList.add("jolt");
 }
 function startRain(){
-  MODE="rain";cleanup();
+  MODE="rain";cleanup();if(!window.PHVS||!PHVS.active)VS=null;field.classList.remove("fog");
   R={level:1,score:0,lives:LIVES,cleared:0,words:[],n:0,spawnT:.4,freeze:0,learned:[],popped:0,combo:0,between:false};bag=[];
   $("field").hidden=false;$("tip").hidden=false;$("sp").hidden=true;$("prog").style.cssText="";$("prog").parentNode.classList.remove("tm");$("tip").className="tip hint";$("tip").innerHTML="<p>터뜨린 낱말의 뜻이 여기에 나와요</p>";
   inp.placeholder="내려오는 낱말을 입력";$("hLab").textContent="SCORE";
@@ -581,11 +591,15 @@ function rainEnd(){
 /* 문장부호·특수기호는 빼고 글자만 (마침표·쉼표·물음표·느낌표 등) */
 SENTS.splice(0,SENTS.length,...SENTS.filter(s=>!/·/.test(s)).map(s=>s.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣA-Za-z0-9\s]/g,"").replace(/\s+/g," ").trim()).filter(Boolean));
 /* ================= 빠르게치기 (기본 모드) ================= */
-const SP_N=5,spTarget=st=>120+(st-1)*40,SP_BANDS=[[0,13],[0,18],[10,24],[14,30],[18,99]];
+const SP_N=5,spTarget=st=>Math.round((120+(st-1)*40)*LVF(.75,1,1.3)),SP_BANDS=[[0,13],[0,18],[10,24],[14,30],[18,99]];
 let SP=null,spT=0,VS=null; /* VS: 온라인 대전 중 (같은 문장 순서) */
-const VS_GOAL=10,rngOf=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let x=Math.imul(s^s>>>15,1|s);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296},shufR=(a,r)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const VS_GOAL=10,VS_RAIN=2,rngOf=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let x=Math.imul(s^s>>>15,1|s);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296},shufR=(a,r)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 function atkMsg(b,s){const el=$("atk");el.innerHTML=`<b>${b}</b>${s?`<small>${s}</small>`:""}`;el.classList.remove("show");void el.offsetWidth;el.classList.add("show")}
-function vsApply(k){if(!SP||SP.busy||STATE!=="play"){VS.pend.push(k);return}
+function vsApply(k){
+ if(MODE==="rain"){if(!R||STATE!=="play")return;sfx.bad();if(navigator.vibrate)try{navigator.vibrate([30,30,30])}catch(e){}
+  if(k==="drop"){spawn();setTimeout(()=>{if(R&&STATE==="play")spawn()},350);banner("ATTACKED!","낱말 +2",true)}
+  if(k==="fog"){field.classList.add("fog");clearTimeout(vsApply.f);vsApply.f=setTimeout(()=>field.classList.remove("fog"),3500);banner("ATTACKED!","안개 3초",true)}return}
+ if(!SP||SP.busy||STATE!=="play"){VS.pend.push(k);return}
  if(k==="time"){SP.t0-=SP.limit*.3;atkMsg("ATTACKED!","시간 -30%")}
  if(k==="fog"){const els=[...$("sent").children].filter(e=>e.textContent.trim()&&!e.classList.contains("ok"));for(const e of shuf(els).slice(0,Math.max(2,Math.ceil(els.length*.4))))e.dataset.f=1;atkMsg("ATTACKED!","글자 가리기")}
  shake();sfx.bad();if(navigator.vibrate)try{navigator.vibrate([30,30,30])}catch(e){}}
@@ -661,11 +675,11 @@ function spEnd(){
 
 /* ================= 공통 ================= */
 function hud(){
-  if(MODE==="rain"&&R){$("hStage").textContent=R.level;$("hScore").textContent=R.score.toLocaleString();livesUI(R.lives);$("prog").style.width=Math.min(100,R.cleared/goal(R.level)*100)+"%"}
+  if(MODE==="rain"&&R){if(VS&&window.PHVS&&PHVS.active)PHVS.score("ST."+R.level+" · ♥"+R.lives);$("hStage").textContent=R.level;$("hScore").textContent=R.score.toLocaleString();livesUI(R.lives);$("prog").style.width=Math.min(100,R.cleared/goal(R.level)*100)+"%"}
   if(MODE==="speed"&&SP){$("hStage").textContent=SP.stage;$("hScore").textContent=SP.kpm||0;livesUI(SP.lives);$("prog").parentNode.classList.add("tm") /* 빠르게치기: 맨 위 바 = 남은 시간 (진행은 네모 점) */}
 }
 function shake(){inp.classList.remove("shake");void inp.offsetWidth;inp.classList.add("shake");clearTimeout(shake.t);shake.t=setTimeout(()=>inp.classList.remove("shake"),300)}
-function cleanup(){cancelAnimationFrame(raf);raf=0;clearInterval(spT);field.querySelectorAll(".w,.pts").forEach(n=>n.remove());field.classList.remove("frozen","danger");["ovTitle","ovPause","ovOver","ovRank"].forEach(hide)}
+function cleanup(){cancelAnimationFrame(raf);raf=0;clearInterval(spT);field.querySelectorAll(".w,.pts").forEach(n=>n.remove());field.classList.remove("frozen","danger");["ovTitle","ovMode","ovPause","ovOver","ovRank"].forEach(hide)}
 function goPlay(){inp.value="";inp.disabled=false;focusIn()}
 function submit(){unlock();if(STATE!=="play")return;if(MODE==="speed"){spSubmit();return}const v=inp.value.trim();inp.value="";if(v)rainSubmit(v)}
 inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();setTimeout(submit,0)}});
@@ -680,7 +694,7 @@ $("bPause").onclick=()=>pause(STATE==="play");$("bResume").onclick=()=>pause(fal
 $("bRestart").onclick=()=>{hide("ovPause");MODE==="speed"?startSpeed():startRain()};
 $("bQuit").onclick=()=>{hide("ovPause");STATE="over";MODE==="speed"?spEnd():rainEnd()};
 $("bHome").onclick=$("bOverHome").onclick=()=>toTitle();
-$("bAgain").onclick=()=>{unlock();MODE==="speed"?startSpeed():startRain()};
+$("bAgain").onclick=()=>{unlock();PLV=LV;MODE==="speed"?startSpeed():startRain()};
 document.addEventListener("visibilitychange",()=>{if(document.hidden)pause(true)});
 function toTitle(){cleanup();STATE="title";inp.blur();R=null;SP=null;$("field").hidden=true;$("tip").hidden=true;$("sp").hidden=false;$("sent").textContent="";$("dots").innerHTML="";$("next").textContent="";livesUI(LIVES);$("hScore").textContent="0";$("hStage").textContent="1";$("prog").style.cssText="";$("prog").parentNode.classList.remove("tm");bestTxt();show("ovTitle")}
 function bestTxt(){const a=+(store.get("hb-best-kpm")||0),b=+(store.get("mcb-best-basic")||0);$("bestTxt").textContent=[a?`BEST ${a}타`:"",b?`한글비 ${b.toLocaleString()}`:""].filter(Boolean).join("  ·  ")}
@@ -688,24 +702,32 @@ const TUT={goal:"<b>빠르게치기</b>: 나온 문장을 그대로 치면 다�
  touch:[["스페이스","문장 끝에서 누르면 바로 제출"],["엔터","입력"],["★ 낱말","얼음·폭탄·목숨 보너스"]],
  pc:[["Space","문장 끝에서 누르면 바로 제출"],["Enter","입력"],["★ 낱말","얼음·폭탄·목숨 보너스"]]};
 function go(m){unlock();focusIn();phTut("ph-tut-hangulbi",TUT,()=>{m==="speed"?startSpeed():startRain()})}
-$("bSpeed").onclick=()=>go("speed");$("bRain").onclick=()=>go("rain");
+let PK="single",VSPICK=null; /* 싱글 / 온라인 */
+function lvSync(){document.querySelectorAll("#lvSel button").forEach(b=>b.classList.toggle("on",b.dataset.l===LV))}
+document.querySelectorAll("#lvSel button").forEach(b=>b.onclick=()=>{LV=b.dataset.l;try{localStorage.setItem("hb-lv",LV)}catch(e){}lvSync()});
+function modeOpen(k){PK=k;$("mTitle").textContent=k==="online"?"ONLINE PLAY":"SINGLE PLAY";lvSync();show("ovMode")}
+function pickMode(m){unlock();hide("ovMode");if(PK==="online"){VSPICK={m,l:LV};if(window.PHVS)PHVS.menu();return}PLV=LV;go(m)}
+$("bSingle").onclick=()=>{unlock();modeOpen("single")};$("bModeX").onclick=()=>hide("ovMode");
+$("bSpeed").onclick=()=>pickMode("speed");$("bRain").onclick=()=>pickMode("rain");
 /* 온라인 대전: 빠르게치기 · 같은 문장 · 먼저 10문장 · 맞힐 때마다 상대 공격(시간 뺏기 / 글자 가리기) */
-addEventListener("load",()=>{if(window.PHVS){PHVS.init({id:'hgb',name:()=>store.get("mcb-name")||"",setName:n=>store.set("mcb-name",n),score:()=>SP?SP.ok:0,
- start:d=>{VS={r:rngOf(d.seed),n:0,pend:[]};startSpeed();$("spinfo").textContent="먼저 "+VS_GOAL+"문장! 맞힐 때마다 상대 공격";vsScore()},
- data:d=>{if(d.t==="atk"&&VS&&SP&&STATE==="play")vsApply(d.k)},
+addEventListener("load",()=>{if(window.PHVS){PHVS.init({id:'hgb',name:()=>store.get("mcb-name")||"",setName:n=>store.set("mcb-name",n),score:()=>MODE==="rain"&&R?R.score:SP?SP.ok:0,
+ extra:()=>VSPICK?{m:VSPICK.m,l:VSPICK.l}:{m:"speed",l:"n"},
+ start:d=>{PLV=d.l||"n";VS={r:rngOf(d.seed),n:0,pend:[]};if(d.m==="rain"){startRain();banner("VS · "+({e:"EASY",n:"NORMAL",h:"HARD"})[PLV],"먼저 STAGE "+VS_RAIN+" 클리어! 터뜨릴수록 상대 공격",false,2200);return}startSpeed();$("spinfo").textContent="먼저 "+VS_GOAL+"문장! 맞힐 때마다 상대 공격";vsScore()},
+ data:d=>{if(d.t==="atk"&&VS&&STATE==="play")vsApply(d.k)},
  stop:()=>{clearInterval(spT);STATE="over"},leave:()=>{VS=null;$("spinfo").textContent="문장을 그대로 치고 스페이스 또는 엔터";toTitle()}});
- $("bOnline").onclick=()=>{unlock();PHVS.menu()}}else $("bOnline").hidden=true}); /* vs.js는 아래에서 불러와서 다 읽은 뒤 연결 */
+ $("bOnline").onclick=()=>{unlock();modeOpen("online")}}else $("bOnline").hidden=true}); /* vs.js는 아래에서 불러와서 다 읽은 뒤 연결 */
 
 /* ================= 랭킹 (PC · 모바일 따로) ================= */
 const RANK_URL="https://script.google.com/macros/s/AKfycbzkdjVleobj98oyxlC77cUf5txCRiSB6D1zgRWU56pX22ElXAx9R8xFRGnV0nKAUbwC/exec";
 const DV=(()=>{try{return TOUCH||/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?"m":"p"}catch(e){return "p"}})();
 let ONL=null,MINE=null,RK="kpm",RV=DV,LAST=null;
+const LVS=()=>PLV==="n"?"":"-"+PLV;
 function netAdd(m,s,v,n){return fetch(`${RANK_URL}?g=hangulbi&a=add&n=${encodeURIComponent(n)}&s=${s}&v=${v}&m=${m}`).catch(()=>{})}
 function netTop(){return fetch(`${RANK_URL}?g=hangulbi`).then(r=>r.json()).then(j=>{ONL=j.top||[];rRender()}).catch(()=>{ONL=ONL||[];rRender()})}
 function rSync(){document.querySelectorAll("#rTabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===RK));document.querySelectorAll("#rDv button").forEach(b=>b.classList.toggle("on",b.dataset.dv===RV))}
 function rRender(){rSync();const el=$("rList");if(!ONL){el.innerHTML='<span class="em">LOADING…</span>';return}
-  const rows=ONL.filter(r=>r.m===RK+"-"+RV&&+r.s>0).sort((a,b)=>b.s-a.s).slice(0,50);
-  el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span>${esc(r.n)}</span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
+  const rows=ONL.filter(r=>(r.m===RK+"-"+RV||String(r.m).indexOf(RK+"-"+RV+"-")===0)&&+r.s>0).sort((a,b)=>b.s-a.s).slice(0,50);
+  el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span>${esc(r.n)}${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}</span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
 document.querySelectorAll("#rTabs button").forEach(b=>b.onclick=()=>{RK=b.dataset.k;rRender()});
 document.querySelectorAll("#rDv button").forEach(b=>b.onclick=()=>{RV=b.dataset.dv;rRender()});
 function openRank(k){RK=k||RK;RV=DV;show("ovRank");rRender();netTop()}
@@ -719,12 +741,12 @@ function overUI(o){
 }
 $("oName").addEventListener("submit",e=>{e.preventDefault();if(!LAST||LAST.saved)return;LAST.saved=true;
   const n=($("oNameIn").value.trim()||"익명").slice(0,10);store.set("mcb-name",n);$("oName").classList.add("saved");$("oNameIn").blur();
-  const ps=[];if(LAST.kind==="rain"){ps.push(netAdd("rain-"+DV,LAST.s,LAST.v,n));MINE={n,s:LAST.s,k:"rain"}}
-  else{if(LAST.s>0)ps.push(netAdd("spd-"+DV,LAST.s,LAST.v,n));if(LAST.kpm>0)ps.push(netAdd("kpm-"+DV,LAST.kpm,LAST.v,n));MINE={n,s:LAST.kpm,k:"kpm"}}
+  const ps=[];if(LAST.kind==="rain"){ps.push(netAdd("rain-"+DV+LVS(),LAST.s,LAST.v,n));MINE={n,s:LAST.s,k:"rain"}}
+  else{if(LAST.s>0)ps.push(netAdd("spd-"+DV+LVS(),LAST.s,LAST.v,n));if(LAST.kpm>0)ps.push(netAdd("kpm-"+DV+LVS(),LAST.kpm,LAST.v,n));MINE={n,s:LAST.kpm,k:"kpm"}}
   Promise.all(ps).then(()=>openRank(LAST.kind==="rain"?"rain":"kpm"))});
 livesUI(LIVES);bestTxt();
 window.__t={startSpeed,startRain,get R(){return R},get SP(){return SP},spawn:()=>spawn(),rainEnd,spEnd,submit};
 </script>
-<script src="../games/ph.js?v=13"></script><script src="../games/vs.js?v=3"></script>
+<script src="../games/ph.js?v=13"></script><script src="../games/vs.js?v=4"></script>
 </body>
 </html>
