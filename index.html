@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1792833000";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1792834000";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -34,7 +34,7 @@ body{font-family:var(--f);color:var(--g1);-webkit-font-smoothing:none;-webkit-us
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 /* 실제 보이는 화면(키보드 제외)에 딱 맞춤 */
 .gb{position:fixed;left:0;right:0;top:var(--app-top,0px);height:var(--app-h,100dvh);display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 2px) 4px calc(env(safe-area-inset-bottom,0px) + 4px);max-width:560px;margin:0 auto;background:#17171f}
-html.kb .gb{padding-top:4px;padding-bottom:4px}
+html.kb .gb{padding-top:calc(env(safe-area-inset-top,0px) + 2px);padding-bottom:4px} /* 키보드 떠도 상태바 아래로 */
 html.kb .lcd-label{display:none}
 .bezel{flex:1;min-height:0;display:flex;flex-direction:column;padding:8px;border-radius:10px;background:#101016;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
 html.kb .bezel{padding:4px}
@@ -120,6 +120,10 @@ html.kb .card{padding:10px 10px 9px}
 html.kb .sent{font-size:16px;line-height:1.45}
 .sent i{font-style:normal}
 .sent i.ok{color:#fff}
+.prog.tm{height:6px;border-radius:3px} /* 빠르게치기: 맨 위 시간 바 */
+.sp{justify-content:center!important;gap:12px!important;padding:6px 0 10px!important} /* 문장을 남는 공간 가운데에 */
+.sp .card{padding:20px 14px!important}.sp .sent{font-size:20px!important;line-height:1.5!important}
+html.kb .sp .next{display:block}html.kb .sp .card{padding:16px 12px!important}html.kb .sp .sent{font-size:19px!important}
 .sent i[data-f]:not(.ok){color:transparent!important;background:repeating-linear-gradient(45deg,#3a4560 0 3px,#222a3c 3px 6px);border-radius:2px} /* 대전 공격: 가려진 글자 */
 html .phVc{top:calc(env(safe-area-inset-top,0px) + 100px);bottom:auto} /* 대전 상대 표시: 입력창 가리지 않게 위로 */
 .card{position:relative}.atk{position:absolute;left:50%;top:-12px;transform:translateX(-50%);z-index:3;pointer-events:none;opacity:0;white-space:nowrap;background:#2a0d16;border:2px solid #ff4d6d;border-radius:6px;padding:3px 10px 2px;font:700 11px Silkscreen,monospace;color:#ff8aa0;letter-spacing:.08em}.atk small{margin-left:6px;font:11px Galmuri11,monospace;color:#ffd0d8;letter-spacing:0}.atk.show{animation:atk 1.6s steps(8) forwards}@keyframes atk{0%{opacity:0;transform:translate(-50%,-4px)}12%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}.sent i.bad{color:var(--red);background:rgba(255,77,109,.18)}
@@ -195,7 +199,7 @@ html.kb .spinfo{display:none}
     <!-- 빠르게치기 -->
     <div class="sp" id="sp">
       <div class="dots" id="dots"></div>
-      <div class="card"><div class="atk" id="atk"></div><div class="sent" id="sent"></div><div class="timer"><i id="timer"></i></div></div>
+      <div class="card"><div class="atk" id="atk"></div><div class="sent" id="sent"></div></div>
       <div class="next" id="next"></div>
       <div class="spinfo" id="spinfo">문장을 그대로 치고 스페이스 또는 엔터</div>
     </div>
@@ -537,7 +541,7 @@ function rainSubmit(v){
 function startRain(){
   MODE="rain";cleanup();
   R={level:1,score:0,lives:LIVES,cleared:0,words:[],n:0,spawnT:.4,freeze:0,learned:[],popped:0,combo:0,between:false};bag=[];
-  $("field").hidden=false;$("tip").hidden=false;$("sp").hidden=true;$("tip").className="tip hint";$("tip").innerHTML="<p>터뜨린 낱말의 뜻이 여기에 나와요</p>";
+  $("field").hidden=false;$("tip").hidden=false;$("sp").hidden=true;$("prog").style.cssText="";$("prog").parentNode.classList.remove("tm");$("tip").className="tip hint";$("tip").innerHTML="<p>터뜨린 낱말의 뜻이 여기에 나와요</p>";
   inp.placeholder="내려오는 낱말을 입력";$("hLab").textContent="SCORE";
   STATE="play";hud();goPlay();
   requestAnimationFrame(()=>{field.style.setProperty("--fh",field.clientHeight+"px");banner("STAGE 1",CAT[theme(1)],false,1400)});
@@ -596,8 +600,8 @@ function spPaint(){
 }
 function spTick(){
   if(!SP||SP.busy||STATE!=="play"||MODE!=="speed")return;
-  const el=performance.now()-SP.t0,left=Math.max(0,1-el/SP.limit),tb=$("timer");
-  tb.style.transform=`scaleX(${left})`;tb.style.background=left>.6?"#3fe0c0":left>.35?"#f2b000":left>.15?"#ff9a3c":"#ff4d6d";
+  const el=performance.now()-SP.t0,left=Math.max(0,1-el/SP.limit),tb=$("prog"),col=left>.6?"#3fe0c0":left>.35?"#f2b000":left>.15?"#ff9a3c":"#ff4d6d";
+  tb.style.transition="none";tb.style.width=(left*100)+"%";tb.style.background=col;tb.style.boxShadow="0 0 6px "+col; /* 시간 바: 맨 위 */
   const v=inp.value;SP.kpm=v?Math.round(keys(v)/Math.max(1000,el)*60000):0;$("hScore").textContent=SP.kpm;
   if(left<=0)spFail("TIME OVER");
 }
@@ -637,7 +641,7 @@ function spEnd(){
 /* ================= 공통 ================= */
 function hud(){
   if(MODE==="rain"&&R){$("hStage").textContent=R.level;$("hScore").textContent=R.score.toLocaleString();livesUI(R.lives);$("prog").style.width=Math.min(100,R.cleared/goal(R.level)*100)+"%"}
-  if(MODE==="speed"&&SP){$("hStage").textContent=SP.stage;$("hScore").textContent=SP.kpm||0;livesUI(SP.lives);$("prog").style.width=(SP.i/SP_N*100)+"%"}
+  if(MODE==="speed"&&SP){$("hStage").textContent=SP.stage;$("hScore").textContent=SP.kpm||0;livesUI(SP.lives);$("prog").parentNode.classList.add("tm") /* 빠르게치기: 맨 위 바 = 남은 시간 (진행은 네모 점) */}
 }
 function shake(){inp.classList.remove("shake");void inp.offsetWidth;inp.classList.add("shake");clearTimeout(shake.t);shake.t=setTimeout(()=>inp.classList.remove("shake"),300)}
 function cleanup(){cancelAnimationFrame(raf);raf=0;clearInterval(spT);field.querySelectorAll(".w,.pts").forEach(n=>n.remove());field.classList.remove("frozen","danger");["ovTitle","ovPause","ovOver","ovRank"].forEach(hide)}
@@ -657,7 +661,7 @@ $("bQuit").onclick=()=>{hide("ovPause");STATE="over";MODE==="speed"?spEnd():rain
 $("bHome").onclick=$("bOverHome").onclick=()=>toTitle();
 $("bAgain").onclick=()=>{unlock();MODE==="speed"?startSpeed():startRain()};
 document.addEventListener("visibilitychange",()=>{if(document.hidden)pause(true)});
-function toTitle(){cleanup();STATE="title";inp.blur();R=null;SP=null;$("field").hidden=true;$("tip").hidden=true;$("sp").hidden=false;$("sent").textContent="";$("dots").innerHTML="";$("next").textContent="";livesUI(LIVES);$("hScore").textContent="0";$("hStage").textContent="1";$("prog").style.width="0";bestTxt();show("ovTitle")}
+function toTitle(){cleanup();STATE="title";inp.blur();R=null;SP=null;$("field").hidden=true;$("tip").hidden=true;$("sp").hidden=false;$("sent").textContent="";$("dots").innerHTML="";$("next").textContent="";livesUI(LIVES);$("hScore").textContent="0";$("hStage").textContent="1";$("prog").style.cssText="";$("prog").parentNode.classList.remove("tm");bestTxt();show("ovTitle")}
 function bestTxt(){const a=+(store.get("hb-best-kpm")||0),b=+(store.get("mcb-best-basic")||0);$("bestTxt").textContent=[a?`BEST ${a}타`:"",b?`한글비 ${b.toLocaleString()}`:""].filter(Boolean).join("  ·  ")}
 const TUT={goal:"<b>빠르게치기</b>: 나온 문장을 그대로 치면 다음 문장! 목표 타수보다 늦거나 오타가 나면 목숨이 줄어요.<br><b>한글비</b>: 내려오는 우리말을 그대로 쳐서 터뜨려요. 바닥에 닿으면 목숨이 줄고, 터뜨린 말의 뜻이 아래에 나와요.",
  touch:[["스페이스","문장 끝에서 누르면 바로 제출"],["엔터","입력"],["★ 낱말","얼음·폭탄·목숨 보너스"]],
