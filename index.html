@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1792803000";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1792805000";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -168,11 +168,7 @@ html.kb .spinfo{display:none}
 .phS-show.hg{gap:5px;height:34px}
 .phS-show.hg i{font:15px/1 var(--f);font-style:normal;color:#fff;padding:6px 6px 5px;border:2px solid var(--c);border-radius:5px;background:#0d2420;box-shadow:0 0 8px color-mix(in srgb,var(--c) 45%,transparent);animation:hgf 2.4s steps(6) infinite}
 @keyframes hgf{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}
-.btn.ko,.phS-b.ko{font-family:Galmuri11,sans-serif!important;letter-spacing:.06em!important;font-size:15px!important}
-.phS-b small{display:block;font:11px var(--f);letter-spacing:0;opacity:.7;margin-top:3px}
-.phS-b.sp2{--phB:#2fb8ff!important;--phT:#bfe9ff;--phBg:#071621;--phR:rgba(47,184,255,.16)}
-.phS-b.sp2{border-color:#2fb8ff!important;color:#bfe9ff!important;background:#071621!important;box-shadow:inset 0 0 0 3px #071621,inset 0 0 0 5px rgba(47,184,255,.16)!important}
-.phS-btns .phS-b{height:56px!important;flex-direction:column!important}
+.btn.ko{font-family:Galmuri11,sans-serif!important;letter-spacing:.06em!important;font-size:15px!important}
 .phS-best{font:700 9px Silkscreen;color:var(--g2);letter-spacing:1px;min-height:12px}
 .phS-credit{font-family:var(--f)}
 </style>
@@ -206,7 +202,7 @@ html.kb .spinfo{display:none}
     </form>
 
     <div class="ov show" id="ovTitle"><div class="phS"><i class="phS-sp a"></i><div class="phS-logo" data-word="HANGULBI"></div><div class="phS-show hg" id="show"></div><i class="phS-sp b"></i>
-      <div class="phS-btns"><button class="phS-b ko" id="bSpeed">빠르게치기<small>문장 타자 · 속도 겨루기</small></button><button class="phS-b ko sp2" id="bRain">한글비<small>내려오는 우리말 맞히기</small></button><button class="phS-b gold" id="bRank">RANKING</button></div>
+      <div class="phS-btns"><button class="phS-b" id="bSpeed">SPEED TYPING</button><button class="phS-b" id="bRain">HANGUL RAIN</button><button class="phS-b gold" id="bRank">RANKING</button></div>
       <div class="phS-best" id="bestTxt"></div>
       <i class="phS-sp c"></i><div class="phS-credit">이 게임은 서울 마포구에 사는 박현아가 만든<br>비상업용 게임이에요. 헷갈리는 우리말을<br>빠르고 바르게 쳐 보세요.</div></div></div>
 
@@ -547,7 +543,7 @@ function rainEnd(){
   cancelAnimationFrame(raf);raf=0;STATE="over";
   const key="mcb-best-basic",best=+(store.get(key)||0),rec=R.score>best&&R.score>0;if(rec)store.set(key,R.score);
   const p=R.popped,title=p<5?"설겆이 하는 사람… 아니 설거지!":p<15?"금새… 아니 '금세' 배우는 사람":p<30?"맞춤법 단속반":p<50?"걸어 다니는 국어사전":"국립국어원 비밀 요원";
-  overUI({sub:"한글비 · GAME OVER",big:R.score.toLocaleString(),msg:(rec?"NEW BEST! · ":best?`최고 ${best.toLocaleString()}점 · `:"")+"칭호: "+title,
+  overUI({sub:"HANGUL RAIN · GAME OVER",big:R.score.toLocaleString(),msg:(rec?"NEW BEST! · ":best?`최고 ${best.toLocaleString()}점 · `:"")+"칭호: "+title,
     stats:[["STAGE",R.level],["WORDS",R.popped],["MISS",R.learned.filter(x=>x.st==="miss").length]],rec:{kind:"rain",s:R.score,v:R.level}});
   const items=R.learned.slice().sort((a,b)=>(a.st==="miss"?0:1)-(b.st==="miss"?0:1));
   $("oWords").hidden=!items.length;$("oWords").innerHTML=items.map(({e,st})=>`<div><b>${esc(e.word)}</b>${e.wrong?`<s>${esc(e.wrong)}</s>`:""}${st==="miss"?"<em>MISS</em>":""}<p>${esc(e.mean)}</p></div>`).join("");
@@ -617,7 +613,7 @@ function spEnd(){
   const avg=SP.res.length?Math.round(SP.res.reduce((a,b)=>a+b,0)/SP.res.length):0,acc=SP.cAll?Math.round(SP.cOk/SP.cAll*100):0,score=Math.round(SP.pts*acc/100);
   const best=+(store.get("mcb-best-speedst")||0),rec=SP.stage>best;if(rec)store.set("mcb-best-speedst",SP.stage);
   const bk=+(store.get("hb-best-kpm")||0);if(avg>bk)store.set("hb-best-kpm",avg);
-  overUI({sub:"빠르게치기 · GAME OVER",big:avg+"타",msg:"평균 타수"+(avg>bk&&avg>0?" · NEW BEST!":bk?` · 최고 ${bk}타`:""),
+  overUI({sub:"SPEED TYPING · GAME OVER",big:avg+"타",msg:"평균 타수"+(avg>bk&&avg>0?" · NEW BEST!":bk?` · 최고 ${bk}타`:""),
     stats:[["STAGE",SP.stage],["TOP",(SP.res.length?Math.max(...SP.res):0)+"타"],["ACC",acc+"%"],["CLEAR",SP.ok],["SCORE",score.toLocaleString()],["MISS",LIVES-SP.lives]],
     rec:{kind:"spd",s:score,v:SP.stage,kpm:avg}});
   $("oWords").hidden=true;
