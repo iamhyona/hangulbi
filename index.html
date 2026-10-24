@@ -448,6 +448,12 @@ html.kb .speed{padding-top:26px!important;padding-bottom:56px!important}
 html.kb .sp-play{gap:12px}
 html.kb .sp-stats div{padding:6px 8px}
 @media (max-width:480px){#startOv h1{font-size:24px}.dlg h2{font-size:24px}.rank-h{font-size:8px}}
+/* 무지개 줄은 창 띄운 화면 위에도 보이게, 창은 그 아래부터 */
+.lcd-label{position:relative;z-index:25}
+.overlay{padding-top:calc(env(safe-area-inset-top,0px) + 40px)}
+/* 홈 화면 앱: 위 상태바·아래 홈바만큼 뺀 높이 안에 다 들어가게 */
+body{height:calc(var(--app-h,100dvh) - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important}
+html.kb body{height:calc(var(--app-h,100dvh) - env(safe-area-inset-top,0px))!important}
 </style>
 </head>
 <body>
