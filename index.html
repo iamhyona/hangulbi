@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1792836000";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793001824";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -247,6 +247,7 @@ html.kb .spinfo{display:none}
       <div class="sub">RANKING</div>
       <div class="tabs" id="rTabs"><button data-k="kpm">KPM</button><button data-k="spd">TYPING</button><button data-k="rain">RAIN</button></div>
       <div class="tabs dv" id="rDv"><button data-dv="m">MOBILE</button><button data-dv="p">PC</button></div>
+      <div id="rkBar"></div>
       <div class="list" id="rList"></div>
       <button class="x" id="bRankX">✕</button>
     </div>
@@ -726,12 +727,14 @@ function netAdd(m,s,v,n){return fetch(`${RANK_URL}?g=hangulbi&a=add&n=${encodeUR
 function netTop(){return fetch(`${RANK_URL}?g=hangulbi`).then(r=>r.json()).then(j=>{ONL=j.top||[];rRender()}).catch(()=>{ONL=ONL||[];rRender()})}
 function rSync(){document.querySelectorAll("#rTabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===RK));document.querySelectorAll("#rDv button").forEach(b=>b.classList.toggle("on",b.dataset.dv===RV))}
 function rRender(){rSync();const el=$("rList");if(!ONL){el.innerHTML='<span class="em">LOADING…</span>';return}
-  const rows=ONL.filter(r=>(r.m===RK+"-"+RV||String(r.m).indexOf(RK+"-"+RV+"-")===0)&&+r.s>0).sort((a,b)=>b.s-a.s).slice(0,50);
+  const rows=ONL.filter(r=>(r.m===RK+"-"+RV||String(r.m).indexOf(RK+"-"+RV+"-")===0)&&+r.s>0).filter(r=>!window.phRk||((String(r.m).split("-")[2]||"n")===RSEL.diff&&phRk.ver("hangulbi",r)===RSEL.ver)).sort((a,b)=>b.s-a.s).slice(0,50);
   el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span>${esc(r.n)}${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}</span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
 document.querySelectorAll("#rTabs button").forEach(b=>b.onclick=()=>{RK=b.dataset.k;rRender()});
 document.querySelectorAll("#rDv button").forEach(b=>b.onclick=()=>{RV=b.dataset.dv;rRender()});
-function openRank(k){RK=k||RK;RV=DV;show("ovRank");rRender();netTop()}
-$("bRank").onclick=()=>openRank("kpm");$("bToRank").onclick=()=>openRank(LAST&&LAST.kind==="rain"?"rain":"kpm");$("bRankX").onclick=()=>hide("ovRank");
+/* 랭킹: 모드(KPM·TYPING·RAIN) × 기기 × 난이도 × 버전 (게임:모드:난이도:버전) */
+let RSEL={};function rkBarInit(sel){if(window.phRk)RSEL=phRk.bar($("rkBar"),{game:"hangulbi",diffs:[["e","EASY"],["n","NORMAL"],["h","HARD"]],sel,onChange:s=>{RSEL=s;if(ONL)rRender()}})}
+function openRank(k,sel){RK=k||RK;RV=DV;rkBarInit(sel||null);show("ovRank");rRender();netTop()}
+$("bRank").onclick=()=>openRank("kpm");$("bToRank").onclick=()=>openRank(LAST&&LAST.kind==="rain"?"rain":"kpm",{diff:PLV,ver:window.phRk?phRk.vers("hangulbi")[0].id:null});$("bRankX").onclick=()=>hide("ovRank");
 function overUI(o){
   inp.blur();LAST=o.rec;
   $("oSub").textContent=o.sub;$("oBig").textContent=o.big;$("oMsg").textContent=o.msg;
@@ -743,10 +746,10 @@ $("oName").addEventListener("submit",e=>{e.preventDefault();if(!LAST||LAST.saved
   const n=($("oNameIn").value.trim()||"익명").slice(0,10);store.set("mcb-name",n);$("oName").classList.add("saved");$("oNameIn").blur();
   const ps=[];if(LAST.kind==="rain"){ps.push(netAdd("rain-"+DV+LVS(),LAST.s,LAST.v,n));MINE={n,s:LAST.s,k:"rain"}}
   else{if(LAST.s>0)ps.push(netAdd("spd-"+DV+LVS(),LAST.s,LAST.v,n));if(LAST.kpm>0)ps.push(netAdd("kpm-"+DV+LVS(),LAST.kpm,LAST.v,n));MINE={n,s:LAST.kpm,k:"kpm"}}
-  Promise.all(ps).then(()=>openRank(LAST.kind==="rain"?"rain":"kpm"))});
+  Promise.all(ps).then(()=>openRank(LAST.kind==="rain"?"rain":"kpm",{diff:PLV,ver:window.phRk?phRk.vers("hangulbi")[0].id:null}))});
 livesUI(LIVES);bestTxt();
 window.__t={startSpeed,startRain,get R(){return R},get SP(){return SP},spawn:()=>spawn(),rainEnd,spEnd,submit};
 </script>
-<script src="../games/ph.js?v=13"></script><script src="../games/vs.js?v=4"></script>
+<script src="../games/ph.js?v=14"></script><script src="../games/vs.js?v=4"></script>
 </body>
 </html>
