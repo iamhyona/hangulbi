@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793110275";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793112840";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -534,7 +534,7 @@ const drop=w=>R.words=R.words.filter(o=>o!==w);
 function miss(w){
   drop(w);w.el.classList.add("diss");splash(w);setTimeout(()=>w.el.remove(),620);
   R.lives--;R.combo=0;log(w.e,"miss");tip(w.e,"miss");sfx.miss();if(navigator.vibrate)try{navigator.vibrate(40)}catch(e){}
-  hud();if(R.lives<=0){STATE="over";if(VS){cancelAnimationFrame(raf);raf=0;setTimeout(()=>PHVS.over(R.score,true),500);return}setTimeout(rainEnd,400)}
+  hud();if(R.lives<=0&&!R.endQ){R.endQ=1;STATE="over";if(VS){cancelAnimationFrame(raf);raf=0;setTimeout(()=>PHVS.over(R.score,true),500);return}setTimeout(rainEnd,400)}
 }
 function pop(w,quiet){
   drop(w);R.combo++;
@@ -579,7 +579,7 @@ function startRain(){
   requestAnimationFrame(()=>{field.style.setProperty("--fh",field.clientHeight+"px");banner("STAGE 1",CAT[theme(1)],false,1400)});
   last=0;cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
 }
-function rainEnd(){
+function rainEnd(){if(R.ended)return;R.ended=1; /* 끝 화면은 한 번만 (여러 번 뜨면 같은 기록이 여러 번 등록됐음) */
   cancelAnimationFrame(raf);raf=0;STATE="over";
   const fs=Math.round(R.score*SMUL()),key="mcb-best-basic",best=+(store.get(key)||0),rec=fs>best&&fs>0;if(rec)store.set(key,fs);
   const p=R.popped,title=p<5?"설겆이 하는 사람… 아니 설거지!":p<15?"금새… 아니 '금세' 배우는 사람":p<30?"맞춤법 단속반":p<50?"걸어 다니는 국어사전":"국립국어원 비밀 요원";
@@ -652,7 +652,7 @@ function spCount(v,t){let ok=0;for(let i=0;i<t.length;i++)if(v[i]===t[i])ok++;SP
 function spFail(why){
   if(SP.busy)return;SP.busy=true;spCount(inp.value,SP.list[SP.i]);SP.lives--;hud();shake();sfx.bad();
   spBanner(why,SP.lives>0?"LIFE "+SP.lives:"",true);
-  vsScore();if(SP.lives<=0){STATE="over";if(VS){clearInterval(spT);setTimeout(()=>PHVS.over(SP.ok,true),600);return}setTimeout(spEnd,800);return}
+  vsScore();if(SP.lives<=0&&!SP.endQ){SP.endQ=1;STATE="over";if(VS){clearInterval(spT);setTimeout(()=>PHVS.over(SP.ok,true),600);return}setTimeout(spEnd,800);return}
   setTimeout(spAdvance,500);
 }
 function spSubmit(){
@@ -663,7 +663,7 @@ function spSubmit(){
   SP.res.push(kpm);SP.ok++;spCount(t,t);SP.pts+=Math.round(kpm*(1+(SP.stage-1)*.2));$("hScore").textContent=kpm;sfx.ok();
   spBanner(kpm+"타",VS?"→ "+vsSend(kpm):"");inp.value="";vsScore();spAdvance();
 }
-function spEnd(){
+function spEnd(){if(SP.ended)return;SP.ended=1;
   clearInterval(spT);STATE="over";
   const avg=SP.res.length?Math.round(SP.res.reduce((a,b)=>a+b,0)/SP.res.length):0,acc=SP.cAll?Math.round(SP.cOk/SP.cAll*100):0,score=Math.round(SP.pts*acc/100*SMUL());
   const best=+(store.get("mcb-best-speedst")||0),rec=SP.stage>best;if(rec)store.set("mcb-best-speedst",SP.stage);
