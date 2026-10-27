@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793003820";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793110275";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -220,7 +220,7 @@ html.kb .spinfo{display:none}
 
     <div class="ov" id="ovMode"><div class="phS">
       <div class="sub" id="mTitle">SINGLE PLAY</div>
-      <div class="tabs lvs" id="lvSel"><button data-l="e">EASY</button><button data-l="n">NORMAL</button><button data-l="h">HARD</button></div>
+      <div class="tabs lvs" id="lvSel"><button data-l="e">EASY ×0.5</button><button data-l="n">NORMAL ×1</button><button data-l="h">HARD ×2</button></div>
       <div class="mBtns"><button class="phS-b" id="bSpeed">SPEED TYPING</button><button class="phS-b" id="bRain">HANGUL RAIN</button></div>
       <button class="x" id="bModeX">✕</button></div>
     </div>
@@ -487,6 +487,7 @@ const goal=st=>8+st*2;
 let R=null,raf=0,last=0,bag=[];
 let LV="n",PLV="n";try{LV=localStorage.getItem("hb-lv")||"n"}catch(e){} /* 난이도: 고른 것 · 지금 판 */
 const LVF=(e,n,h)=>({e,n,h})[PLV]||n;
+const SMUL=()=>LVF(.5,1,2); /* 난이도 점수 배율: EASY ×0.5 · NORMAL ×1 · HARD ×2 (RAIN·TYPING 점수. 타수는 그대로) */
 const MOBI=()=>{try{return matchMedia("(pointer:coarse)").matches||/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)}catch(e){return false}}; /* 모바일: 키보드 때문에 화면이 짧아서 */
 function fallTime(){return Math.max(4.2,10.5-R.level*.85)*(MOBI()?1.3:1)*LVF(1.3,1,.78)} // 난이도: 이지 천천히 · 하드 빠르게 // 모바일은 30% 천천히 // 바닥까지 걸리는 시간(초): 화면이 짧아져도 난이도는 같게
 function nextEntry(){
@@ -580,10 +581,10 @@ function startRain(){
 }
 function rainEnd(){
   cancelAnimationFrame(raf);raf=0;STATE="over";
-  const key="mcb-best-basic",best=+(store.get(key)||0),rec=R.score>best&&R.score>0;if(rec)store.set(key,R.score);
+  const fs=Math.round(R.score*SMUL()),key="mcb-best-basic",best=+(store.get(key)||0),rec=fs>best&&fs>0;if(rec)store.set(key,fs);
   const p=R.popped,title=p<5?"설겆이 하는 사람… 아니 설거지!":p<15?"금새… 아니 '금세' 배우는 사람":p<30?"맞춤법 단속반":p<50?"걸어 다니는 국어사전":"국립국어원 비밀 요원";
-  overUI({sub:"HANGUL RAIN · GAME OVER",big:R.score.toLocaleString(),msg:(rec?"NEW BEST! · ":best?`최고 ${best.toLocaleString()}점 · `:"")+"칭호: "+title,
-    stats:[["STAGE",R.level],["WORDS",R.popped],["MISS",R.learned.filter(x=>x.st==="miss").length]],rec:{kind:"rain",s:R.score,v:R.level}});
+  overUI({sub:"HANGUL RAIN · GAME OVER",big:fs.toLocaleString(),msg:(rec?"NEW BEST! · ":best?`최고 ${best.toLocaleString()}점 · `:"")+"칭호: "+title,
+    stats:[["STAGE",R.level],["WORDS",R.popped],["MISS",R.learned.filter(x=>x.st==="miss").length]],rec:{kind:"rain",s:fs,v:R.level}});
   const items=R.learned.slice().sort((a,b)=>(a.st==="miss"?0:1)-(b.st==="miss"?0:1));
   $("oWords").hidden=!items.length;$("oWords").innerHTML=items.map(({e,st})=>`<div><b>${esc(e.word)}</b>${e.wrong?`<s>${esc(e.wrong)}</s>`:""}${st==="miss"?"<em>MISS</em>":""}<p>${esc(e.mean)}</p></div>`).join("");
 }
@@ -664,7 +665,7 @@ function spSubmit(){
 }
 function spEnd(){
   clearInterval(spT);STATE="over";
-  const avg=SP.res.length?Math.round(SP.res.reduce((a,b)=>a+b,0)/SP.res.length):0,acc=SP.cAll?Math.round(SP.cOk/SP.cAll*100):0,score=Math.round(SP.pts*acc/100);
+  const avg=SP.res.length?Math.round(SP.res.reduce((a,b)=>a+b,0)/SP.res.length):0,acc=SP.cAll?Math.round(SP.cOk/SP.cAll*100):0,score=Math.round(SP.pts*acc/100*SMUL());
   const best=+(store.get("mcb-best-speedst")||0),rec=SP.stage>best;if(rec)store.set("mcb-best-speedst",SP.stage);
   const bk=+(store.get("hb-best-kpm")||0);if(avg>bk)store.set("hb-best-kpm",avg);
   overUI({sub:"SPEED TYPING · GAME OVER",big:avg+"타",msg:"평균 타수"+(avg>bk&&avg>0?" · NEW BEST!":bk?` · 최고 ${bk}타`:""),
