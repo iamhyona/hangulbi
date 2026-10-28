@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793112840";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('8px "Press Start 2P"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793212107";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -220,8 +220,8 @@ html.kb .spinfo{display:none}
 
     <div class="ov" id="ovMode"><div class="phS">
       <div class="sub" id="mTitle">SINGLE PLAY</div>
-      <div class="tabs lvs" id="lvSel"><button data-l="e">EASY ×0.5</button><button data-l="n">NORMAL ×1</button><button data-l="h">HARD ×2</button></div>
-      <div class="mBtns"><button class="phS-b" id="bSpeed">SPEED TYPING</button><button class="phS-b" id="bRain">HANGUL RAIN</button></div>
+      <div class="phSeg" id="mSeg"><button id="bSpeed" class="on">SPEED TYPING</button><button id="bRain">HANGUL RAIN</button></div>
+      <div class="mBtns"><button class="phDiff lv-e" data-l="e">EASY</button><button class="phDiff lv-n" data-l="n">NORMAL</button><button class="phDiff lv-h" data-l="h">HARD</button></div>
       <button class="x" id="bModeX">✕</button></div>
     </div>
     <div class="ov" id="ovPause">
@@ -245,8 +245,8 @@ html.kb .spinfo{display:none}
 
     <div class="ov" id="ovRank">
       <div class="sub">RANKING</div>
-      <div class="tabs" id="rTabs"><button data-k="kpm">KPM</button><button data-k="spd">TYPING</button><button data-k="rain">RAIN</button></div>
-      <div class="tabs dv" id="rDv"><button data-dv="m">MOBILE</button><button data-dv="p">PC</button></div>
+      <div class="tabs phSeg" id="rTabs"><button data-k="kpm">KPM</button><button data-k="spd">TYPING</button><button data-k="rain">RAIN</button></div>
+      <div class="tabs dv phSeg" id="rDv"><button data-dv="m">MOBILE</button><button data-dv="p">PC</button></div>
       <div class="list" id="rList"></div>
       <button class="x" id="bRankX">✕</button>
     </div>
@@ -702,14 +702,15 @@ function bestTxt(){const a=+(store.get("hb-best-kpm")||0),b=+(store.get("mcb-bes
 const TUT={goal:"<b>빠르게치기</b>: 나온 문장을 그대로 치면 다음 문장! 목표 타수보다 늦거나 오타가 나면 목숨이 줄어요.<br><b>한글비</b>: 내려오는 우리말을 그대로 쳐서 터뜨려요. 바닥에 닿으면 목숨이 줄고, 터뜨린 말의 뜻이 아래에 나와요.",
  touch:[["스페이스","문장 끝에서 누르면 바로 제출"],["엔터","입력"],["★ 낱말","얼음·폭탄·목숨 보너스"]],
  pc:[["Space","문장 끝에서 누르면 바로 제출"],["Enter","입력"],["★ 낱말","얼음·폭탄·목숨 보너스"]]};
-function go(m){unlock();focusIn();phTut("ph-tut-hangulbi",TUT,()=>{m==="speed"?startSpeed():startRain()})}
+function go(m){unlock();focusIn();if(window.phLvTheme){phLvTheme(PLV,$("field"));phLvTheme(PLV,document.querySelector("#sp .card"))}phTut("ph-tut-hangulbi",TUT,()=>{m==="speed"?startSpeed():startRain()})}
 let PK="single",VSPICK=null; /* 싱글 / 온라인 */
-function lvSync(){document.querySelectorAll("#lvSel button").forEach(b=>b.classList.toggle("on",b.dataset.l===LV))}
-document.querySelectorAll("#lvSel button").forEach(b=>b.onclick=()=>{LV=b.dataset.l;try{localStorage.setItem("hb-lv",LV)}catch(e){}lvSync()});
+/* 모드 고르기: 위 슬라이드 토글(SPEED TYPING · HANGUL RAIN) → 아래 난이도 버튼을 누르면 시작 */
+let PICKM="speed";function lvSync(){$("bSpeed").classList.toggle("on",PICKM==="speed");$("bRain").classList.toggle("on",PICKM==="rain")}
+document.querySelectorAll("#ovMode .phDiff").forEach(b=>b.onclick=()=>{LV=b.dataset.l;try{localStorage.setItem("hb-lv",LV)}catch(e){}pickMode(PICKM)});
 function modeOpen(k){PK=k;$("mTitle").textContent=k==="online"?"ONLINE PLAY":"SINGLE PLAY";lvSync();show("ovMode")}
 function pickMode(m){unlock();hide("ovMode");if(PK==="online"){VSPICK={m,l:LV};if(window.PHVS)PHVS.menu();return}PLV=LV;go(m)}
 $("bSingle").onclick=()=>{unlock();modeOpen("single")};$("bModeX").onclick=()=>hide("ovMode");
-$("bSpeed").onclick=()=>pickMode("speed");$("bRain").onclick=()=>pickMode("rain");
+$("bSpeed").onclick=()=>{PICKM="speed";lvSync()};$("bRain").onclick=()=>{PICKM="rain";lvSync()};
 /* 온라인 대전: 빠르게치기 · 같은 문장 · 먼저 10문장 · 맞힐 때마다 상대 공격(시간 뺏기 / 글자 가리기) */
 addEventListener("load",()=>{if(window.PHVS){PHVS.init({id:'hgb',name:()=>store.get("mcb-name")||"",setName:n=>store.set("mcb-name",n),score:()=>MODE==="rain"&&R?R.score:SP?SP.ok:0,
  extra:()=>VSPICK?{m:VSPICK.m,l:VSPICK.l}:{m:"speed",l:"n"},
@@ -728,7 +729,7 @@ function netTop(){return fetch(`${RANK_URL}?g=hangulbi`).then(r=>r.json()).then(
 function rSync(){document.querySelectorAll("#rTabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===RK));document.querySelectorAll("#rDv button").forEach(b=>b.classList.toggle("on",b.dataset.dv===RV))}
 function rRender(){rSync();const el=$("rList");if(!ONL){el.innerHTML='<span class="em">LOADING…</span>';return}
   const rows=ONL.filter(r=>(r.m===RK+"-"+RV||String(r.m).indexOf(RK+"-"+RV+"-")===0)&&+r.s>0).sort((a,b)=>b.s-a.s).slice(0,50);
-  el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span>${esc(r.n)}${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}</span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
+  el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span><em class="nm">${esc(r.n)}</em>${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}</span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
 document.querySelectorAll("#rTabs button").forEach(b=>b.onclick=()=>{RK=b.dataset.k;rRender()});
 document.querySelectorAll("#rDv button").forEach(b=>b.onclick=()=>{RV=b.dataset.dv;rRender()});
 function openRank(k){RK=k||RK;RV=DV;show("ovRank");rRender();netTop()}
@@ -748,6 +749,6 @@ $("oName").addEventListener("submit",e=>{e.preventDefault();if(!LAST||LAST.saved
 livesUI(LIVES);bestTxt();
 window.__t={startSpeed,startRain,get R(){return R},get SP(){return SP},spawn:()=>spawn(),rainEnd,spEnd,submit};
 </script>
-<script src="../games/ph.js?v=13"></script><script src="../games/vs.js?v=4"></script>
+<script src="../games/ph.js?v=18"></script><script src="../games/vs.js?v=4"></script>
 </body>
 </html>
