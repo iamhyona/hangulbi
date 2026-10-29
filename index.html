@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ko">
-<head><style>html.phL body{visibility:hidden}</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793232263";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+<head><style>html.phL body{visibility:hidden}#rDv{display:none!important}.phDvB{font:400 8px/1 "Silkscreen",monospace;letter-spacing:.06em;color:#c9cbe0;background:#2c2f4a;border-radius:4px;padding:3px 5px 2px;font-style:normal;flex:0 0 auto}
+</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793232263";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -25,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Jersey+15&display=block">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css">
-<link rel="stylesheet" href="../games/ph.css?v=12">
+<link rel="stylesheet" href="../games/ph.css?v=14">
 <style>
 :root{--g1:#e3fff6;--g2:#8fbfb2;--gb:#1f5a50;--neon:#3fe0c0;--bg:#07120f;--card:#0b1a16;--gold:#f2b000;--red:#ff4d6d;--f:Galmuri11,"Galmuri9",sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -76,8 +77,14 @@ html.kb .hud{--hh:38px}html.kb .hud .phBx{padding:4px 3px!important}html.kb .hud
 .field.frozen{border-color:#7fd4ff}.field.frozen .w{--c:#7fd4ff;background:#0d2433}
 .field.jolt{animation:jolt .25s steps(3)}
 @keyframes jolt{33%{transform:translateX(-4px)}66%{transform:translateX(4px)}}
-.pts{position:absolute;font:400 18px "Jersey 15",sans-serif;letter-spacing:.02em;color:#ffd84d;text-shadow:1px 0 #08090f,-1px 0 #08090f,0 1px #08090f,0 -1px #08090f,1px 1px #08090f,-1px -1px #08090f,0 0 8px rgba(255,216,77,.55);pointer-events:none;animation:up .7s steps(6) forwards;z-index:3}
+.pts{position:absolute;font:700 12px Silkscreen;color:#fff;text-shadow:0 0 6px var(--neon);pointer-events:none;animation:up .7s steps(6) forwards;z-index:3}
 @keyframes up{to{transform:translateY(-26px);opacity:0}}
+.banner{position:absolute;left:0;right:0;top:38%;text-align:center;pointer-events:none;opacity:0;z-index:4}
+.banner.show{opacity:1;animation:bn .25s steps(3)}
+@keyframes bn{from{transform:scale(1.4)}}
+.banner b{display:block;font:700 26px Silkscreen;color:#fff;text-shadow:0 0 10px var(--neon),0 0 24px var(--neon);letter-spacing:2px}
+.banner small{display:block;font:13px var(--f);color:var(--g2);margin-top:6px}
+.banner.bad b{text-shadow:0 0 10px var(--red),0 0 24px var(--red)}
 /* 뜻 풀이 줄 */
 .tip{flex-shrink:0;min-height:36px;border:2px solid #17473f;border-radius:6px;background:var(--card);padding:5px 8px;display:flex;flex-direction:column;justify-content:center;gap:2px}
 .tip .t1{display:flex;gap:6px;align-items:baseline;font:14px var(--f);color:#fff;white-space:nowrap;overflow:hidden}
@@ -118,10 +125,7 @@ html.kb .sent{font-size:16px;line-height:1.45}
 html.kb .sp .next{display:block}html.kb .sp .card{padding:16px 12px!important}html.kb .sp .sent{font-size:19px!important}
 .sent i[data-f]:not(.ok){color:transparent!important;background:repeating-linear-gradient(45deg,#3a4560 0 3px,#222a3c 3px 6px);border-radius:2px} /* 대전 공격: 가려진 글자 */
 html .phVc{top:calc(env(safe-area-inset-top,0px) + 100px);bottom:auto} /* 대전 상대 표시: 입력창 가리지 않게 위로 */
-.card{position:relative}.atk{position:absolute;left:50%;top:-14px;transform:translateX(-50%);z-index:3;pointer-events:none;opacity:0;white-space:nowrap;font:700 14px Silkscreen,monospace;color:#c9a6ff;letter-spacing:.1em;text-shadow:2px 0 #08090f,-2px 0 #08090f,0 2px #08090f,0 -2px #08090f,2px 2px #08090f,-2px -2px #08090f,0 0 12px rgba(201,166,255,.55)}.atk small{margin-left:8px;font:12px Galmuri11,monospace;color:#c9a6ff;letter-spacing:.04em;text-shadow:1px 1px #08090f,-1px -1px #08090f,1px -1px #08090f,-1px 1px #08090f}.atk.show{animation:atk 1.6s steps(8) forwards}@keyframes atk{0%{opacity:0;transform:translate(-50%,-4px)}12%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}.sent i.bad{color:var(--red);background:rgba(255,77,109,.18)}
-.spPop{position:static!important;transform:none!important;animation:none!important;display:flex}
-.spPop b.n{font:400 30px "Jersey 15",sans-serif!important;letter-spacing:.02em!important}
-.spPop span.ko{font-size:13px!important;letter-spacing:.04em!important}
+.card{position:relative}.atk{position:absolute;left:50%;top:-12px;transform:translateX(-50%);z-index:3;pointer-events:none;opacity:0;white-space:nowrap;background:#2a0d16;border:2px solid #ff4d6d;border-radius:6px;padding:3px 10px 2px;font:700 11px Silkscreen,monospace;color:#ff8aa0;letter-spacing:.08em}.atk small{margin-left:6px;font:11px Galmuri11,monospace;color:#ffd0d8;letter-spacing:0}.atk.show{animation:atk 1.6s steps(8) forwards}@keyframes atk{0%{opacity:0;transform:translate(-50%,-4px)}12%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}.sent i.bad{color:var(--red);background:rgba(255,77,109,.18)}
 .kpmL{position:absolute;right:8px;top:6px;font:400 8px Silkscreen,monospace;letter-spacing:.1em;color:#5f8a80;pointer-events:none}
 .kpmL b{font:400 16px "Jersey 15",sans-serif;color:#cfe;margin-right:3px;letter-spacing:.02em}
 html.kb .kpmL{top:3px}
@@ -199,7 +203,7 @@ html.kb .phLvName{display:none}
     </div>
     <div class="prog"><i id="prog"></i></div>
     <!-- 한글비 -->
-    <div class="field" id="field" hidden><div class="rain" id="rain"></div><div class="ground"></div></div>
+    <div class="field" id="field" hidden><div class="rain" id="rain"></div><div class="ground"></div><div class="banner" id="banner"><b></b><small></small></div></div>
     <div class="phLvName" id="lvR" hidden></div>
     <div class="tip hint" id="tip" hidden><p>터뜨린 낱말의 뜻이 여기에 나와요</p></div>
     <!-- 빠르게치기 -->
@@ -230,8 +234,7 @@ html.kb .phLvName{display:none}
       <div class="big">PAUSE</div>
       <button class="phBtn" id="bResume">RESUME</button>
       <button class="phBtn sub" id="bRestart">RESTART</button>
-      <button class="phBtn sub" id="bQuit">QUIT</button>
-      <button class="x" id="bHome">✕</button>
+      <button class="phBtn sub" id="bHome">MAIN MENU</button>
     </div>
 
     <div class="ov" id="ovOver">
@@ -248,7 +251,7 @@ html.kb .phLvName{display:none}
     <div class="ov" id="ovRank">
       <div class="sub">RANKING</div>
       <div class="tabs phSeg" id="rTabs"><button data-k="kpm">KPM</button><button data-k="spd">TYPING</button><button data-k="rain">RAIN</button></div>
-      <div class="tabs dv phSeg" id="rDv"><button data-dv="m">MOBILE</button><button data-dv="p">PC</button></div>
+      <div class="tabs dv phSeg" id="rDv" hidden style="display:none"><button data-dv="m">MOBILE</button><button data-dv="p">PC</button></div>
       <div class="list" id="rList"></div>
       <button class="x" id="bRankX">✕</button>
     </div>
@@ -556,18 +559,17 @@ function pop(w,quiet){
   hud();
 }
 function fire(k){
-  if(k==="freeze"){R.freeze=3;field.classList.add("frozen");banner("FREEZE","3초 동안 멈춤","item")}
-  if(k==="heal"){R.lives=Math.min(LIVES,R.lives+1);banner("+1 LIFE","목숨 하나 더","item")}
-  if(k==="bomb"){banner("BOMB!","화면 싹쓸이","item");for(const w of R.words.slice())pop(w,true)}
+  if(k==="freeze"){R.freeze=3;field.classList.add("frozen");banner("FREEZE","3초 동안 멈춤")}
+  if(k==="heal"){R.lives=Math.min(LIVES,R.lives+1);banner("+1 LIFE","목숨 하나 더")}
+  if(k==="bomb"){banner("BOMB!","화면 싹쓸이");for(const w of R.words.slice())pop(w,true)}
 }
-/* 게임 중 팝업 (v2 공통 모양): 색 = 뜻 (gold 득점 · item 아이템 · stage 스테이지 · atk 공격 · warn 위험) */
-function banner(b,s,kind,tier,sub){if(!window.phPop)return;field.querySelectorAll(".phPop").forEach(n=>n.remove());phPop(field,esc(b),s?esc(s):"",kind||"stage",tier||"d2",sub==null?"ko":sub)}
+function banner(b,s,bad,ms=1100){const el=$("banner");el.querySelector("b").textContent=b;el.querySelector("small").textContent=s||"";el.classList.toggle("bad",!!bad);el.classList.remove("show");void el.offsetWidth;el.classList.add("show");clearTimeout(banner.t);banner.t=setTimeout(()=>el.classList.remove("show"),ms)}
 function stageClear(){
   if(R.between||STATE!=="play")return;if(VS&&R.level>=VS_RAIN){STATE="over";cancelAnimationFrame(raf);raf=0;sfx.clear();PHVS.claimWin(R.score);return} /* 대전: 먼저 클리어 */R.between=true;sfx.clear();
   for(const w of R.words.slice()){drop(w);w.el.classList.add("diss");splash(w);setTimeout(()=>w.el.remove(),620)}
   const bonus=Math.round(R.lives*50*R.level*SPDS());R.score+=bonus;R.lives=Math.min(LIVES,R.lives+1);hud();
-  banner("CLEAR!","+"+bonus.toLocaleString(),"stage","d1","n");
-  setTimeout(()=>{if(!R||STATE!=="play")return;R.level++;R.cleared=0;R.between=false;R.spawnT=.9;bag=[];hud();const c=theme(R.level);banner("STAGE "+R.level,c?CAT[c]:"총출동","stage","d1")},1500);
+  banner("CLEAR!","보너스 +"+bonus.toLocaleString());
+  setTimeout(()=>{if(!R||STATE!=="play")return;R.level++;R.cleared=0;R.between=false;R.spawnT=.9;bag=[];hud();const c=theme(R.level);banner("STAGE "+R.level,c?CAT[c]:"총출동",false,1400)},1500);
 }
 function log(e,st){const k=R.learned.findIndex(x=>x.e===e);if(k>-1)R.learned.splice(k,1);R.learned.unshift({e,st})}
 function tipVis(){$("tip").hidden=!(MODE==="rain"&&R&&OPT.guide)}
@@ -586,7 +588,7 @@ function startRain(){
   $("field").hidden=false;$("lvR").hidden=false;$("sp").hidden=true;$("prog").style.cssText="";$("prog").parentNode.classList.remove("tm");$("tip").className="tip hint";$("tip").innerHTML="<p>터뜨린 낱말의 뜻이 여기에 나와요</p>";
   inp.placeholder="내려오는 낱말을 입력";
   tipVis();lvTheme();STATE="play";hud();goPlay();
-  requestAnimationFrame(()=>{field.style.setProperty("--fh",field.clientHeight+"px");banner("STAGE 1",CAT[theme(1)],"stage","d1")});
+  requestAnimationFrame(()=>{field.style.setProperty("--fh",field.clientHeight+"px");banner("STAGE 1",CAT[theme(1)],false,1400)});
   last=0;cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
 }
 function rainEnd(){if(R.ended)return;R.ended=1; /* 끝 화면은 한 번만 (여러 번 뜨면 같은 기록이 여러 번 등록됐음) */
@@ -608,8 +610,8 @@ const VS_GOAL=10,VS_RAIN=2,rngOf=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let x=Math.imul(s
 function atkMsg(b,s){const el=$("atk");el.innerHTML=`<b>${b}</b>${s?`<small>${s}</small>`:""}`;el.classList.remove("show");void el.offsetWidth;el.classList.add("show")}
 function vsApply(k){
  if(MODE==="rain"){if(!R||STATE!=="play")return;sfx.bad();vib([30,30,30]);
-  if(k==="drop"){spawn();setTimeout(()=>{if(R&&STATE==="play")spawn()},350);banner("ATTACKED!","낱말 +2","atk")}
-  if(k==="fog"){field.classList.add("fog");clearTimeout(vsApply.f);vsApply.f=setTimeout(()=>field.classList.remove("fog"),3500);banner("ATTACKED!","안개 3초","atk")}return}
+  if(k==="drop"){spawn();setTimeout(()=>{if(R&&STATE==="play")spawn()},350);banner("ATTACKED!","낱말 +2",true)}
+  if(k==="fog"){field.classList.add("fog");clearTimeout(vsApply.f);vsApply.f=setTimeout(()=>field.classList.remove("fog"),3500);banner("ATTACKED!","안개 3초",true)}return}
  if(!SP||SP.busy||STATE!=="play"){VS.pend.push(k);return}
  if(k==="time"){SP.t0-=SP.limit*.3;atkMsg("ATTACKED!","시간 -30%")}
  if(k==="fog"){const els=[...$("sent").children].filter(e=>e.textContent.trim()&&!e.classList.contains("ok"));for(const e of shuf(els).slice(0,Math.max(2,Math.ceil(els.length*.4))))e.dataset.f=1;atkMsg("ATTACKED!","글자 가리기")}
@@ -654,14 +656,14 @@ function spTick(){
 function spAdvance(){
   if(VS&&SP.ok>=VS_GOAL){clearInterval(spT);STATE="over";PHVS.claimWin(SP.ok);return} /* 대전: 먼저 10문장 */
   SP.i++;
-  if(SP.i>=SP_N){SP.stage++;SP.i=0;SP.list=spDeck();sfx.clear();spBanner("STAGE "+SP.stage,"목표 "+spTarget(SP.stage)+"타","stage");setTimeout(spShow,700)}
+  if(SP.i>=SP_N){SP.stage++;SP.i=0;SP.list=spDeck();sfx.clear();spBanner("STAGE "+SP.stage,"목표 "+spTarget(SP.stage)+"타");setTimeout(spShow,700)}
   else setTimeout(spShow,300);
 }
-function spBanner(b,s,kind,bt){const c=$("sent");c.innerHTML=`<div class="phPop spPop ${kind||"stage"} d2"><b class="${bt||""}">${esc(b)}</b>${s?`<span class="ko">${esc(s)}</span>`:""}</div>`} /* 문장 칸 팝업 (v2 공통 모양) */
+function spBanner(b,s,bad){const c=$("sent");c.innerHTML=`<span style="font:700 22px Silkscreen;color:#fff;text-shadow:0 0 10px ${bad?"#ff4d6d":"#3fe0c0"}">${esc(b)}</span>${s?`<br><span style="font-size:13px;color:#8fbfb2">${esc(s)}</span>`:""}`}
 function spCount(v,t){let ok=0;for(let i=0;i<t.length;i++)if(v[i]===t[i])ok++;SP.cOk+=ok;SP.cAll+=Math.max(t.length,v.length)}
 function spFail(why){
   if(SP.busy)return;SP.busy=true;spCount(inp.value,SP.list[SP.i]);SP.lives--;hud();shake();sfx.bad();
-  spBanner(why,SP.lives>0?"목숨 "+SP.lives:"","warn");
+  spBanner(why,SP.lives>0?"LIFE "+SP.lives:"",true);
   vsScore();if(SP.lives<=0&&!SP.endQ){SP.endQ=1;STATE="over";if(VS){clearInterval(spT);setTimeout(()=>PHVS.over(SP.ok,true),600);return}setTimeout(spEnd,800);return}
   setTimeout(spAdvance,500);
 }
@@ -671,7 +673,7 @@ function spSubmit(){
   if(v.replace(/\s+/g," ")!==t){spFail("TYPO");return}
   SP.busy=true;const el=performance.now()-SP.t0,kpm=Math.round(keys(t)/Math.max(1000,el)*60000);
   SP.res.push(kpm);SP.ok++;spCount(t,t);SP.pts+=Math.round(kpm*(1+(SP.stage-1)*.2));$("kpmL").firstChild.textContent=kpm;sfx.ok();hud();
-  spBanner(kpm+"타",VS?"→ "+vsSend(kpm):"","gold","n");inp.value="";vsScore();spAdvance();
+  spBanner(kpm+"타",VS?"→ "+vsSend(kpm):"");inp.value="";vsScore();spAdvance();
 }
 function spScore(){const acc=SP.cAll?Math.round(SP.cOk/SP.cAll*100):100;return Math.round(SP.pts*acc/100*SMUL())} /* 지금 끝나면 받을 점수 */
 function spEnd(){if(SP.ended)return;SP.ended=1;
@@ -712,13 +714,13 @@ function openSet(){if(!window.phSettings||SETOPEN)return;unlock();const was=STAT
     home:()=>{SETOPEN=false;toTitle()}})}
 $("bSet").onclick=openSet;$("bResume").onclick=()=>pause(false);
 $("bRestart").onclick=()=>{hide("ovPause");MODE==="speed"?startSpeed():startRain()};
-$("bQuit").onclick=()=>{hide("ovPause");STATE="over";MODE==="speed"?spEnd():rainEnd()};
+
 $("bHome").onclick=$("bOverHome").onclick=()=>toTitle();
 $("bAgain").onclick=()=>{unlock();PLV=LV;MODE==="speed"?startSpeed():startRain()};
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&!SETOPEN)pause(true)});
 function toTitle(){document.querySelectorAll(".phSet").forEach(n=>n.remove());SETOPEN=false;cleanup();STATE="title";inp.blur();R=null;SP=null;$("field").hidden=true;$("lvR").hidden=true;$("tip").hidden=true;$("sp").hidden=false;$("sent").textContent="";$("kpmL").firstChild.textContent="0";$("dots").innerHTML="";$("next").textContent="";livesUI(LIVES);$("hScore").textContent="0";$("hStage").textContent="1";$("prog").style.cssText="";$("prog").parentNode.classList.remove("tm");bestTxt();show("ovTitle")}
 function bestTxt(){const a=+(store.get("hb-best-kpm")||0),b=+(store.get("mcb-best-basic")||0);$("bestTxt").textContent=[a?`BEST ${a}타`:"",b?`한글비 ${b.toLocaleString()}`:""].filter(Boolean).join("  ·  ")}
-const TUT={goal:"<b>빠르게치기</b>: 나온 문장을 그대로 치면 다음 문장! 목표 타수보다 늦거나 오타가 나면 목숨이 줄어요.<br><b>한글비</b>: 내려오는 우리말을 그대로 쳐서 터뜨려요. 바닥에 닿으면 목숨이 줄고, 터뜨린 말의 뜻이 아래에 나와요.",
+const TUT={goal:"하늘에서 한글비가 내려요!<br>땅에 닿기 전에 그대로 쳐서 터뜨려요.",
  touch:[["스페이스","문장 끝에서 누르면 바로 제출"],["엔터","입력"],["★ 낱말","얼음·폭탄·목숨 보너스"]],
  pc:[["Space","문장 끝에서 누르면 바로 제출"],["Enter","입력"],["★ 낱말","얼음·폭탄·목숨 보너스"]]};
 function lvTheme(){if(window.phLvTheme){phLvTheme(PLV,$("field"));phLvTheme(PLV,document.querySelector("#sp .card"))}}
@@ -744,7 +746,7 @@ document.addEventListener("DOMContentLoaded",()=>{optLoad();
 /* 온라인 대전: 빠르게치기 · 같은 문장 · 먼저 10문장 · 맞힐 때마다 상대 공격(시간 뺏기 / 글자 가리기) */
 addEventListener("load",()=>{if(window.PHVS){PHVS.init({id:'hgb',name:()=>store.get("mcb-name")||"",setName:n=>store.set("mcb-name",n),score:()=>MODE==="rain"&&R?R.score:SP?SP.ok:0,
  extra:()=>VSPICK?{m:VSPICK.m,l:VSPICK.l}:{m:"speed",l:"n"},
- start:d=>{PLV=d.l||"n";VS={r:rngOf(d.seed),n:0,pend:[]};if(d.m==="rain"){startRain();setTimeout(()=>banner("VS · "+({e:"EASY",n:"NORMAL",h:"HARD"})[PLV],"먼저 STAGE "+VS_RAIN+" 클리어!","atk","d2"),1300);return}startSpeed();$("spinfo").textContent="먼저 "+VS_GOAL+"문장! 맞힐 때마다 상대 공격";vsScore()},
+ start:d=>{PLV=d.l||"n";VS={r:rngOf(d.seed),n:0,pend:[]};if(d.m==="rain"){startRain();setTimeout(()=>banner("VS · "+({e:"EASY",n:"NORMAL",h:"HARD"})[PLV],"먼저 STAGE "+VS_RAIN+" 클리어! 터뜨릴수록 상대 공격",false,2200),1300);return}startSpeed();$("spinfo").textContent="먼저 "+VS_GOAL+"문장! 맞힐 때마다 상대 공격";vsScore()},
  data:d=>{if(d.t==="atk"&&VS&&STATE==="play")vsApply(d.k)},
  stop:()=>{clearInterval(spT);STATE="over"},leave:()=>{VS=null;$("spinfo").textContent="문장을 그대로 치고 스페이스 또는 엔터";toTitle()}});
  $("bOnline").onclick=()=>{unlock();modeOpen("online")}}else $("bOnline").hidden=true}); /* vs.js는 아래에서 불러와서 다 읽은 뒤 연결 */
@@ -758,8 +760,8 @@ function netAdd(m,s,v,n){return fetch(`${RANK_URL}?g=hangulbi&a=add&n=${encodeUR
 function netTop(){return fetch(`${RANK_URL}?g=hangulbi`).then(r=>r.json()).then(j=>{ONL=j.top||[];rRender()}).catch(()=>{ONL=ONL||[];rRender()})}
 function rSync(){document.querySelectorAll("#rTabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===RK));document.querySelectorAll("#rDv button").forEach(b=>b.classList.toggle("on",b.dataset.dv===RV))}
 function rRender(){rSync();const el=$("rList");if(!ONL){el.innerHTML='<span class="em">LOADING…</span>';return}
-  const rows=ONL.filter(r=>(r.m===RK+"-"+RV||String(r.m).indexOf(RK+"-"+RV+"-")===0)&&+r.s>0).sort((a,b)=>b.s-a.s).slice(0,50);
-  el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span><em class="nm">${esc(r.n)}</em>${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}</span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
+  const rows=ONL.filter(r=>{const p=String(r.m).split("-");return p[0]===RK&&(p[1]==="m"||p[1]==="p")&&+r.s>0}).sort((a,b)=>b.s-a.s).slice(0,50);
+  el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span><em class="nm">${esc(r.n)}</em>${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}<i class="phDvB">${String(r.m).split("-")[1]==="m"?"MOBILE":"PC"}</i></span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
 document.querySelectorAll("#rTabs button").forEach(b=>b.onclick=()=>{RK=b.dataset.k;rRender()});
 document.querySelectorAll("#rDv button").forEach(b=>b.onclick=()=>{RV=b.dataset.dv;rRender()});
 function openRank(k){RK=k||RK;RV=DV;show("ovRank");rRender();netTop()}
@@ -779,6 +781,6 @@ $("oName").addEventListener("submit",e=>{e.preventDefault();if(!LAST||LAST.saved
 livesUI(LIVES);bestTxt();
 window.__t={startSpeed,startRain,get R(){return R},get SP(){return SP},spawn:()=>spawn(),rainEnd,spEnd,submit};
 </script>
-<script src="../games/ph.js?v=22"></script><script src="../games/vs.js?v=4"></script>
+<script src="../games/ph.js?v=24"></script><script src="../games/vs.js?v=4"></script>
 </body>
 </html>
