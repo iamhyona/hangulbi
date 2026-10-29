@@ -725,7 +725,7 @@ function lvTheme(){if(window.phLvTheme){phLvTheme(PLV,$("field"));phLvTheme(PLV,
 function go(m){unlock();focusIn();lvTheme();phTut("ph-tut-hangulbi",TUT,()=>{m==="speed"?startSpeed():startRain()})}
 let PK="single",VSPICK=null; /* 싱글 / 온라인 */
 /* 모드 고르기: 위 슬라이드 토글(SPEED TYPING · HANGUL RAIN) → 아래 난이도 버튼을 누르면 시작 */
-let PICKM="speed";function lvSync(){$("bSpeed").classList.toggle("on",PICKM==="speed");$("bRain").classList.toggle("on",PICKM==="rain");document.querySelectorAll("#ovMode .phDiff").forEach(b=>b.classList.toggle("sel",b.dataset.l===LV))}
+let PICKM="rain";function lvSync(){$("bSpeed").classList.toggle("on",PICKM==="speed");$("bRain").classList.toggle("on",PICKM==="rain");document.querySelectorAll("#ovMode .phDiff").forEach(b=>b.classList.toggle("sel",b.dataset.l===LV))}
 document.querySelectorAll("#ovMode .phDiff").forEach(b=>b.onclick=()=>{LV=b.dataset.l;try{localStorage.setItem("hb-lv",LV)}catch(e){}PP.set("lv",LV);PP.set("mode",PICKM);pickMode(PICKM)});
 function modeOpen(k){PK=k;$("mTitle").textContent=k==="online"?"ONLINE PLAY":"SINGLE PLAY";lvSync();show("ovMode");if(!TOUCH){const b=document.querySelector(`#ovMode .phDiff[data-l="${LV}"]`);if(b)try{b.focus({preventScroll:true})}catch(e){}}}
 function pickMode(m){unlock();hide("ovMode");if(PK==="online"){VSPICK={m,l:LV};if(window.PHVS)PHVS.menu();return}PLV=LV;go(m)}
@@ -733,7 +733,7 @@ $("bSingle").onclick=()=>{unlock();modeOpen("single")};$("bModeX").onclick=()=>h
 $("bSpeed").onclick=()=>{PICKM="speed";PP.set("mode",PICKM);lvSync()};$("bRain").onclick=()=>{PICKM="rain";PP.set("mode",PICKM);lvSync()};
 /* ph.js 가 읽힌 뒤: 저장된 설정·모드·난이도 불러오고 설정 창 연결 */
 document.addEventListener("DOMContentLoaded",()=>{optLoad();
-  const m=PP.get("mode",null),l=PP.get("lv",null);if(m==="speed"||m==="rain")PICKM=m;if(l==="e"||l==="n"||l==="h")LV=l;lvSync();
+  PICKM="rain";LV="n";lvSync(); /* 들어올 때마다 기본 한글비(스테이지) + NORMAL */
   if(window.phSettings)phSettings.config({
     guide:{label:"뜻 표시",get:()=>OPT.guide,set:v=>{OPT.guide=!!v;PP.set("guide",OPT.guide);tipVis()}},
     speed:{get:()=>OPT.speed,set:v=>{OPT.speed=+v;PP.set("speed",OPT.speed)}},
