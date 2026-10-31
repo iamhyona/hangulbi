@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head><style>html.phL body{visibility:hidden}#rDv{display:none!important}.phDvB{font:400 8px/1 "Silkscreen",monospace;letter-spacing:.06em;color:#c9cbe0;background:#2c2f4a;border-radius:4px;padding:3px 5px 2px;font-style:normal;flex:0 0 auto}
-</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793570000";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793417029";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Jersey+15&display=block">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css">
-<link rel="stylesheet" href="../games/ph.css?v=19">
+<link rel="stylesheet" href="../games/ph.css?v=21">
 <style>
 :root{--g1:#e3fff6;--g2:#8fbfb2;--gb:#1f5a50;--neon:#3fe0c0;--bg:#07120f;--card:#0b1a16;--gold:#f2b000;--red:#ff4d6d;--f:Galmuri11,"Galmuri9",sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -136,7 +136,7 @@ html.kb .timer{margin-top:8px}
 .next{font:12px var(--f);color:#3f6a60;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:14px}
 .next:not(:empty)::before{content:"NEXT  ";font:700 8px Silkscreen;color:#2f5a50}
 html.kb .next{display:none}
-.spinfo{font:12px var(--f);color:#3f6a60;text-align:center}
+.spinfo{font:12px var(--f);color:#3f6a60;text-align:center}.spinfo:empty{display:none}
 html.kb .spinfo{display:none}
 [hidden]{display:none!important}
 /* 오버레이 */
@@ -188,28 +188,44 @@ html.kb .phLvName{display:none}
 </style>
 <script>/* 키보드가 올라와도 보이는 영역에 화면을 맞춤 */(function(){var d=document.documentElement;function f(){var v=window.visualViewport,h=v?v.height:innerHeight,t=v?v.offsetTop:0;d.style.setProperty('--app-h',h+'px');d.style.setProperty('--app-top',t+'px');var kb=!!v&&(window.innerHeight-v.height>120||(screen.height-v.height>260&&matchMedia('(pointer:coarse)').matches&&document.activeElement&&document.activeElement.tagName==='INPUT'));d.classList.toggle('kb',kb)}f();addEventListener('resize',f);if(window.visualViewport){visualViewport.addEventListener('resize',f);visualViewport.addEventListener('scroll',f)}addEventListener('orientationchange',function(){setTimeout(f,300)});addEventListener('pageshow',f);document.addEventListener('focusin',function(){setTimeout(f,60);setTimeout(f,400)});document.addEventListener('focusout',function(){setTimeout(f,60);setTimeout(f,400)});setTimeout(f,250);window.__vv=f})();</script>
 <style>#bestTxt{display:none!important}</style>
-<style id="ppSkinCss">/* 팡팡이 모드 (2026-10-31): 시작 화면 CLASSIC / PANGPANG · 스토리 */
-.ppTg{display:flex;margin:4px auto 14px;border:2px solid #3a3e66;border-radius:999px;overflow:hidden;width:220px;max-width:100%}
-.ppTg button{all:unset;flex:1;text-align:center;font:400 10px/30px Silkscreen,monospace;letter-spacing:.18em;color:#8b8fa8;cursor:pointer}
-.ppTg button.on{background:#ff6ec7;color:#2a0619}
-.ppTg button:focus-visible{outline:2px solid #fff;outline-offset:-3px}
-.ppSt{font:400 11px/1.7 Galmuri11,sans-serif;color:#c9cbe0;text-align:center;margin:6px 0 10px;word-break:keep-all}
-html:not(.pp) .ppSt,html:not(.pp) .ppShow{display:none!important}
-html.pp .phS-show.ppHide{display:none!important}
-.ppShow{display:flex;align-items:flex-end;justify-content:center;gap:4px;min-height:64px}
-.ppShow img{width:30px;height:30px;display:block}
-.ppShow img.L{width:46px;height:46px}
-.ppShow .hg{display:flex;flex-direction:column;align-items:center;gap:2px}
-.ppShow .hg span{font:15px Galmuri11,sans-serif;color:#fff;border:2px solid var(--c);border-radius:5px;padding:2px 5px;background:#0d2433}
-@keyframes ppBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.ppShow>*{animation:ppBob 1.6s ease-in-out infinite}.ppShow>*:nth-child(2n){animation-delay:.4s}.ppShow>*:nth-child(3n){animation-delay:.8s}
-@media (prefers-reduced-motion:reduce){.ppShow>*{animation:none}}
+<style id="ppSkinCss">/* 팡팡이 모드 (2026-10-31): 시작 화면 CLASSIC / PANGPANG 선택 (랭킹 탭과 같은 둥근 통) · 원래 모션 그대로 그림만 팡팡이 */
+.ppTg.phSeg{margin:2px auto 16px!important}
+.ppTg.phSeg>.phSegK{background:var(--tgOn,#10b870)!important}
+.ppTg.phSeg>button{font:400 10px "Silkscreen",monospace!important;letter-spacing:.16em!important;color:#8b8fa8!important;cursor:pointer}
+.ppTg.phSeg>button.on{color:var(--tgOnT,#06261a)!important}
+html.tgGray .ppTg.phSeg>.phSegK{background:#c9cbd6!important}
+html.tgGray .ppTg.phSeg>button.on{color:#111!important}
+html.pp .mv-bricks>i.ball{width:13px;height:13px;background:var(--ppBall) center/contain no-repeat;box-shadow:none;border-radius:0}
+html.pp .phS-show.hg{height:60px;align-items:flex-end}
+html.pp .phS-show.hg>i{position:relative;margin-top:22px}
+html.pp .phS-show.hg>i::before{content:'';position:absolute;left:50%;top:-25px;width:24px;height:24px;transform:translateX(-50%);background:var(--ppDrop) center/contain no-repeat}
 html.pp #field .w{overflow:visible}
 html.pp #field .w::before{content:'';position:absolute;left:50%;top:-29px;width:30px;height:30px;transform:translateX(-50%);background:var(--ppDrop) center/contain no-repeat;pointer-events:none}
 html.pp #field .w.big::before{background-image:var(--ppHeart)}
 html.pp #field .w.gone::before,html.pp #field .w.melt::before,html.pp #field .w.diss::before{opacity:0;transition:opacity .2s}
 </style>
-</head>
+<style id="hgTypeCss">/* 빠르게치기 정리 (2026-10-31): 타수는 문장 상자 밖 아래 · 난도는 판 아래 테두리 밖(다른 게임과 같은 자리) · 안내 문구 땐 상자·바·다음 문장 숨김 · 단계 = 동그라미 */
+.sp{border:2px solid #17473f;border-radius:6px;background:#06100d;padding:6px 10px 10px!important}
+.kpmL{position:static!important;text-align:center;font:400 8px Silkscreen,monospace;letter-spacing:.14em;color:#5f8a80;margin-top:-2px}
+.kpmL b{font:400 18px "Jersey 15",sans-serif;color:#cfe;margin-right:3px}
+.dots{gap:8px}
+.dots i{width:12px;height:12px;border-radius:50%;border:2px solid #2fae8f;background:none;box-shadow:none;box-sizing:border-box}
+.dots i.done{background:var(--neon);border-color:var(--neon);box-shadow:0 0 6px var(--neon)}
+.dots i.now{border-color:var(--neon);background:rgba(63,224,192,.18);box-shadow:0 0 6px rgba(63,224,192,.5)}
+html body .sp.notice .card,html body .sp.notice .card::before,html body .sp.notice .card::after{border-color:transparent!important;background:none!important;box-shadow:none!important;outline:0!important}
+.sp.notice .dots,.sp.notice .next,.sp.notice .spinfo,.sp.notice .kpmL{visibility:hidden}
+.screen.spNotice .prog{visibility:hidden}
+/* 판 색 비교 시안: 남색 (html.hgNavy) */
+html.hgNavy{--bg:#0a0c1d;--card:#0d1030;--gb:#3a3f80;--g2:#9aa3d8}
+html.hgNavy .screen{background:#0a0c1d;box-shadow:inset 0 0 0 1px rgba(150,170,255,.22)}
+html.hgNavy .field,html.hgNavy .sp{border-color:#3a3f80;background:#0a0c1d}
+html.hgNavy .card{border-color:#3a3f80;background:#0d1030}
+html.hgNavy .rain i{background:linear-gradient(#8fb0ff00,#8fb0ffaa)}
+html.hgNavy .sent{color:#6a74b0}
+html.hgNavy .kpmL,html.hgNavy .next:not(:empty)::before{color:#6a74b0}
+html.hgNavy .tip{border-color:#3a3f80!important;background:#0d1030!important}
+html.hgNavy .inrow input{background:#0a0c1d!important}
+</style></head>
 <body>
 <div class="gb">
   <div class="lcd-label"><i class="ln"></i><span class="copy">© 2026 PARK HYONA</span><i class="ln"></i></div>
@@ -226,20 +242,20 @@ html.pp #field .w.gone::before,html.pp #field .w.melt::before,html.pp #field .w.
     <div class="prog"><i id="prog"></i></div>
     <!-- 한글비 -->
     <div class="field" id="field" hidden><div class="rain" id="rain"></div><div class="ground"></div><div class="banner" id="banner"><b></b><small></small></div></div>
-    <div class="phLvName" id="lvR" hidden></div>
-    <div class="tip hint" id="tip" hidden><p>터뜨린 낱말의 뜻이 여기에 나와요</p></div>
     <!-- 빠르게치기 -->
     <div class="sp" id="sp">
       <div class="dots" id="dots"></div>
-      <div class="card"><div class="atk" id="atk"></div><div class="kpmL" id="kpmL"><b>0</b>타</div><div class="sent" id="sent"></div></div>
-      <div class="phLvName"></div>
+      <div class="card"><div class="atk" id="atk"></div><div class="sent" id="sent"></div></div>
+      <div class="kpmL" id="kpmL"><b>0</b>타</div>
       <div class="next" id="next"></div>
-      <div class="spinfo" id="spinfo">문장을 그대로 치고 스페이스 또는 엔터</div>
+      <div class="spinfo" id="spinfo"></div>
     </div>
+    <div class="tip hint" id="tip" hidden><p>터뜨린 낱말의 뜻이 여기에 나와요</p></div>
     <form class="inrow" id="form" autocomplete="off">
       <input id="inp" type="text" enterkeyhint="send" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" placeholder="여기에 입력" aria-label="입력">
       <button type="submit" id="bGo">ENTER</button>
     </form>
+    <div class="phLvName" id="lvR" hidden></div>
 
     <div class="ov show" id="ovTitle"><div class="phS"><i class="phS-sp a"></i><div class="phS-logo" data-word="HANGULBI"></div><div class="phS-show hg" id="show"></div><i class="phS-sp b"></i>
       <div class="phS-btns"><button class="phS-b" id="bSingle">SINGLE PLAY</button><button class="phS-b" id="bOnline">ONLINE PLAY</button><button class="phS-b gold" id="bRank">RANKING</button></div>
@@ -650,7 +666,7 @@ function spDeck(){
 function startSpeed(){
   MODE="speed";cleanup();if(!window.PHVS||!PHVS.active)VS=null;
   SP={stage:1,i:0,lives:LIVES,res:[],ok:0,busy:false,cOk:0,cAll:0,pts:0,paused:0};SP.list=spDeck();
-  $("field").hidden=true;$("lvR").hidden=true;$("tip").hidden=true;$("sp").hidden=false;lvTheme();
+  $("field").hidden=true;$("lvR").hidden=false;$("tip").hidden=true;$("sp").hidden=false;lvTheme();
   inp.placeholder="위 문장을 그대로 입력";
   STATE="play";goPlay();spShow();hud();
   clearInterval(spT);spT=setInterval(spTick,100);
@@ -658,6 +674,7 @@ function startSpeed(){
 function spShow(){
   if(!SP||STATE==="over")return;
   const t=SP.list[SP.i];
+  $("sp").classList.remove("notice");document.querySelector(".screen").classList.remove("spNotice");
   $("dots").innerHTML=Array.from({length:SP_N},(_,k)=>`<i class="${k<SP.i?"done":k===SP.i?"now":""}"></i>`).join("");
   $("next").textContent=SP.list[SP.i+1]||"";
   $("sent").innerHTML=[...t].map(c=>`<i>${c===" "?"&nbsp;":esc(c)}</i>`).join("").replace(/&nbsp;<\/i>/g," </i>");
@@ -681,7 +698,7 @@ function spAdvance(){
   if(SP.i>=SP_N){SP.stage++;SP.i=0;SP.list=spDeck();sfx.clear();spBanner("STAGE "+SP.stage,"목표 "+spTarget(SP.stage)+"타");setTimeout(spShow,700)}
   else setTimeout(spShow,300);
 }
-function spBanner(b,s,bad){const c=$("sent");c.innerHTML=`<span style="font:700 22px Silkscreen;color:#fff;text-shadow:0 0 10px ${bad?"#ff4d6d":"#3fe0c0"}">${esc(b)}</span>${s?`<br><span style="font-size:13px;color:#8fbfb2">${esc(s)}</span>`:""}`}
+function spBanner(b,s,bad){$("sp").classList.add("notice");document.querySelector(".screen").classList.add("spNotice");const c=$("sent");c.innerHTML=`<span style="font:700 22px Silkscreen;color:#fff;text-shadow:0 0 10px ${bad?"#ff4d6d":"#3fe0c0"}">${esc(b)}</span>${s?`<br><span style="font-size:13px;color:#8fbfb2">${esc(s)}</span>`:""}`}
 function spCount(v,t){let ok=0;for(let i=0;i<t.length;i++)if(v[i]===t[i])ok++;SP.cOk+=ok;SP.cAll+=Math.max(t.length,v.length)}
 function spFail(why){
   if(SP.busy)return;SP.busy=true;spCount(inp.value,SP.list[SP.i]);SP.lives--;hud();shake();sfx.bad();
@@ -745,7 +762,7 @@ function bestTxt(){const a=+(store.get("hb-best-kpm")||0),b=+(store.get("mcb-bes
 const TUT={goal:"하늘에서 한글비가 내려요!<br>땅에 닿기 전에 그대로 쳐서 터뜨려요.",
  touch:[["스페이스","문장 끝에서 누르면 바로 제출"],["엔터","입력"],["★ 낱말","얼음·폭탄·목숨 보너스"]],
  pc:[["Space","문장 끝에서 누르면 바로 제출"],["Enter","입력"],["★ 낱말","얼음·폭탄·목숨 보너스"]]};
-function lvTheme(){if(window.phLvTheme){phLvTheme(PLV,$("field"));phLvTheme(PLV,document.querySelector("#sp .card"))}}
+function lvTheme(){if(window.phLvTheme){phLvTheme(PLV,$("field"));phLvTheme(PLV,$("sp"))}}
 function go(m){unlock();focusIn();lvTheme();phTut("ph-tut-hangulbi",TUT,()=>{m==="speed"?startSpeed():startRain()})}
 let PK="single",VSPICK=null; /* 싱글 / 온라인 */
 /* 모드 고르기: 위 슬라이드 토글(SPEED TYPING · HANGUL RAIN) → 아래 난이도 버튼을 누르면 시작 */
@@ -770,7 +787,7 @@ addEventListener("load",()=>{if(window.PHVS){PHVS.init({id:'hgb',name:()=>store.
  extra:()=>VSPICK?{m:VSPICK.m,l:VSPICK.l}:{m:"speed",l:"n"},
  start:d=>{PLV=d.l||"n";VS={r:rngOf(d.seed),n:0,pend:[]};if(d.m==="rain"){startRain();setTimeout(()=>banner("VS · "+({e:"EASY",n:"NORMAL",h:"HARD"})[PLV],"먼저 STAGE "+VS_RAIN+" 클리어! 터뜨릴수록 상대 공격",false,2200),1300);return}startSpeed();$("spinfo").textContent="먼저 "+VS_GOAL+"문장! 맞힐 때마다 상대 공격";vsScore()},
  data:d=>{if(d.t==="atk"&&VS&&STATE==="play")vsApply(d.k)},
- stop:()=>{clearInterval(spT);STATE="over"},leave:()=>{VS=null;$("spinfo").textContent="문장을 그대로 치고 스페이스 또는 엔터";toTitle()}});
+ stop:()=>{clearInterval(spT);STATE="over"},leave:()=>{VS=null;$("spinfo").textContent="";toTitle()}});
  $("bOnline").onclick=()=>{unlock();modeOpen("online")}}else $("bOnline").hidden=true}); /* vs.js는 아래에서 불러와서 다 읽은 뒤 연결 */
 
 /* ================= 랭킹 (PC · 모바일 따로) ================= */
@@ -803,7 +820,7 @@ $("oName").addEventListener("submit",e=>{e.preventDefault();if(!LAST||LAST.saved
 livesUI(LIVES);bestTxt();
 window.__t={startSpeed,startRain,get R(){return R},get SP(){return SP},spawn:()=>spawn(),rainEnd,spEnd,submit};
 </script>
-<script src="../games/ph.js?v=34"></script><script src="../games/vs.js?v=4"></script>
+<script src="../games/ph.js?v=36"></script><script src="../games/vs.js?v=4"></script>
 <script id="hapJs">/* 진동: 맞힐 때 · 클리어 · 게임오버 */(function(){var H=function(p){if(p&&window.phHaptic)phHaptic(p)};function w(n,p){var f=window[n];if(typeof f!=='function')return;window[n]=function(){var r=f.apply(this,arguments);try{H(typeof p==='function'?p.apply(this,arguments):p)}catch(e){}return r}}function o(obj,n,p){if(!obj||typeof obj[n]!=='function')return;var f=obj[n];obj[n]=function(){var r=f.apply(this,arguments);H(p);return r}}
 o(sfx,'ok',10);o(sfx,'clear',[30,40,60]);w('overUI',[60,40,120])})();</script>
 <script id="ppSv">window.PPSV={"3": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-2 -2 44 44\" width=\"88\" height=\"88\"><defs><radialGradient id=\"g\" cx=\"0.5\" cy=\"0.62\" r=\".62\"><stop offset=\"0\" stop-color=\"#9fd3ff\"/><stop offset=\".5\" stop-color=\"#3e8fe6\"/><stop offset=\".86\" stop-color=\"#3e8fe6\"/><stop offset=\"1\" stop-color=\"#1c58ad\"/></radialGradient><mask id=\"m\" maskUnits=\"userSpaceOnUse\" x=\"-5\" y=\"-5\" width=\"50\" height=\"50\"><g fill=\"#fff\" stroke=\"#fff\" stroke-width=\"3.5\" stroke-linejoin=\"round\"><path d=\"M20 4C27 11.5 36.5 16.5 36.5 25C36.5 32.6 29.6 37 20 37C10.4 37 3.5 32.6 3.5 25C3.5 16.5 13 11.5 20 4Z\"/></g></mask><filter id=\"s\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\"><feGaussianBlur stdDeviation=\".9\"/></filter></defs><g fill=\"#231510\" stroke=\"#231510\" stroke-width=\"6.7\" stroke-linejoin=\"round\"><path d=\"M20 4C27 11.5 36.5 16.5 36.5 25C36.5 32.6 29.6 37 20 37C10.4 37 3.5 32.6 3.5 25C3.5 16.5 13 11.5 20 4Z\"/></g><g fill=\"url(#g)\" stroke=\"url(#g)\" stroke-width=\"3.5\" stroke-linejoin=\"round\"><path d=\"M20 4C27 11.5 36.5 16.5 36.5 25C36.5 32.6 29.6 37 20 37C10.4 37 3.5 32.6 3.5 25C3.5 16.5 13 11.5 20 4Z\"/></g><g mask=\"url(#m)\"><g fill=\"none\" stroke=\"#1c58ad\" stroke-width=\"3\" stroke-linejoin=\"round\" transform=\"translate(0 1.3)\" opacity=\".55\" filter=\"url(#s)\"><path d=\"M20 4C27 11.5 36.5 16.5 36.5 25C36.5 32.6 29.6 37 20 37C10.4 37 3.5 32.6 3.5 25C3.5 16.5 13 11.5 20 4Z\"/></g><ellipse cx=\"13.5\" cy=\"9.5\" rx=\"5.2\" ry=\"2.6\" transform=\"rotate(-28 13.5 9.5)\" fill=\"#fff\" opacity=\".85\" filter=\"url(#s)\"/><circle cx=\"9.5\" cy=\"14\" r=\"1.1\" fill=\"#fff\" opacity=\".7\"/></g><g transform=\"translate(0 4)\"><ellipse cx=\"16\" cy=\"17.6\" rx=\"1.7\" ry=\"2.3\" fill=\"#2a1712\"/><ellipse cx=\"24\" cy=\"17.6\" rx=\"1.7\" ry=\"2.3\" fill=\"#2a1712\"/><ellipse cx=\"16.4\" cy=\"16.8\" rx=\".55\" ry=\".7\" fill=\"#fff\" opacity=\".8\"/><ellipse cx=\"24.4\" cy=\"16.8\" rx=\".55\" ry=\".7\" fill=\"#fff\" opacity=\".8\"/><path d=\"M15.6 21.4Q20 26.6 24.4 21.4Q20 23.4 15.6 21.4Z\" fill=\"#2a1712\" stroke=\"#2a1712\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/></g></svg>", "1": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-2 -2 44 44\" width=\"88\" height=\"88\"><defs><radialGradient id=\"g\" cx=\"0.5\" cy=\"0.42\" r=\".62\"><stop offset=\"0\" stop-color=\"#ff8a73\"/><stop offset=\".5\" stop-color=\"#e8352e\"/><stop offset=\".86\" stop-color=\"#e8352e\"/><stop offset=\"1\" stop-color=\"#a8170f\"/></radialGradient><mask id=\"m\" maskUnits=\"userSpaceOnUse\" x=\"-5\" y=\"-5\" width=\"50\" height=\"50\"><g fill=\"#fff\" stroke=\"#fff\" stroke-width=\"3.5\" stroke-linejoin=\"round\"><path d=\"M20 35.5C7.5 29 3.2 22.5 3.2 15.2C3.2 8.6 7.6 4.2 13 4.2C16.3 4.2 18.7 6 20 8.6C21.3 6 23.7 4.2 27 4.2C32.4 4.2 36.8 8.6 36.8 15.2C36.8 22.5 32.5 29 20 35.5Z\"/></g></mask><filter id=\"s\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\"><feGaussianBlur stdDeviation=\".9\"/></filter></defs><g fill=\"#231510\" stroke=\"#231510\" stroke-width=\"6.7\" stroke-linejoin=\"round\"><path d=\"M20 35.5C7.5 29 3.2 22.5 3.2 15.2C3.2 8.6 7.6 4.2 13 4.2C16.3 4.2 18.7 6 20 8.6C21.3 6 23.7 4.2 27 4.2C32.4 4.2 36.8 8.6 36.8 15.2C36.8 22.5 32.5 29 20 35.5Z\"/></g><g fill=\"url(#g)\" stroke=\"url(#g)\" stroke-width=\"3.5\" stroke-linejoin=\"round\"><path d=\"M20 35.5C7.5 29 3.2 22.5 3.2 15.2C3.2 8.6 7.6 4.2 13 4.2C16.3 4.2 18.7 6 20 8.6C21.3 6 23.7 4.2 27 4.2C32.4 4.2 36.8 8.6 36.8 15.2C36.8 22.5 32.5 29 20 35.5Z\"/></g><g mask=\"url(#m)\"><g fill=\"none\" stroke=\"#a8170f\" stroke-width=\"3\" stroke-linejoin=\"round\" transform=\"translate(0 1.3)\" opacity=\".55\" filter=\"url(#s)\"><path d=\"M20 35.5C7.5 29 3.2 22.5 3.2 15.2C3.2 8.6 7.6 4.2 13 4.2C16.3 4.2 18.7 6 20 8.6C21.3 6 23.7 4.2 27 4.2C32.4 4.2 36.8 8.6 36.8 15.2C36.8 22.5 32.5 29 20 35.5Z\"/></g><ellipse cx=\"13.5\" cy=\"9.5\" rx=\"5.2\" ry=\"2.6\" transform=\"rotate(-28 13.5 9.5)\" fill=\"#fff\" opacity=\".85\" filter=\"url(#s)\"/><circle cx=\"9.5\" cy=\"14\" r=\"1.1\" fill=\"#fff\" opacity=\".7\"/></g><g transform=\"translate(0 -1)\"><ellipse cx=\"16\" cy=\"17.6\" rx=\"1.7\" ry=\"2.3\" fill=\"#2a1712\"/><ellipse cx=\"24\" cy=\"17.6\" rx=\"1.7\" ry=\"2.3\" fill=\"#2a1712\"/><ellipse cx=\"16.4\" cy=\"16.8\" rx=\".55\" ry=\".7\" fill=\"#fff\" opacity=\".8\"/><ellipse cx=\"24.4\" cy=\"16.8\" rx=\".55\" ry=\".7\" fill=\"#fff\" opacity=\".8\"/><path d=\"M15.6 21.4Q20 26.6 24.4 21.4Q20 23.4 15.6 21.4Z\" fill=\"#2a1712\" stroke=\"#2a1712\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/></g></svg>"};</script>
@@ -812,17 +829,16 @@ o(sfx,'ok',10);o(sfx,'clear',[30,40,60]);w('overUI',[60,40,120])})();</script>
 for(var k in SV){var i=new Image();i.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(SV[k]);IM[k]=i}
 window.PPU=function(k){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(SV[k])};
 function get(){try{return localStorage.getItem(K)!=='cl'}catch(e){return true}}
-function set(v){window.PPM=v;document.documentElement.classList.toggle('pp',v);try{localStorage.setItem(K,v?'pp':'cl')}catch(e){}document.querySelectorAll('.ppTg button').forEach(function(b){b.classList.toggle('on',(b.dataset.s==='pp')===v)})}
+var dr=function(){document.documentElement.style.setProperty('--ppDrop','url("'+PPU('3')+'")');document.documentElement.style.setProperty('--ppHeart','url("'+PPU('1')+'")')};dr();
+function set(v){window.PPM=v;document.documentElement.classList.toggle('pp',v);try{localStorage.setItem(K,v?'pp':'cl')}catch(e){}document.querySelectorAll('.ppTg button').forEach(function(b){b.classList.toggle('on',(b.dataset.s==='pp')===v)});var sh=document.querySelector('.phS .phS-show')||document.querySelector('.phS-show');if(sh)try{skin(sh,v)}catch(e){}}
 window.PPM=get();document.documentElement.classList.toggle('pp',window.PPM);
-function ui(){var sh=document.querySelector('.phS .phS-show')||document.querySelector('.phS-show');if(!sh){setTimeout(ui,200);return}if(document.querySelector('.ppTg'))return;
- sh.classList.add('ppHide');var s=document.createElement('div');s.className='ppShow';s.setAttribute('aria-hidden','true');s.innerHTML=(function(){var c=['#ff5c7a','#ffb02e','#3fd07f','#b48cff','#4ab8ff'];return '한글비타자'.split('').map(function(ch,i){return '<div class="hg" style="--c:'+c[i]+'"><img src="'+PPU('3')+'" alt=""><span>'+ch+'</span></div>'}).join('')})();sh.after(s);
- var st=document.createElement('div');st.className='ppSt';st.innerHTML="구름나라 빗방울 팡팡이들이 낱말을 들고 내려와요.<br>바르게 쓰면 팡!";s.after(st);
- var t=document.createElement('div');t.className='ppTg';t.setAttribute('role','group');t.setAttribute('aria-label','모드');t.innerHTML='<button type="button" data-s="cl">CLASSIC</button><button type="button" data-s="pp">PANGPANG</button>';
- var anchor=st;anchor.after(t);html=document.documentElement;
- if(!html.classList.contains('pp'))sh.classList.add('ppHideOff');
+function skin(sh,on){document.documentElement.style.setProperty('--ppDrop','url("'+PPU('3')+'")');document.documentElement.style.setProperty('--ppHeart','url("'+PPU('1')+'")')}
+function ui(){var sh=document.querySelector('.phS .phS-show')||document.querySelector('.phS-show');if(!sh||!sh.children.length){setTimeout(ui,200);return}if(document.querySelector('.ppTg'))return;
+ var t=document.createElement('div');t.className='ppTg phSeg';t.setAttribute('role','group');t.setAttribute('aria-label','모드');t.innerHTML='<button type="button" data-s="cl">CLASSIC</button><button type="button" data-s="pp">PANGPANG</button>';
+ sh.after(t);
  t.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;e.stopPropagation();set(b.dataset.s==='pp')});
- ['pointerdown','touchstart'].forEach(function(n){t.addEventListener(n,function(e){e.stopPropagation()})});set(window.PPM)}
-var html;if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ui);else setTimeout(ui,0);var dr=function(){document.documentElement.style.setProperty('--ppDrop','url("'+PPU('3')+'")');document.documentElement.style.setProperty('--ppHeart','url("'+PPU('1')+'")')};dr();
+ ['pointerdown','touchstart'].forEach(function(n){t.addEventListener(n,function(e){e.stopPropagation()})});setTimeout(function(){set(window.PPM);window.phSeg&&phSeg()},600)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ui);else setTimeout(ui,0);
 })();</script>
 </body>
 </html>
