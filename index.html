@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head><style>html.phL body{visibility:hidden}#rDv{display:none!important}.phDvB{font:400 8px/1 "Silkscreen",monospace;letter-spacing:.06em;color:#c9cbe0;background:#2c2f4a;border-radius:4px;padding:3px 5px 2px;font-style:normal;flex:0 0 auto}
-</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793524126";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793529285";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -811,11 +811,11 @@ function overUI(o){
   inp.blur();inp.value="";LAST=o.rec;
   $("oSub").textContent=o.sub;$("oBig").textContent=o.big;$("oMsg").textContent=o.msg;
   $("oStats").innerHTML=o.stats.map(([a,b])=>`<div><small>${a}</small><b>${b}</b></div>`).join("");
-  $("oNameIn").value=store.get("mcb-name")||"";$("oName").classList.toggle("saved",!(o.rec.s>0||o.rec.kpm>0));LAST.saved=false;
+  $("oNameIn").value=store.get("mcb-name")||"";$("oName").classList.toggle("saved",!(o.rec.s>0||o.rec.kpm>0));$("oName").querySelector("button").textContent="OK";LAST.saved=false;
   show("ovOver");
 }
 $("oName").addEventListener("submit",e=>{e.preventDefault();if(!LAST||LAST.saved)return;LAST.saved=true;
-  const n=($("oNameIn").value.trim()||"익명").slice(0,10);store.set("mcb-name",n);$("oName").classList.add("saved");$("oNameIn").blur();
+  const n=($("oNameIn").value.trim()||"익명").slice(0,10);store.set("mcb-name",n);$("oName").classList.add("saved");$("oName").querySelector("button").textContent="✓";$("oNameIn").blur(); /* 2026-11-01: 등록하면 ✓ */
   const ps=[];if(LAST.kind==="rain"){ps.push(netAdd("rain-"+DV+LVS(),LAST.s,LAST.v,n));MINE={n,s:LAST.s,k:"rain"}}
   else{if(LAST.s>0)ps.push(netAdd("spd-"+DV+LVS(),LAST.s,LAST.v,n));if(LAST.kpm>0)ps.push(netAdd("kpm-"+DV+LVS(),LAST.kpm,LAST.v,n));MINE={n,s:LAST.kpm,k:"kpm"}}
   Promise.all(ps).then(()=>openRank(LAST.kind==="rain"?"rain":"kpm"))});
