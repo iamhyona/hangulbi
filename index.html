@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head><style>html.phL body{visibility:hidden}#rDv{display:none!important}.phDvB{font:400 8px/1 "Silkscreen",monospace;letter-spacing:.06em;color:#c9cbe0;background:#2c2f4a;border-radius:4px;padding:3px 5px 2px;font-style:normal;flex:0 0 auto}
-</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793507365";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793524126";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -634,7 +634,7 @@ function rainEnd(){if(R.ended)return;R.ended=1; /* 끝 화면은 한 번만 (여
   cancelAnimationFrame(raf);raf=0;STATE="over";
   const fs=Math.round(R.score*SMUL()),key="mcb-best-basic",best=+(store.get(key)||0),rec=fs>best&&fs>0;if(rec)store.set(key,fs);
   const p=R.popped,title=p<5?"설겆이 하는 사람… 아니 설거지!":p<15?"금새… 아니 '금세' 배우는 사람":p<30?"맞춤법 단속반":p<50?"걸어 다니는 국어사전":"국립국어원 비밀 요원";
-  overUI({sub:"HANGUL RAIN · GAME OVER",big:fs.toLocaleString(),msg:(rec?"NEW BEST! · ":best?`최고 ${best.toLocaleString()}점 · `:"")+"칭호: "+title,
+  overUI({sub:"HANGUL RAIN · GAME OVER",big:fs.toLocaleString(),msg:(SMUL()!==1?R.score.toLocaleString()+" × "+SMUL()+" · ":"")+(rec?"NEW BEST! · ":best?`최고 ${best.toLocaleString()}점 · `:"")+"칭호: "+title,
     stats:[["STAGE",R.level],["WORDS",R.popped],["MISS",R.learned.filter(x=>x.st==="miss").length]],rec:{kind:"rain",s:fs,v:R.level}});
   const items=R.learned.slice().sort((a,b)=>(a.st==="miss"?0:1)-(b.st==="miss"?0:1));
   $("oWords").hidden=!items.length;$("oWords").innerHTML=items.map(({e,st})=>`<div><b>${esc(e.word)}</b>${e.wrong?`<s>${esc(e.wrong)}</s>`:""}${st==="miss"?"<em>MISS</em>":""}<p>${esc(e.mean)}</p></div>`).join("");
@@ -737,6 +737,7 @@ function cleanup(){cancelAnimationFrame(raf);raf=0;clearInterval(spT);field.quer
 function goPlay(){inp.value="";inp.disabled=false;focusIn()}
 function submit(){unlock();if(STATE!=="play")return;if(MODE==="speed"){spSubmit();return}const v=inp.value.trim();inp.value="";if(v)rainSubmit(v)}
 inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();setTimeout(submit,0)}});
+inp.addEventListener("input",()=>{if(STATE==="over"&&inp.value){inp.value="";inp.blur()}}); /* 2026-11-01: 끝난 뒤 배경 입력창에 글자가 쌓이지 않게 */
 $("form").addEventListener("submit",e=>{e.preventDefault();setTimeout(submit,0)});
 inp.addEventListener("input",()=>{if(STATE!=="play"||MODE!=="speed"||!SP||SP.busy)return;spPaint();sfx.key();const v=inp.value,t=SP.list[SP.i];if(/\s$/.test(v)&&v.trimEnd().length>=t.length)setTimeout(spSubmit,0)});
 function pause(on,quiet){
@@ -807,7 +808,7 @@ document.querySelectorAll("#rDv button").forEach(b=>b.onclick=()=>{RV=b.dataset.
 function openRank(k){RK=k||RK;RV=DV;show("ovRank");rRender();netTop()}
 $("bRank").onclick=()=>openRank("kpm");$("bToRank").onclick=()=>openRank(LAST&&LAST.kind==="rain"?"rain":"kpm");$("bRankX").onclick=()=>hide("ovRank");
 function overUI(o){
-  inp.blur();LAST=o.rec;
+  inp.blur();inp.value="";LAST=o.rec;
   $("oSub").textContent=o.sub;$("oBig").textContent=o.big;$("oMsg").textContent=o.msg;
   $("oStats").innerHTML=o.stats.map(([a,b])=>`<div><small>${a}</small><b>${b}</b></div>`).join("");
   $("oNameIn").value=store.get("mcb-name")||"";$("oName").classList.toggle("saved",!(o.rec.s>0||o.rec.kpm>0));LAST.saved=false;
