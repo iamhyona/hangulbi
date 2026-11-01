@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head><style>html.phL body{visibility:hidden}#rDv{display:none!important}.phDvB{font:400 8px/1 "Silkscreen",monospace;letter-spacing:.06em;color:#c9cbe0;background:#2c2f4a;border-radius:4px;padding:3px 5px 2px;font-style:normal;flex:0 0 auto}
-</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793529285";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
+</style><script>/* 글꼴·최신 버전 확인될 때까지 잠깐 가리기 */(function(){var d=document.documentElement,n=2;d.classList.add("phL");function o(){d.classList.remove("phL")}window.__phDone=function(){if(--n<=0)o()};setTimeout(o,1200);function f(){try{var F=document.fonts;Promise.all([F.load('700 14px "Silkscreen"'),F.load('12px "Galmuri11"'),F.load('20px "Jersey 15"')]).then(function(){return F.ready}).then(window.__phDone,window.__phDone)}catch(e){o()}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",f);else f()})();</script><script>/* 옛 버전 캐시 자동 갱신 */(function(){var V="1793554601";try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var V="(\d+)"/);if(m&&m[1]!==V&&location.search.indexOf("v="+m[1])<0){location.replace(location.pathname+"?v="+m[1])}if(!(m&&m[1]!==V)&&window.__phDone)__phDone()}).catch(function(){window.__phDone&&__phDone()})}catch(e){window.__phDone&&__phDone()}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>HANGULBI · 한글비타자게임</title>
@@ -291,7 +291,7 @@ body[data-phlv] .inrow input.shake{border-color:var(--red)!important}</style></h
       <div class="sub">RANKING</div>
       <div class="tabs phSeg" id="rTabs"><button data-k="kpm">KPM</button><button data-k="spd">TYPING</button><button data-k="rain">RAIN</button></div>
       <div class="tabs dv phSeg" id="rDv" hidden style="display:none"><button data-dv="m">MOBILE</button><button data-dv="p">PC</button></div>
-      <div class="list" id="rList"></div>
+      <div class="phLvTabs" id="rkLv"><button class="lv-e" data-l="e">E</button><button class="lv-n" data-l="n">N</button><button class="lv-h" data-l="h">H</button></div><div class="list" id="rList"></div>
       <button class="x" id="bRankX">✕</button>
     </div>
   </div></div>
@@ -800,12 +800,14 @@ const LVS=()=>PLV==="n"?"":"-"+PLV;
 function netAdd(m,s,v,n){return fetch(`${RANK_URL}?g=hangulbi&a=add&n=${encodeURIComponent(n)}&s=${s}&v=${v}&m=${m}`).catch(()=>{})}
 function netTop(){return fetch(`${RANK_URL}?g=hangulbi`).then(r=>r.json()).then(j=>{ONL=j.top||[];rRender()}).catch(()=>{ONL=ONL||[];rRender()})}
 function rSync(){document.querySelectorAll("#rTabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===RK));document.querySelectorAll("#rDv button").forEach(b=>b.classList.toggle("on",b.dataset.dv===RV))}
-function rRender(){rSync();const el=$("rList");if(!ONL){el.innerHTML='<span class="em"><span class="phLoad">LOADING</span></span>';return}
-  const rows=ONL.filter(r=>{const p=String(r.m).split("-");return p[0]===RK&&(p[1]==="m"||p[1]==="p")&&+r.s>0}).sort((a,b)=>b.s-a.s).slice(0,50);
+let RKL="n"; /* 2026-11-02: 난도별 랭킹 */
+document.querySelectorAll("#rkLv button").forEach(b=>b.onclick=()=>{RKL=b.dataset.l;rRender()});
+function rRender(){rSync();document.querySelectorAll("#rkLv button").forEach(b=>b.classList.toggle("on",b.dataset.l===RKL));const el=$("rList");if(!ONL){el.innerHTML='<span class="em"><span class="phLoad">LOADING</span></span>';return}
+  const rows=ONL.filter(r=>{const p=String(r.m).split("-");return p[0]===RK&&(p[1]==="m"||p[1]==="p")&&+r.s>0&&((p[2]==="e"||p[2]==="h")?p[2]:"n")===RKL}).sort((a,b)=>b.s-a.s).slice(0,50);
   el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span><em class="nm">${esc(r.n)}</em>${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}<i class="phDvB">${String(r.m).split("-")[1]==="m"?"MOBILE":"PC"}</i></span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
 document.querySelectorAll("#rTabs button").forEach(b=>b.onclick=()=>{RK=b.dataset.k;rRender()});
 document.querySelectorAll("#rDv button").forEach(b=>b.onclick=()=>{RV=b.dataset.dv;rRender()});
-function openRank(k){RK=k||RK;RV=DV;show("ovRank");rRender();netTop()}
+function openRank(k){RK=k||RK;RV=DV;RKL=(PLV==="e"||PLV==="h")?PLV:"n";show("ovRank");rRender();netTop()}
 $("bRank").onclick=()=>openRank("kpm");$("bToRank").onclick=()=>openRank(LAST&&LAST.kind==="rain"?"rain":"kpm");$("bRankX").onclick=()=>hide("ovRank");
 function overUI(o){
   inp.blur();inp.value="";LAST=o.rec;
