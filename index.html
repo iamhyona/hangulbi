@@ -291,7 +291,7 @@ body[data-phlv] .inrow input.shake{border-color:var(--red)!important}</style></h
       <div class="sub">RANKING</div>
       <div class="tabs phSeg" id="rTabs"><button data-k="kpm">KPM</button><button data-k="spd">TYPING</button><button data-k="rain">RAIN</button></div>
       <div class="tabs dv phSeg" id="rDv" hidden style="display:none"><button data-dv="m">MOBILE</button><button data-dv="p">PC</button></div>
-      <div class="phLvTabs" id="rkLv"><button class="lv-e" data-l="e">E</button><button class="lv-n" data-l="n">N</button><button class="lv-h" data-l="h">H</button></div><div class="list" id="rList"></div>
+      <div class="list" id="rList"></div>
       <button class="x" id="bRankX">✕</button>
     </div>
   </div></div>
@@ -803,7 +803,7 @@ function rSync(){document.querySelectorAll("#rTabs button").forEach(b=>b.classLi
 let RKL="n"; /* 2026-11-02: 난도별 랭킹 */
 document.querySelectorAll("#rkLv button").forEach(b=>b.onclick=()=>{RKL=b.dataset.l;rRender()});
 function rRender(){rSync();document.querySelectorAll("#rkLv button").forEach(b=>b.classList.toggle("on",b.dataset.l===RKL));const el=$("rList");if(!ONL){el.innerHTML='<span class="em"><span class="phLoad">LOADING</span></span>';return}
-  const rows=ONL.filter(r=>{const p=String(r.m).split("-");return p[0]===RK&&(p[1]==="m"||p[1]==="p")&&+r.s>0&&((p[2]==="e"||p[2]==="h")?p[2]:"n")===RKL}).sort((a,b)=>b.s-a.s).slice(0,50);
+  const rows=ONL.filter(r=>{const p=String(r.m).split("-");return p[0]===RK&&(p[1]==="m"||p[1]==="p")&&+r.s>0}) /* 2026-11-19: 모드별 통합 랭킹 (난이도 배율로 비교, 난이도는 뱃지로만) */.sort((a,b)=>b.s-a.s).slice(0,50);
   el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span><em class="nm">${esc(r.n)}</em>${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}<i class="phDvB">${String(r.m).split("-")[1]==="m"?"MOBILE":"PC"}</i></span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
 document.querySelectorAll("#rTabs button").forEach(b=>b.onclick=()=>{RK=b.dataset.k;rRender()});
 document.querySelectorAll("#rDv button").forEach(b=>b.onclick=()=>{RV=b.dataset.dv;rRender()});
