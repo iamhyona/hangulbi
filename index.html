@@ -64,7 +64,7 @@ html.kb .hud{--hh:38px}html.kb .hud .phBx{padding:4px 3px!important}html.kb .hud
 @media (min-width:600px) and (pointer:fine){.w{font-size:18px;padding:6px 9px 5px}}
 .w.S{--c:#2fb8ff}.w.V{--c:#f2b000}.w.N{--c:#2fd889}.w.H{--c:#b07cff}
 .w.bonus{--c:#fff;background:#3a2f06;color:#ffe27a}
-.w.bonus::before{content:"★ ";color:#ffd23f}
+.w.bonus::before{content:'';display:inline-block;width:.7em;height:.7em;background:#ffd23f;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M3 0h1v1h-1zM2 1h3v1h-3zM0 2h7v1h-7zM1 3h5v1h-5zM2 4h3v1h-3zM1 5h2v1h-2zM4 5h2v1h-2zM1 6h1v1h-1zM5 6h1v1h-1z'/%3E%3C/svg%3E") no-repeat center/contain;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M3 0h1v1h-1zM2 1h3v1h-3zM0 2h7v1h-7zM1 3h5v1h-5zM2 4h3v1h-3zM1 5h2v1h-2zM4 5h2v1h-2zM1 6h1v1h-1zM5 6h1v1h-1z'/%3E%3C/svg%3E") no-repeat center/contain;margin-right:.3em;vertical-align:.02em}
 .w.big{--c:#ff4d6d;background:#2a0c13;font-size:17px}
 .w.hit{color:#fff;background:var(--c);color:#0a0c1d}
 .w.gone{animation:gone .35s steps(4) forwards}
@@ -792,7 +792,7 @@ addEventListener("load",()=>{if(window.PHVS){PHVS.init({id:'hgb',name:()=>store.
  stop:()=>{clearInterval(spT);STATE="over"},leave:()=>{VS=null;$("spinfo").textContent="";toTitle()}});
  $("bOnline").onclick=()=>{unlock();modeOpen("online")}}else $("bOnline").hidden=true}); /* vs.js는 아래에서 불러와서 다 읽은 뒤 연결 */
 
-/* ================= 랭킹 (PC · 모바일 따로) ================= */
+/* ================= 랭킹 (2026-11-19: PC · 모바일 한 랭킹, 기록 이름에만 기기 표시가 남음) ================= */
 const RANK_URL="https://script.google.com/macros/s/AKfycbzkdjVleobj98oyxlC77cUf5txCRiSB6D1zgRWU56pX22ElXAx9R8xFRGnV0nKAUbwC/exec";
 const DV=(()=>{try{return TOUCH||/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?"m":"p"}catch(e){return "p"}})();
 let ONL=null,MINE=null,RK="kpm",RV=DV,LAST=null;
@@ -804,7 +804,7 @@ let RKL="n"; /* 2026-11-02: 난도별 랭킹 */
 document.querySelectorAll("#rkLv button").forEach(b=>b.onclick=()=>{RKL=b.dataset.l;rRender()});
 function rRender(){rSync();document.querySelectorAll("#rkLv button").forEach(b=>b.classList.toggle("on",b.dataset.l===RKL));const el=$("rList");if(!ONL){el.innerHTML='<span class="em"><span class="phLoad">LOADING</span></span>';return}
   const rows=ONL.filter(r=>{const p=String(r.m).split("-");return p[0]===RK&&(p[1]==="m"||p[1]==="p")&&+r.s>0}) /* 2026-11-19: 모드별 통합 랭킹 (난이도 배율로 비교, 난이도는 뱃지로만) */.sort((a,b)=>b.s-a.s).slice(0,50);
-  el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span><em class="nm">${esc(r.n)}</em>${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}<i class="phDvB">${String(r.m).split("-")[1]==="m"?"MOBILE":"PC"}</i></span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
+  el.innerHTML=rows.length?rows.map((r,i)=>`<div class="${MINE&&MINE.n===r.n&&+MINE.s===+r.s&&MINE.k===RK?"me":""}"><span class="r">${i+1}</span><span><em class="nm">${esc(r.n)}</em>${window.phLv?phLv(({e:"EASY",h:"HARD"})[String(r.m).split("-")[2]]||"NORMAL"):""}</span><span class="s">${(+r.s).toLocaleString()}${RK==="kpm"?"타":""}</span><span class="m">ST.${esc(r.v)}</span></div>`).join(""):'<span class="em">아직 기록이 없어요</span>'}
 document.querySelectorAll("#rTabs button").forEach(b=>b.onclick=()=>{RK=b.dataset.k;rRender()});
 document.querySelectorAll("#rDv button").forEach(b=>b.onclick=()=>{RV=b.dataset.dv;rRender()});
 function openRank(k){RK=k||RK;RV=DV;RKL=(PLV==="e"||PLV==="h")?PLV:"n";show("ovRank");rRender();netTop()}
@@ -820,7 +820,7 @@ $("oName").addEventListener("submit",e=>{e.preventDefault();if(!LAST||LAST.saved
   const n=($("oNameIn").value.trim()||"익명").slice(0,10);store.set("mcb-name",n);$("oName").classList.add("saved");$("oName").querySelector("button").textContent="✓";$("oNameIn").blur(); /* 2026-11-01: 등록하면 ✓ */
   const ps=[];if(LAST.kind==="rain"){ps.push(netAdd("rain-"+DV+LVS(),LAST.s,LAST.v,n));MINE={n,s:LAST.s,k:"rain"}}
   else{if(LAST.s>0)ps.push(netAdd("spd-"+DV+LVS(),LAST.s,LAST.v,n));if(LAST.kpm>0)ps.push(netAdd("kpm-"+DV+LVS(),LAST.kpm,LAST.v,n));MINE={n,s:LAST.kpm,k:"kpm"}}
-  Promise.all(ps).then(()=>openRank(LAST.kind==="rain"?"rain":"kpm"))});
+  const rk=LAST.kind==="rain"?"rain":"kpm";setTimeout(()=>openRank(rk),500);Promise.all(ps).then(()=>{if($("ovRank").classList.contains("show"))netTop()})}); /* 2026-11-19: ✓ 뒤 바로 랭킹 열기 (서버 응답 기다리지 않음), 등록 끝나면 목록 새로고침 */
 livesUI(LIVES);bestTxt();
 window.__t={startSpeed,startRain,get R(){return R},get SP(){return SP},spawn:()=>spawn(),rainEnd,spEnd,submit};
 </script>
